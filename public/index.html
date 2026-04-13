@@ -984,6 +984,32 @@ document.addEventListener('DOMContentLoaded', function() {
     new ResizeObserver(function() { if(mapWrap.offsetWidth > 0) drawFlowMap(); }).observe(mapWrap);
   }
 
+  // Check if resuming from dashboard
+  var urlParams = new URLSearchParams(window.location.search);
+  var resumeId = urlParams.get('resume') || localStorage.getItem('advise_resume_id');
+  if (resumeId) {
+    localStorage.removeItem('advise_resume_id');
+    // Try to load from KV first
+    fetch('/api/session/' + resumeId)
+      .then(function(r){ return r.json(); })
+      .then(function(d) {
+        if (d && d.prospect && d.prospect.first) {
+          restoreSession(d);
+        }
+      })
+      .catch(function() {
+        // Fall back to localStorage
+        var saved = localStorage.getItem('advise_current_session');
+        if (saved) {
+          try {
+            var d = JSON.parse(saved);
+            if (d && d.sessionId === resumeId) { restoreSession(d); return; }
+          } catch(e) {}
+        }
+      });
+    return;
+  }
+
   // Try to restore session from localStorage
   var saved = localStorage.getItem('advise_current_session');
   if (saved) {
