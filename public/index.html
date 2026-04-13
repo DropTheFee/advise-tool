@@ -1012,7 +1012,7 @@ function goTo(n) {
   currentStage = n;
   document.getElementById('qa-panel').scrollTop = 0;
   // Switch viz to appropriate default tab
-  if (n <= 2) { switchViz('map'); }
+  if (n <= 2) { switchViz('map'); setTimeout(drawFlowMap, 300); }
   else if (n === 3) { switchViz('impact'); recalc(); startTicking(); }
   else if (n === 4) { switchViz('shift'); populateShiftSummary(); }
   else if (n === 5) { switchViz('shift'); buildBriefPreview(); }
@@ -1040,7 +1040,7 @@ function switchViz(tab) {
   var viewId = tab === 'map' ? 'map-view' : tab === 'score' ? 'score-view' : tab === 'impact' ? 'impact-view' : 'shift-view';
   var view = document.getElementById(viewId);
   if (view) view.classList.add('active');
-  if (tab === 'map') setTimeout(drawFlowMap, 50);
+  if (tab === 'map') setTimeout(drawFlowMap, 200);
   if (tab === 'score') updateScorecard();
 }
 
