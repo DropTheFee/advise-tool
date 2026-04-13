@@ -23,7 +23,8 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
 .sessions-table{width:100%;border-collapse:collapse;}
 .sessions-table th{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);}
 .sessions-table td{padding:12px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px;vertical-align:middle;}
-.sessions-table tr:hover td{background:rgba(107,63,160,0.05);}
+.sessions-table tr:hover td{background:rgba(107,63,160,0.08);cursor:pointer;}
+.sessions-table tr:hover td:first-child{border-left:2px solid var(--purpleb);}
 .tier-badge{display:inline-block;padding:3px 10px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
 .tier-launch{background:rgba(26,90,138,0.2);color:#6EDFC8;border:1px solid rgba(26,90,138,0.3);}
 .tier-grow{background:rgba(107,63,160,0.2);color:var(--purpleb);border:1px solid rgba(107,63,160,0.3);}
@@ -71,7 +72,8 @@ fetch('/api/sessions').then(function(r){return r.json();}).then(function(data){
   var withBrief = sessions.filter(function(s){return s.briefGenerated;}).length;
   document.getElementById('stat-briefs').textContent = withBrief;
   var totalLeak = sessions.reduce(function(a,s){return a+(s.totalLeak||0);},0);
-  document.getElementById('stat-avg-leak').textContent = sessions.length ? fmt(totalLeak/sessions.length) : '$0';
+  var avgAnnualLeak = sessions.length ? totalLeak/sessions.length : 0;
+  document.getElementById('stat-avg-leak').textContent = sessions.length ? fmt(avgAnnualLeak/12) + '/mo' : '$0';
   var yesCount = sessions.filter(function(s){return s.outcome==='verbal-yes';}).length;
   document.getElementById('stat-yes').textContent = sessions.length ? Math.round(yesCount/sessions.length*100)+'%' : '—';
 
@@ -91,15 +93,19 @@ fetch('/api/sessions').then(function(r){return r.json();}).then(function(data){
     var outcomeLabel = s.outcome==='verbal-yes'?'✅ Verbal Yes':s.outcome==='nurture'?'Nurture':s.outcome==='think'?'Thinking':s.outcome==='proposal'?'Sent Agreement':'—';
     var tierClass = 'tier-'+(s.tier||'launch');
     var tierLabel = s.tier ? s.tier.charAt(0).toUpperCase()+s.tier.slice(1) : '—';
-    html += '<tr>'
-      +'<td><strong>'+( p.business||'—')+'</strong></td>'
+html += '<tr style="cursor:pointer;" onclick="openSession(''+s.id+'')">'
+      +'<td><strong>'+(p.business||'—')+'</strong></td>'
       +'<td>'+(p.first||'')+' '+(p.last||'')+'</td>'
       +'<td style="color:var(--muted);font-size:12px;">'+(p.industry||'—')+'</td>'
       +'<td style="color:var(--muted);font-size:12px;">'+fmtDate(s.updatedAt)+'</td>'
       +'<td><span class="leak-val">'+fmt(s.totalLeak/12)+'</span><span style="font-size:10px;color:var(--muted);">/mo</span></td>'
       +'<td>'+(s.tier?'<span class="tier-badge '+tierClass+'">'+tierLabel+'</span>':'<span style="color:var(--muted);">—</span>')+'</td>'
       +'<td>'+(s.outcome?'<span class="outcome-badge '+outcomeClass+'">'+outcomeLabel+'</span>':'<span style="color:var(--muted);">—</span>')+'</td>'
-      +'<td>'+(s.briefGenerated?'<a href="/brief/'+s.id+'" class="btn-view" target="_blank">View Brief</a>':'<span style="color:var(--muted);font-size:11px;">Not generated</span>')+'</td>'
+      +'<td onclick="event.stopPropagation();">'
+      +(s.briefGenerated
+        ?'<a href="/brief/'+s.id+'" class="btn-view" target="_blank">View Brief</a>'
+        :'<span style="color:var(--muted);font-size:11px;">Not generated</span>')
+      +'</td>'
       +'</tr>';
   });
 
@@ -108,6 +114,12 @@ fetch('/api/sessions').then(function(r){return r.json();}).then(function(data){
 }).catch(function(){
   document.getElementById('table-wrap').innerHTML = '<div class="empty-state"><h2>Could not load sessions</h2><p>Make sure the Worker is deployed and KV is connected.</p></div>';
 });
+
+function openSession(id) {
+  // Store the session ID to resume, then go to the tool
+  localStorage.setItem('advise_resume_id', id);
+  window.location.href = '/?resume=' + id;
+}
 </script>
 </body>
 </html>
