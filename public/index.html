@@ -165,6 +165,10 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
 .viz-tab{padding:6px 14px;border-radius:6px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;cursor:pointer;letter-spacing:1px;text-transform:uppercase;color:var(--muted);background:transparent;border:1px solid transparent;transition:all 0.2s;}
 .viz-tab.active{background:rgba(107,63,160,0.2);border-color:rgba(107,63,160,0.4);color:var(--purpleb);}
 .viz-session-id{font-family:'Syne',sans-serif;font-size:9px;color:var(--muted);letter-spacing:1px;}
+.map-toggle{display:none;align-items:center;gap:4px;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:4px;margin-left:12px;}
+.map-toggle.visible{display:flex;}
+.mt-btn{padding:5px 12px;border-radius:6px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--muted);letter-spacing:1px;text-transform:uppercase;transition:all 0.2s;}
+.mt-btn.active{background:linear-gradient(135deg,var(--purple),var(--teal));color:var(--white);}
 
 .viz-body{flex:1;overflow:hidden;position:relative;}
 .viz-view{display:none;width:100%;height:100%;}
@@ -249,6 +253,7 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
 .tc-features{list-style:none;margin-top:8px;}
 .tc-features li{font-size:10px;color:var(--muted);padding:3px 0;display:flex;gap:6px;line-height:1.3;}
 .tc-features li::before{content:'✓';color:var(--tealb);font-weight:700;flex-shrink:0;}
+.tc-tagline{font-size:11px;color:var(--muted);line-height:1.4;margin:6px 0 8px;font-style:italic;}
 .tc-btn{width:100%;margin-top:12px;padding:9px;background:var(--card2);border:1px solid var(--border);border-radius:7px;color:var(--muted);font-family:'Syne',sans-serif;font-size:10px;font-weight:700;cursor:pointer;transition:all 0.2s;}
 .tc.recommended .tc-btn{background:linear-gradient(135deg,var(--gold),var(--goldb));border-color:transparent;color:var(--bg);}
 .tc.selected .tc-btn{background:linear-gradient(135deg,var(--teal),var(--tealb));border-color:transparent;color:var(--bg);}
@@ -289,10 +294,18 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
 #brief-content{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px;}
 
 @media print{
-  #screen-brief{padding:0;}
+  body{background:white!important;color:#111!important;}
+  #screen-brief{padding:0;background:white!important;}
   .brief-actions,.sidebar,.viz-panel,#screen-pre,#screen-main{display:none!important;}
-  #screen-brief{display:block!important;}
-  #brief-content{border:none;padding:20px;}
+  #screen-brief{display:block!important;background:white!important;}
+  #brief-content{border:none;padding:20px;background:white!important;color:#111!important;}
+  #brief-content *{color:#111!important;background:transparent!important;border-color:#ddd!important;-webkit-text-fill-color:#111!important;}
+  #brief-content [style*="color:#F0F4F8"],[style*="color: #F0F4F8"]{color:#111!important;}
+  #brief-content [style*="color:#7A9BB5"]{color:#555!important;}
+  #brief-content [style*="color:#6EDFC8"]{color:#1A8A72!important;}
+  #brief-content [style*="color:#B83232"],[style*="color:#E05555"]{color:#cc0000!important;}
+  #brief-content [style*="color:#F5C842"],[style*="color:#C8860A"]{color:#7a5800!important;}
+  #brief-content [style*="background:#060F18"],[style*="background:#0a1624"],[style*="background:#0d1d30"]{background:white!important;}
 }
 </style>
 </head>
@@ -691,12 +704,14 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
           <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Right panel shows all three tiers. Recommended tier is highlighted based on their profile.</div>
           <div class="qb-label" style="margin-bottom:4px;margin-top:8px;">Call Notes</div>
           <textarea class="qi" id="s-notes" placeholder="Any hesitation, pricing concerns, next steps discussed..." oninput="autoSave()"></textarea>
-          <div class="qb-label" style="margin-bottom:6px;margin-top:12px;">Outcome</div>
-          <div class="outcome-opts" id="outcome-opts">
-            <div class="oo" onclick="setOutcome(this,'verbal-yes')">✅ Verbal Yes — Ready to Move Forward</div>
-            <div class="oo" onclick="setOutcome(this,'think')">🤔 Needs to Think / Talk to Partner</div>
-            <div class="oo" onclick="setOutcome(this,'proposal')">💬 Send Agreement First</div>
-            <div class="oo" onclick="setOutcome(this,'nurture')">❌ Not Ready — Move to Nurture</div>
+          <div style="margin-top:12px;padding:12px;background:rgba(122,155,181,0.05);border:1px dashed rgba(122,155,181,0.15);border-radius:8px;">
+            <div class="qb-label" style="margin-bottom:6px;color:var(--muted);">INTERNAL — Call Outcome</div>
+            <div class="outcome-opts" id="outcome-opts">
+              <div class="oo" onclick="setOutcome(this,'verbal-yes')">Verbal Yes</div>
+              <div class="oo" onclick="setOutcome(this,'think')">Needs to Think</div>
+              <div class="oo" onclick="setOutcome(this,'proposal')">Send Agreement</div>
+              <div class="oo" onclick="setOutcome(this,'nurture')">Not Ready</div>
+            </div>
           </div>
         </div>
 
@@ -740,11 +755,17 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
     <!-- RIGHT: VISUAL PANEL (60%) -->
     <div class="viz-panel">
       <div class="viz-header">
-        <div class="viz-tabs">
-          <div class="viz-tab active" id="tab-map" onclick="switchViz('map')">FLOW MAP</div>
-          <div class="viz-tab" id="tab-score" onclick="switchViz('score')">SCORECARD</div>
-          <div class="viz-tab" id="tab-impact" onclick="switchViz('impact')">IMPACT</div>
-          <div class="viz-tab" id="tab-shift" onclick="switchViz('shift')">SHIFT</div>
+        <div style="display:flex;align-items:center;">
+          <div class="viz-tabs">
+            <div class="viz-tab active" id="tab-map" onclick="switchViz('map')">FLOW MAP</div>
+            <div class="viz-tab" id="tab-score" onclick="switchViz('score')">SCORECARD</div>
+            <div class="viz-tab" id="tab-impact" onclick="switchViz('impact')">IMPACT</div>
+            <div class="viz-tab" id="tab-shift" onclick="switchViz('shift')">SHIFT</div>
+          </div>
+          <div class="map-toggle" id="map-toggle">
+            <button class="mt-btn active" id="mt-current" onclick="setMapMode('current')">NOW</button>
+            <button class="mt-btn" id="mt-surj" onclick="setMapMode('surj')">WITH SüRJ</button>
+          </div>
         </div>
         <div class="viz-session-id" id="session-id-display"></div>
       </div>
@@ -854,12 +875,16 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
               <div class="tc" id="tc-launch" onclick="selectTier('launch')">
                 <div class="tc-tier">SüRJ</div>
                 <div class="tc-price">$297<span>/mo</span></div>
+                <div class="tc-tagline">Gets the foundation in place.<br>Stops the bleeding.</div>
                 <div class="tc-roi" id="roi-launch">—</div>
                 <ul class="tc-features">
-                  <li>CRM + custom pipeline</li><li>Web presence build / embed</li>
-                  <li>Contact form + booking</li><li>SMS &amp; email welcome</li>
-                  <li>Missed call text-back</li><li>Lead notification</li>
-                  <li>Monthly check-in</li>
+                  <li>CRM + custom pipeline</li>
+                  <li>Web presence build / embed</li>
+                  <li>Contact form + calendar booking</li>
+                  <li>SMS &amp; email welcome automation</li>
+                  <li>Missed call text-back</li>
+                  <li>Lead notification to your phone</li>
+                  <li>Monthly system check-in</li>
                 </ul>
                 <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:1px;margin-top:10px;text-align:center;">LAUNCH</div>
                 <button class="tc-btn">Select Launch</button>
@@ -868,11 +893,15 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
                 <div class="tc-badge">MOST POPULAR</div>
                 <div class="tc-tier">SüRJ</div>
                 <div class="tc-price">$497<span>/mo</span></div>
+                <div class="tc-tagline">Closes the conversion &amp;<br>referral gaps identified today.</div>
                 <div class="tc-roi" id="roi-grow">—</div>
                 <ul class="tc-features">
-                  <li>Everything in Launch</li><li>Conversation AI 24/7</li>
-                  <li>Automated review requests</li><li>Multi-step nurture</li>
-                  <li>Reputation monitoring</li><li>Bi-monthly strategy call</li>
+                  <li>Everything in Launch</li>
+                  <li>Conversation AI — 24/7 lead response</li>
+                  <li>Automated review request sequences</li>
+                  <li>Multi-step nurture (SMS + email)</li>
+                  <li>Reputation monitoring dashboard</li>
+                  <li>Bi-monthly strategy call with Steve</li>
                   <li>Advanced pipeline automation</li>
                 </ul>
                 <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:1px;margin-top:10px;text-align:center;">GROW</div>
@@ -881,12 +910,15 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
               <div class="tc" id="tc-scale" onclick="selectTier('scale')">
                 <div class="tc-tier">SüRJ</div>
                 <div class="tc-price">$797<span>/mo</span></div>
+                <div class="tc-tagline">Steve in your business<br>every month. Every gap closed.</div>
                 <div class="tc-roi" id="roi-scale">—</div>
                 <ul class="tc-features">
-                  <li>Everything in Grow</li><li>Voice AI call screening</li>
-                  <li>Advanced reporting</li><li>Competitor monitoring</li>
-                  <li>Priority support — Steve direct</li><li>Monthly strategy session</li>
-                  <li>Ads management add-on</li>
+                  <li>Everything in Grow</li>
+                  <li>Voice AI — never miss an inbound call</li>
+                  <li>Advanced reporting dashboard</li>
+                  <li>Monthly strategy session with Steve</li>
+                  <li>Priority support — direct to Steve</li>
+                  <li style="color:var(--muted);font-style:italic;">Ads management available once system is running clean<br><span style="font-size:9px;opacity:0.6;">Why get more leads if you have holes in the bucket?</span><br><span style="font-size:9px;opacity:0.6;">(Additional cost + ad spend)</span></li>
                 </ul>
                 <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:1px;margin-top:10px;text-align:center;">SCALE</div>
                 <button class="tc-btn">Select Scale</button>
@@ -946,6 +978,11 @@ document.addEventListener('DOMContentLoaded', function() {
   addLS(); addLS();
   buildScorecard();
   window.addEventListener('resize', function() { if(S.currentStage >= 0) drawFlowMap(); });
+  // Redraw map when canvas becomes visible
+  var mapWrap = document.getElementById('flow-map-wrap');
+  if (mapWrap && window.ResizeObserver) {
+    new ResizeObserver(function() { if(mapWrap.offsetWidth > 0) drawFlowMap(); }).observe(mapWrap);
+  }
 
   // Try to restore session from localStorage
   var saved = localStorage.getItem('advise_current_session');
@@ -1332,6 +1369,15 @@ function scorePillar(p) {
 // ══════════════════════════════════════════════════════════════
 // FLOW MAP — Canvas
 // ══════════════════════════════════════════════════════════════
+var mapMode = 'current'; // 'current' or 'surj'
+
+function setMapMode(mode) {
+  mapMode = mode;
+  document.getElementById('mt-current').className = 'mt-btn' + (mode === 'current' ? ' active' : '');
+  document.getElementById('mt-surj').className = 'mt-btn' + (mode === 'surj' ? ' active' : '');
+  drawFlowMap();
+}
+
 function drawFlowMap() {
   var canvas = document.getElementById('flow-canvas');
   var wrap = document.getElementById('flow-map-wrap');
@@ -1340,10 +1386,9 @@ function drawFlowMap() {
   canvas.height = wrap.offsetHeight;
   var ctx = canvas.getContext('2d');
   var W = canvas.width; var H = canvas.height;
+  if (W === 0 || H === 0) return;
 
   ctx.clearRect(0, 0, W, H);
-
-  // Background
   ctx.fillStyle = '#060F18';
   ctx.fillRect(0, 0, W, H);
 
@@ -1351,15 +1396,14 @@ function drawFlowMap() {
   var capSel = getSelected('cap-opts');
   var fuSel = getSelected('fu-opts');
   var k = S.kpi;
-  var stage = currentStage;
+  // Always show all stages that have data regardless of currentStage
+  var showAttract = sources.length > 0 || capSel.length > 0 || fuSel.length > 0;
+  var showDiagnose = k.leads > 0 || k.quotes > 0;
+  var showVisualize = currentStage >= 2 || k.closed > 0;
+  var tier = S.selectedTier || 'launch';
 
-  // Only draw what's been revealed so far
-  var showAttract = stage >= 0;
-  var showDiagnose = stage >= 1;
-  var showVisualize = stage >= 2;
-
-  if (!showAttract && sources.length === 0) {
-    drawPlaceholder(ctx, W, H, 'Complete Stage A to begin mapping...');
+  if (!showAttract) {
+    drawPlaceholder(ctx, W, H, 'Add lead sources in Stage A to begin mapping...');
     return;
   }
 
@@ -1367,92 +1411,116 @@ function drawFlowMap() {
   var edges = [];
 
   // ── ATTRACT LAYER ─────────────────────────────────────────
-  if (showAttract) {
-    var numSrc = Math.max(sources.length, 1);
-    var srcY = H * 0.12;
-    var srcSpacing = Math.min(W / (numSrc + 1), 160);
-    var srcStartX = (W - srcSpacing * (numSrc - 1)) / 2;
+  var numSrc = Math.max(sources.length, 1);
+  var srcY = H * 0.08;
+  var srcSpacing = Math.min(W / (numSrc + 1), 150);
+  var srcStartX = (W - srcSpacing * (numSrc - 1)) / 2;
 
-    sources.forEach(function(s, i) {
-      var x = srcStartX + i * srcSpacing;
-      nodes.push({ id:'src_'+i, x:x, y:srcY, label:s.name, sublabel:s.pct+'%', type:'source', active:true });
-    });
+  sources.forEach(function(s, i) {
+    var x = srcStartX + i * srcSpacing;
+    nodes.push({ id:'src_'+i, x:x, y:srcY, label:s.name, sublabel:s.pct+'%', type:'source', active:true });
+  });
 
-    if (!sources.length) {
-      nodes.push({ id:'src_0', x:W/2, y:srcY, label:'Lead Sources', sublabel:'Enter in Stage A', type:'source', active:false });
-    }
-
-    // Capture node
-    var capLabel = capSel.length ? capSel[0] : 'Lead Capture';
-    var capActive = capSel.length > 0;
-    nodes.push({ id:'capture', x:W/2, y:H*0.26, label:capLabel, sublabel:'capture method', type:'capture', active:capActive });
-
-    // Edges from sources to capture
-    nodes.filter(function(n){ return n.id.startsWith('src_'); }).forEach(function(n) {
-      edges.push({ from:n.id, to:'capture', gap: !capActive });
-    });
-
-    // Follow-up node
-    var fuLabel = fuSel.length ? fuSel[0] : 'Follow-Up';
-    var fuActive = fuSel.length > 0;
-    var fuGap = fuSel.some(function(f){ return f === 'No System' || f === 'Inconsistent'; });
-    nodes.push({ id:'followup', x:W/2, y:H*0.40, label:fuLabel, sublabel:'lead follow-up', type:fuGap?'gap':'process', active:fuActive });
-    edges.push({ from:'capture', to:'followup', gap:fuGap });
+  if (!sources.length) {
+    nodes.push({ id:'src_0', x:W/2, y:srcY, label:'Lead Sources', sublabel:'Add in Stage A', type:'source', active:false });
   }
 
+  // Capture
+  var hasNoCRM = capSel.some(function(c){ return c === 'Nothing Formal' || c === 'Paper / Notes'; });
+  var capLabel = capSel.length ? capSel[0] : 'Lead Capture';
+  var capGap = hasNoCRM || capSel.length === 0;
+
+  if (mapMode === 'surj') {
+    nodes.push({ id:'capture', x:W/2, y:H*0.20, label:'SüRJ CRM', sublabel:'automated capture', type:'surj', active:true });
+  } else {
+    nodes.push({ id:'capture', x:W/2, y:H*0.20, label:capLabel, sublabel:'capture method', type:capGap?'gap':'capture', active:true });
+  }
+  nodes.filter(function(n){ return n.id.startsWith('src_'); }).forEach(function(n) {
+    edges.push({ from:n.id, to:'capture', gap:capGap && mapMode === 'current', surj:mapMode === 'surj' });
+  });
+
+  // Follow-up
+  var fuGap = fuSel.some(function(f){ return f === 'No System' || f === 'Inconsistent'; }) || fuSel.length === 0;
+  if (mapMode === 'surj') {
+    nodes.push({ id:'followup', x:W/2, y:H*0.32, label:'Automated Follow-Up', sublabel:'SMS + Email sequences', type:'surj', active:true });
+  } else {
+    var fuLabel = fuSel.length ? fuSel[0] : 'No Follow-Up';
+    nodes.push({ id:'followup', x:W/2, y:H*0.32, label:fuLabel, sublabel:'lead follow-up', type:fuGap?'gap':'process', active:true });
+  }
+  edges.push({ from:'capture', to:'followup', gap:fuGap && mapMode === 'current', surj:mapMode === 'surj' });
+
   // ── DIAGNOSE LAYER ────────────────────────────────────────
-  if (showDiagnose && k.leads > 0) {
-    // Qualification
-    nodes.push({ id:'qualify', x:W/2, y:H*0.52, label:'Qualification', sublabel: k.leads + ' leads/mo', type:'process', active:true });
-    edges.push({ from:'followup', to:'qualify', gap:false });
+  if (showDiagnose) {
+    nodes.push({ id:'qualify', x:W/2, y:H*0.44, label:'Qualification', sublabel:k.leads > 0 ? k.leads + ' leads/mo' : 'leads', type:'process', active:true });
+    edges.push({ from:'followup', to:'qualify', gap:false, surj:mapMode === 'surj' });
 
-    // Quotes
-    if (k.quotes > 0) {
-      nodes.push({ id:'quotes', x:W*0.35, y:H*0.63, label:'Proposals', sublabel:k.quotes + ' quotes/mo', type:'process', active:true });
-      edges.push({ from:'qualify', to:'quotes', gap:false });
+    if (k.quotes > 0 || showDiagnose) {
+      nodes.push({ id:'quotes', x:W*0.32, y:H*0.55, label:'Proposals', sublabel:k.quotes > 0 ? k.quotes + ' quotes/mo' : 'quotes sent', type:'process', active:true });
+      edges.push({ from:'qualify', to:'quotes', gap:false, surj:mapMode === 'surj' });
 
-      // Closed
       if (k.closed > 0) {
-        nodes.push({ id:'closed', x:W*0.35, y:H*0.74, label:'Closed Deals', sublabel:k.closed + '/mo · ' + fmt(k.closed*k.deal), type:'revenue', active:true });
-        edges.push({ from:'quotes', to:'closed', gap:false });
+        nodes.push({ id:'closed', x:W*0.32, y:H*0.66, label:'Closed Deals', sublabel:k.closed > 0 ? k.closed + '/mo · ' + fmt(k.closed*k.deal) : 'closed', type:'revenue', active:true });
+        edges.push({ from:'quotes', to:'closed', gap:false, surj:mapMode === 'surj' });
       }
 
-      // Lost quotes — gap node
       var lostQ = Math.max(0, k.quotes - k.closed);
-      if (lostQ > 0) {
-        nodes.push({ id:'lost', x:W*0.65, y:H*0.68, label:'Lost Quotes', sublabel:lostQ + '/mo · ' + fmt(S.calc.convLossMo) + ' lost', type:'gap', active:true });
-        edges.push({ from:'quotes', to:'lost', gap:true });
+      if (lostQ > 0 || k.quotes > 0) {
+        if (mapMode === 'surj') {
+          nodes.push({ id:'lost', x:W*0.68, y:H*0.60, label:'Quote Follow-Up', sublabel:'automated reminders', type:'surj', active:true });
+          edges.push({ from:'quotes', to:'lost', gap:false, surj:true });
+        } else {
+          nodes.push({ id:'lost', x:W*0.68, y:H*0.60, label:'Lost / No Follow-Up', sublabel:lostQ + '/mo · ' + fmt(S.calc.convLossMo) + ' lost', type:'gap', active:true });
+          edges.push({ from:'quotes', to:'lost', gap:true, surj:false });
+        }
       }
     }
   }
 
   // ── VISUALIZE LAYER ───────────────────────────────────────
-  if (showVisualize && k.closed > 0) {
-    var onbSel = getSelected('.ob.sel'); // broad check
-    nodes.push({ id:'delivery', x:W*0.35, y:H*0.84, label:'Job Delivery', sublabel:'fulfillment', type:'process', active:true });
-    edges.push({ from:'closed', to:'delivery', gap:false });
-
-    // Reviews / referral
-    var hasReviews = document.querySelectorAll('.ob.sel');
+  if (showVisualize) {
     var hasAutoReview = false;
-    hasReviews.forEach(function(b){ if(b.textContent==='Automated Requests') hasAutoReview=true; });
-    nodes.push({ id:'retention', x:W*0.35, y:H*0.93, label:hasAutoReview?'Reviews & Referrals':'No Retention System', sublabel:hasAutoReview?'automated':'gap identified', type:hasAutoReview?'revenue':'gap', active:true });
-    edges.push({ from:'delivery', to:'retention', gap:!hasAutoReview });
+    document.querySelectorAll('.ob.sel').forEach(function(b){ if(b.textContent==='Automated Requests') hasAutoReview=true; });
+    var refGap = S.kpi.referralSelected && S.kpi.referralDec < 0.20;
+
+    var deliveryY = k.closed > 0 ? H*0.77 : H*0.66;
+    nodes.push({ id:'delivery', x:W*0.32, y:deliveryY, label:'Job Delivery', sublabel:'fulfillment', type:'process', active:true });
+    if (k.closed > 0) edges.push({ from:'closed', to:'delivery', gap:false, surj:mapMode === 'surj' });
+
+    if (mapMode === 'surj' && (tier === 'grow' || tier === 'scale')) {
+      nodes.push({ id:'reviews', x:W*0.32, y:H*0.87, label:'Auto Review Requests', sublabel:'Google + reputation', type:'surj', active:true });
+      edges.push({ from:'delivery', to:'reviews', gap:false, surj:true });
+      nodes.push({ id:'nurture', x:W*0.68, y:H*0.82, label:'Long-Term Nurture', sublabel:'repeat & referral engine', type:'surj', active:true });
+      edges.push({ from:'reviews', to:'nurture', gap:false, surj:true });
+    } else if (mapMode === 'surj') {
+      nodes.push({ id:'reviews', x:W*0.32, y:H*0.87, label:'Review Requests', sublabel:'basic follow-up', type:'surj', active:true });
+      edges.push({ from:'delivery', to:'reviews', gap:false, surj:true });
+    } else {
+      nodes.push({ id:'retention', x:W*0.32, y:H*0.87, label:hasAutoReview?'Reviews & Referrals':'No Retention System', sublabel:hasAutoReview?'automated':'gap identified', type:hasAutoReview?'revenue':'gap', active:true });
+      edges.push({ from:'delivery', to:'retention', gap:!hasAutoReview, surj:false });
+    }
+
+    // Voice AI at top for Scale
+    if (mapMode === 'surj' && tier === 'scale') {
+      nodes.push({ id:'voiceai', x:W*0.68, y:H*0.20, label:'Voice AI', sublabel:'never miss a call', type:'surj', active:true });
+      nodes.filter(function(n){ return n.id.startsWith('src_'); }).forEach(function(n) {
+        edges.push({ from:n.id, to:'voiceai', gap:false, surj:true });
+      });
+    }
   }
 
-  // ── DRAW EDGES ────────────────────────────────────────────
+  // ── DRAW ──────────────────────────────────────────────────
   edges.forEach(function(e) {
     var from = nodes.find(function(n){ return n.id === e.from; });
     var to = nodes.find(function(n){ return n.id === e.to; });
     if (!from || !to) return;
-    drawEdge(ctx, from.x, from.y, to.x, to.y, e.gap);
+    drawEdge(ctx, from.x, from.y, to.x, to.y, e.gap, e.surj);
   });
-
-  // ── DRAW NODES ────────────────────────────────────────────
   nodes.forEach(function(n) { drawNode(ctx, n); });
-
-  // Legend
   drawLegend(ctx, W, H);
+
+  // Show toggle when on shift stage
+  var toggle = document.getElementById('map-toggle');
+  if (toggle) toggle.className = 'map-toggle' + (currentStage >= 4 ? ' visible' : '');
 }
 
 function drawNode(ctx, n) {
@@ -1463,7 +1531,8 @@ function drawNode(ctx, n) {
     capture: { fill:'rgba(26,90,138,0.3)', stroke:'#1A5C8A', text:'#F0F4F8' },
     process: { fill:'rgba(26,138,114,0.25)', stroke:'#1A8A72', text:'#F0F4F8' },
     revenue: { fill:'rgba(110,223,200,0.2)', stroke:'#6EDFC8', text:'#6EDFC8' },
-    gap: { fill:'rgba(184,50,50,0.25)', stroke:'#B83232', text:'#E05555' }
+    gap: { fill:'rgba(184,50,50,0.25)', stroke:'#B83232', text:'#E05555' },
+    surj: { fill:'rgba(200,134,10,0.2)', stroke:'#F5C842', text:'#F5C842' }
   };
   var c = colors[n.type] || colors.process;
   if (!n.active) { c = { fill:'rgba(122,155,181,0.1)', stroke:'rgba(122,155,181,0.3)', text:'rgba(122,155,181,0.5)' }; }
@@ -1497,38 +1566,43 @@ function drawNode(ctx, n) {
   ctx.fillText(truncate(n.sublabel, 20), x, y + 8);
 }
 
-function drawEdge(ctx, x1, y1, x2, y2, isGap) {
+function drawEdge(ctx, x1, y1, x2, y2, isGap, isSurj) {
   ctx.beginPath();
   ctx.moveTo(x1, y1 + 20);
   var midY = (y1 + y2) / 2;
   ctx.bezierCurveTo(x1, midY, x2, midY, x2, y2 - 20);
-  ctx.strokeStyle = isGap ? 'rgba(184,50,50,0.5)' : 'rgba(110,223,200,0.3)';
-  ctx.lineWidth = isGap ? 2 : 1.5;
-  ctx.setLineDash(isGap ? [4, 3] : []);
+  if (isSurj) {
+    ctx.strokeStyle = 'rgba(245,200,66,0.5)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([]);
+  } else if (isGap) {
+    ctx.strokeStyle = 'rgba(184,50,50,0.6)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([4, 3]);
+  } else {
+    ctx.strokeStyle = 'rgba(110,223,200,0.3)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([]);
+  }
   ctx.stroke();
   ctx.setLineDash([]);
-
-  // Arrow
-  drawArrow(ctx, x2, y2 - 20, isGap);
+  drawArrow(ctx, x2, y2 - 20, isGap, isSurj);
 }
 
-function drawArrow(ctx, x, y, isGap) {
+function drawArrow(ctx, x, y, isGap, isSurj) {
   ctx.beginPath();
   ctx.moveTo(x - 5, y - 6);
   ctx.lineTo(x, y);
   ctx.lineTo(x + 5, y - 6);
-  ctx.strokeStyle = isGap ? 'rgba(184,50,50,0.7)' : 'rgba(110,223,200,0.5)';
+  ctx.strokeStyle = isSurj ? 'rgba(245,200,66,0.7)' : isGap ? 'rgba(184,50,50,0.7)' : 'rgba(110,223,200,0.5)';
   ctx.lineWidth = 1.5;
   ctx.stroke();
 }
 
 function drawLegend(ctx, W, H) {
-  var items = [
-    { color:'#9B6FD0', label:'Lead Source' },
-    { color:'#6EDFC8', label:'Revenue' },
-    { color:'#1A8A72', label:'Process' },
-    { color:'#B83232', label:'Gap' }
-  ];
+  var items = mapMode === 'surj'
+    ? [{ color:'#9B6FD0', label:'Lead Source' }, { color:'#6EDFC8', label:'Revenue' }, { color:'#1A8A72', label:'Process' }, { color:'#F5C842', label:'SüRJ Fix' }]
+    : [{ color:'#9B6FD0', label:'Lead Source' }, { color:'#6EDFC8', label:'Revenue' }, { color:'#1A8A72', label:'Process' }, { color:'#B83232', label:'Gap' }];
   var x = 16; var y = H - 20;
   ctx.font = '10px DM Sans, sans-serif';
   items.forEach(function(item) {
@@ -1659,17 +1733,42 @@ function selectTier(t) {
 }
 
 function updateTierROI() {
-  var mo = S.calc.totalMo;
-  var prices = { launch:297, grow:497, scale:797 };
-  ['launch','grow','scale'].forEach(function(t) {
-    var el = document.getElementById('roi-' + t); if(!el) return;
-    if (mo > 0) {
-      var roi = Math.round((mo / prices[t]) * 10) / 10;
-      el.textContent = 'Every $1 invested recovers ~$' + roi + ' in leak';
+  var c = S.calc;
+  var mo = c.totalMo;
+  var ann = c.totalAnn;
+
+  // Launch recovers conversion gap (missed call text-back + basic follow-up)
+  var launchEl = document.getElementById('roi-launch');
+  if (launchEl) {
+    if (c.convLossMo > 0) {
+      launchEl.textContent = 'Targets ' + fmt(c.convLossMo) + '/mo in unconverted quotes';
+    } else if (mo > 0) {
+      launchEl.textContent = 'Closes lead capture & follow-up gaps';
     } else {
-      el.textContent = 'Enter KPIs to see your ROI';
+      launchEl.textContent = 'Foundation — CRM, capture & follow-up';
     }
-  });
+  }
+
+  // Grow recovers conversion + referral gaps
+  var growEl = document.getElementById('roi-grow');
+  if (growEl) {
+    var growRecovers = c.convLossMo + (c.refCost / 12);
+    if (growRecovers > 0) {
+      growEl.textContent = 'Targets ' + fmt(growRecovers) + '/mo in conversion & referral gaps';
+    } else {
+      growEl.textContent = 'Closes conversion, referral & review gaps';
+    }
+  }
+
+  // Scale recovers everything including owner time
+  var scaleEl = document.getElementById('roi-scale');
+  if (scaleEl) {
+    if (ann > 0) {
+      scaleEl.textContent = 'Targets ' + fmt(ann) + '/yr — every identified gap closed';
+    } else {
+      scaleEl.textContent = 'Every gap closed + Steve in your business monthly';
+    }
+  }
 }
 
 // ══════════════════════════════════════════════════════════════
