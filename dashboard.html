@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SüRJ — ADVISE Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700;900&family=DM+Sans:wght@300;400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#060F18;--card:#0a1624;--card2:#0d1d30;--gold:#C8860A;--goldb:#F5C842;--teal:#1A8A72;--tealb:#6EDFC8;--purple:#6B3FA0;--purpleb:#9B6FD0;--red:#B83232;--white:#F0F4F8;--muted:#7A9BB5;--border:rgba(110,223,200,0.12);}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;}
+.header{padding:24px 40px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Fraunces',serif;font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--purpleb),var(--tealb));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.header-sub{font-family:'Syne',sans-serif;font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+.btn-new{padding:12px 24px;background:linear-gradient(135deg,var(--purple),var(--teal));border:none;border-radius:8px;color:var(--white);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;}
+.main{padding:32px 40px;}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;}
+.stat-label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.stat-value{font-family:'Fraunces',serif;font-size:32px;font-weight:900;color:var(--white);}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:4px;}
+.section-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--tealb);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;}
+.sessions-table{width:100%;border-collapse:collapse;}
+.sessions-table th{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);}
+.sessions-table td{padding:12px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px;vertical-align:middle;}
+.sessions-table tr:hover td{background:rgba(107,63,160,0.05);}
+.tier-badge{display:inline-block;padding:3px 10px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.tier-launch{background:rgba(26,90,138,0.2);color:#6EDFC8;border:1px solid rgba(26,90,138,0.3);}
+.tier-grow{background:rgba(107,63,160,0.2);color:var(--purpleb);border:1px solid rgba(107,63,160,0.3);}
+.tier-scale{background:rgba(200,134,10,0.15);color:var(--goldb);border:1px solid rgba(200,134,10,0.3);}
+.outcome-badge{display:inline-block;padding:3px 10px;border-radius:100px;font-size:10px;}
+.outcome-yes{background:rgba(26,138,114,0.15);color:var(--tealb);}
+.outcome-nurture{background:rgba(184,50,50,0.1);color:var(--red);}
+.outcome-think{background:rgba(200,134,10,0.1);color:var(--goldb);}
+.outcome-other{background:rgba(122,155,181,0.1);color:var(--muted);}
+.btn-view{padding:6px 14px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'Syne',sans-serif;font-size:10px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s;}
+.btn-view:hover{border-color:var(--tealb);color:var(--tealb);}
+.leak-val{font-family:'Fraunces',serif;font-weight:700;color:var(--red);}
+.empty-state{text-align:center;padding:80px 40px;color:var(--muted);}
+.empty-state h2{font-family:'Fraunces',serif;font-size:28px;font-weight:700;margin-bottom:8px;color:var(--white);}
+.loading{text-align:center;padding:40px;color:var(--muted);font-family:'Syne',sans-serif;font-size:12px;letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <div class="logo">SüRJ ADVISE</div>
+    <div class="header-sub">Discovery Session Dashboard</div>
+  </div>
+  <a href="/" class="btn-new">+ New Session</a>
+</div>
+<div class="main">
+  <div class="stats-row" id="stats-row">
+    <div class="stat-card"><div class="stat-label">Total Sessions</div><div class="stat-value" id="stat-total">—</div></div>
+    <div class="stat-card"><div class="stat-label">Briefs Generated</div><div class="stat-value" id="stat-briefs">—</div></div>
+    <div class="stat-card"><div class="stat-label">Avg Monthly Leak</div><div class="stat-value" id="stat-avg-leak">—</div></div>
+    <div class="stat-card"><div class="stat-label">Verbal Yes Rate</div><div class="stat-value" id="stat-yes">—</div></div>
+  </div>
+  <div class="section-title">All Sessions</div>
+  <div id="table-wrap" class="loading">Loading sessions...</div>
+</div>
+<script>
+function fmt(n){if(!n||isNaN(n))return'$0';if(n>=1000000)return'$'+(n/1000000).toFixed(1)+'M';if(n>=1000)return'$'+Math.round(n).toLocaleString();return'$'+Math.round(n);}
+function fmtDate(iso){if(!iso)return'—';var d=new Date(iso);return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+
+fetch('/api/sessions').then(function(r){return r.json();}).then(function(data){
+  var sessions = data.sessions || [];
+
+  // Stats
+  document.getElementById('stat-total').textContent = sessions.length;
+  var withBrief = sessions.filter(function(s){return s.briefGenerated;}).length;
+  document.getElementById('stat-briefs').textContent = withBrief;
+  var totalLeak = sessions.reduce(function(a,s){return a+(s.totalLeak||0);},0);
+  document.getElementById('stat-avg-leak').textContent = sessions.length ? fmt(totalLeak/sessions.length) : '$0';
+  var yesCount = sessions.filter(function(s){return s.outcome==='verbal-yes';}).length;
+  document.getElementById('stat-yes').textContent = sessions.length ? Math.round(yesCount/sessions.length*100)+'%' : '—';
+
+  if (!sessions.length) {
+    document.getElementById('table-wrap').innerHTML = '<div class="empty-state"><h2>No sessions yet</h2><p>Start your first ADVISE discovery call to see it here.</p></div>';
+    return;
+  }
+
+  var html = '<table class="sessions-table"><thead><tr>'
+    +'<th>Business</th><th>Contact</th><th>Industry</th><th>Date</th>'
+    +'<th>Monthly Leak</th><th>Tier</th><th>Outcome</th><th>Brief</th>'
+    +'</tr></thead><tbody>';
+
+  sessions.forEach(function(s){
+    var p = s.prospect || {};
+    var outcomeClass = s.outcome==='verbal-yes'?'outcome-yes':s.outcome==='nurture'?'outcome-nurture':s.outcome==='think'?'outcome-think':'outcome-other';
+    var outcomeLabel = s.outcome==='verbal-yes'?'✅ Verbal Yes':s.outcome==='nurture'?'Nurture':s.outcome==='think'?'Thinking':s.outcome==='proposal'?'Sent Agreement':'—';
+    var tierClass = 'tier-'+(s.tier||'launch');
+    var tierLabel = s.tier ? s.tier.charAt(0).toUpperCase()+s.tier.slice(1) : '—';
+    html += '<tr>'
+      +'<td><strong>'+( p.business||'—')+'</strong></td>'
+      +'<td>'+(p.first||'')+' '+(p.last||'')+'</td>'
+      +'<td style="color:var(--muted);font-size:12px;">'+(p.industry||'—')+'</td>'
+      +'<td style="color:var(--muted);font-size:12px;">'+fmtDate(s.updatedAt)+'</td>'
+      +'<td><span class="leak-val">'+fmt(s.totalLeak/12)+'</span><span style="font-size:10px;color:var(--muted);">/mo</span></td>'
+      +'<td>'+(s.tier?'<span class="tier-badge '+tierClass+'">'+tierLabel+'</span>':'<span style="color:var(--muted);">—</span>')+'</td>'
+      +'<td>'+(s.outcome?'<span class="outcome-badge '+outcomeClass+'">'+outcomeLabel+'</span>':'<span style="color:var(--muted);">—</span>')+'</td>'
+      +'<td>'+(s.briefGenerated?'<a href="/brief/'+s.id+'" class="btn-view" target="_blank">View Brief</a>':'<span style="color:var(--muted);font-size:11px;">Not generated</span>')+'</td>'
+      +'</tr>';
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('table-wrap').innerHTML = html;
+}).catch(function(){
+  document.getElementById('table-wrap').innerHTML = '<div class="empty-state"><h2>Could not load sessions</h2><p>Make sure the Worker is deployed and KV is connected.</p></div>';
+});
+</script>
+</body>
+</html>
