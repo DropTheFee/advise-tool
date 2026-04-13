@@ -93,7 +93,8 @@ fetch('/api/sessions').then(function(r){return r.json();}).then(function(data){
     var outcomeLabel = s.outcome==='verbal-yes'?'✅ Verbal Yes':s.outcome==='nurture'?'Nurture':s.outcome==='think'?'Thinking':s.outcome==='proposal'?'Sent Agreement':'—';
     var tierClass = 'tier-'+(s.tier||'launch');
     var tierLabel = s.tier ? s.tier.charAt(0).toUpperCase()+s.tier.slice(1) : '—';
-html += '<tr style="cursor:pointer;" onclick="openSession(''+s.id+'')">'
+var rowId = s.id;
+    html += '<tr style="cursor:pointer;" onclick="openSession(this.dataset.id)" data-id="'+rowId+'">'
       +'<td><strong>'+(p.business||'—')+'</strong></td>'
       +'<td>'+(p.first||'')+' '+(p.last||'')+'</td>'
       +'<td style="color:var(--muted);font-size:12px;">'+(p.industry||'—')+'</td>'
@@ -102,9 +103,7 @@ html += '<tr style="cursor:pointer;" onclick="openSession(''+s.id+'')">'
       +'<td>'+(s.tier?'<span class="tier-badge '+tierClass+'">'+tierLabel+'</span>':'<span style="color:var(--muted);">—</span>')+'</td>'
       +'<td>'+(s.outcome?'<span class="outcome-badge '+outcomeClass+'">'+outcomeLabel+'</span>':'<span style="color:var(--muted);">—</span>')+'</td>'
       +'<td onclick="event.stopPropagation();">'
-      +(s.briefGenerated
-        ?'<a href="/brief/'+s.id+'" class="btn-view" target="_blank">View Brief</a>'
-        :'<span style="color:var(--muted);font-size:11px;">Not generated</span>')
+      +(s.briefGenerated?'<a href="/brief/'+s.id+'" class="btn-view" target="_blank">View Brief</a>':'<span style="color:var(--muted);font-size:11px;">Not generated</span>')
       +'</td>'
       +'</tr>';
   });
