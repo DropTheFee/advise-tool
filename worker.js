@@ -1,8 +1,8 @@
 // SüRJ ADVISE Tool — Cloudflare Worker
 // Handles routing, KV session storage, and GHL webhook integration
 
-const GHL_LOCATION_ID = env.GHL_LOCATION_ID;
-const GHL_API_KEY = env.GHL_API_KEY;
+const GHL_LOCATION_ID = '4RRtueNq1LIvO5VWxWVB';
+const GHL_API_KEY = 'pit-94230723-2b35-4ca1-bd78-01078416b8b1';
 const GHL_API_BASE = 'https://services.leadconnectorhq.com';
 const GHL_BRIEF_FIELD_ID = 'REPLACE_WITH_YOUR_CUSTOM_FIELD_ID'; // paste from GHL after you create the field
 const GHL_PIPELINE_ID = 'REPLACE_WITH_PIPELINE_ID'; // from GHL Opportunities settings
