@@ -8,5 +8,3 @@ directory = "./public"
 [[kv_namespaces]]
 binding = "ADVISE_SESSIONS"
 id = "b5a89cb8cdfa477289cb15956add5a32"
-
-//this is for good//
