@@ -2077,6 +2077,28 @@ function noteSection(label, fieldId) {
 // KV PERSISTENCE
 // ══════════════════════════════════════════════════════════════
 function collectSessionData() {
+  // Save lead sources
+  var savedSources = [];
+  document.querySelectorAll('#ls-list .ls-row').forEach(function(r) {
+    var name = r.querySelector('.ls-name').value.trim();
+    var pct = r.querySelector('.ls-pct').value;
+    if (name) savedSources.push({ name: name, pct: pct });
+  });
+  // Save button selections
+  var savedSelections = {};
+  document.querySelectorAll('.ob.sel').forEach(function(b) {
+    var group = b.getAttribute('onclick').match(/tog\(this,'(.+?)'\)/);
+    if (group) {
+      var g = group[1];
+      if (!savedSelections[g]) savedSelections[g] = [];
+      savedSelections[g].push(b.textContent.trim());
+    }
+  });
+  // Save referral selection
+  var refSel = null;
+  document.querySelectorAll('#ref-opts .ob.sel').forEach(function(b) {
+    refSel = b.textContent.trim();
+  });
   return {
     sessionId: S.sessionId,
     createdAt: S.createdAt,
@@ -2086,6 +2108,9 @@ function collectSessionData() {
     selectedTier: S.selectedTier,
     outcome: S.outcome,
     scorecard: S.scorecard,
+    leadSources: savedSources,
+    buttonSelections: savedSelections,
+    referralSelection: refSel,
     notes: {
       a_capture: gv('a-capture'), a_followup: gv('a-followup'), a_filter: gv('a-filter'), a_notes: gv('a-notes'),
       d_qualify: gv('d-qualify'), d_proposal: gv('d-proposal'), d_objections: gv('d-objections'), d_qfu: gv('d-qfu'), d_notes: gv('d-notes'),
@@ -2160,6 +2185,42 @@ function restoreSession(d) {
     setInput('d-closed', d.kpiInputs.closed); setInput('d-deal', d.kpiInputs.deal);
     setInput('d-margin', d.kpiInputs.margin); setInput('d-revenue', d.kpiInputs.revenue);
     setInput('i-ownerhrs', d.kpiInputs.ownerHrs);
+  }
+  // Restore lead sources
+  if (d.leadSources && d.leadSources.length) {
+    var lsList = document.getElementById('ls-list');
+    if (lsList) {
+      lsList.innerHTML = '';
+      d.leadSources.forEach(function(src) {
+        var row = document.createElement('div'); row.className = 'ls-row';
+        row.innerHTML = '<input class="ls-name" placeholder="e.g. Google Business Profile" oninput="drawFlowMap();autoSave();">'
+          + '<input class="ls-pct" type="number" placeholder="%" min="0" max="100" oninput="drawFlowMap();autoSave();">'
+          + '<div class="ls-del" onclick="this.parentElement.remove();drawFlowMap();autoSave();">×</div>';
+        lsList.appendChild(row);
+        row.querySelector('.ls-name').value = src.name;
+        row.querySelector('.ls-pct').value = src.pct;
+      });
+    }
+  }
+  // Restore button selections
+  if (d.buttonSelections) {
+    Object.keys(d.buttonSelections).forEach(function(group) {
+      var selected = d.buttonSelections[group];
+      document.querySelectorAll('.ob').forEach(function(b) {
+        var match = b.getAttribute('onclick') && b.getAttribute('onclick').match(/tog\(this,'(.+?)'\)/);
+        if (match && match[1] === group && selected.indexOf(b.textContent.trim()) > -1) {
+          b.classList.add('sel');
+        }
+      });
+    });
+  }
+  // Restore referral selection
+  if (d.referralSelection) {
+    document.querySelectorAll('#ref-opts .ob').forEach(function(b) {
+      if (b.textContent.trim() === d.referralSelection) {
+        b.classList.add('sel');
+      }
+    });
   }
   // Restore notes
   if (d.notes) {
