@@ -45,6 +45,16 @@ export default {
       return handleListSessions(env, corsHeaders);
     }
 
+    if (path.startsWith('/api/session/') && method === 'DELETE') {
+      const id = path.replace('/api/session/', '');
+      return handleDeleteSession(id, env, corsHeaders);
+    }
+
+    if (path.startsWith('/api/lock/') && method === 'POST') {
+      const id = path.replace('/api/lock/', '');
+      return handleLockSession(id, request, env, corsHeaders);
+    }
+
     // ── Page Routes ─────────────────────────────────────────────────────────
     if (path === '/' || path === '/index.html') {
       return serveAsset('index.html', env);
@@ -339,6 +349,43 @@ async function serveAsset(filename, env) {
     return asset;
   } catch (e) {
     return new Response('Asset not found: ' + filename, { status: 404 });
+  }
+}
+
+// ─── DELETE SESSION ──────────────────────────────────────────────────────────
+async function handleDeleteSession(id, env, headers) {
+  try {
+    // Check if locked first
+    const metaRaw = await env.ADVISE_SESSIONS.get('session:' + id + ':meta');
+    if (metaRaw) {
+      const meta = JSON.parse(metaRaw);
+      if (meta.locked) {
+        return jsonResponse({ error: 'Session is locked. Unlock before deleting.' }, 403, headers);
+      }
+    }
+    // Delete all KV keys for this session
+    await env.ADVISE_SESSIONS.delete('session:' + id + ':data');
+    await env.ADVISE_SESSIONS.delete('session:' + id + ':meta');
+    await env.ADVISE_SESSIONS.delete('session:' + id + ':brief');
+    await env.ADVISE_SESSIONS.delete('session:' + id + ':admin');
+    return jsonResponse({ ok: true }, 200, headers);
+  } catch (e) {
+    return jsonResponse({ error: e.message }, 500, headers);
+  }
+}
+
+// ─── LOCK SESSION ─────────────────────────────────────────────────────────────
+async function handleLockSession(id, request, env, headers) {
+  try {
+    const body = await request.json();
+    const metaRaw = await env.ADVISE_SESSIONS.get('session:' + id + ':meta');
+    if (!metaRaw) return jsonResponse({ error: 'Session not found' }, 404, headers);
+    const meta = JSON.parse(metaRaw);
+    meta.locked = body.locked;
+    await env.ADVISE_SESSIONS.put('session:' + id + ':meta', JSON.stringify(meta));
+    return jsonResponse({ ok: true, locked: meta.locked }, 200, headers);
+  } catch (e) {
+    return jsonResponse({ error: e.message }, 500, headers);
   }
 }
 
