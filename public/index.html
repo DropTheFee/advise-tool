@@ -991,12 +991,26 @@ document.addEventListener('DOMContentLoaded', function() {
   var resumeId = urlParams.get('resume') || localStorage.getItem('advise_resume_id');
   if (resumeId) {
     localStorage.removeItem('advise_resume_id');
+    // Show loading state
+    document.getElementById('screen-pre').style.display = 'none';
+    document.getElementById('screen-main').classList.add('active');
+    document.getElementById('sb-name').textContent = 'Loading...';
+    document.getElementById('sb-biz').textContent = 'Restoring session...';
     // Try to load from KV first
     fetch('/api/session/' + resumeId)
-      .then(function(r){ return r.json(); })
+      .then(function(r) {
+        if (!r.ok) throw new Error('Not found');
+        return r.json();
+      })
       .then(function(d) {
         if (d && d.prospect && d.prospect.first) {
           restoreSession(d);
+          // Go to last stage with data
+          var lastStage = 5;
+          if (d.kpiInputs && d.kpiInputs.leads) lastStage = Math.max(1, lastStage);
+          goTo(lastStage);
+        } else {
+          throw new Error('Invalid data');
         }
       })
       .catch(function() {
@@ -1005,9 +1019,17 @@ document.addEventListener('DOMContentLoaded', function() {
         if (saved) {
           try {
             var d = JSON.parse(saved);
-            if (d && d.sessionId === resumeId) { restoreSession(d); return; }
+            if (d && d.prospect && d.prospect.first) {
+              restoreSession(d);
+              goTo(5);
+              return;
+            }
           } catch(e) {}
         }
+        // Give up - go back to pre screen
+        document.getElementById('screen-main').classList.remove('active');
+        document.getElementById('screen-pre').style.display = 'flex';
+        alert('Could not restore session. Please start a new session.');
       });
     return;
   }
