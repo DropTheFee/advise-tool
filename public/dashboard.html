@@ -36,6 +36,10 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
 .outcome-other{background:rgba(122,155,181,0.1);color:var(--muted);}
 .btn-view{padding:6px 14px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'Syne',sans-serif;font-size:10px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s;}
 .btn-view:hover{border-color:var(--tealb);color:var(--tealb);}
+.btn-delete{background:rgba(184,50,50,0.1);border:1px solid rgba(184,50,50,0.2);border-radius:6px;padding:5px 8px;cursor:pointer;font-size:13px;margin-left:6px;transition:all 0.2s;}
+.btn-delete:hover{background:rgba(184,50,50,0.3);}
+.btn-lock{background:rgba(122,155,181,0.08);border:1px solid var(--border);border-radius:6px;padding:5px 8px;cursor:pointer;font-size:13px;transition:all 0.2s;}
+.btn-lock:hover{background:rgba(122,155,181,0.15);}
 .leak-val{font-family:'Fraunces',serif;font-weight:700;color:var(--red);}
 .empty-state{text-align:center;padding:80px 40px;color:var(--muted);}
 .empty-state h2{font-family:'Fraunces',serif;font-size:28px;font-weight:700;margin-bottom:8px;color:var(--white);}
@@ -105,6 +109,10 @@ var rowId = s.id;
       +'<td onclick="event.stopPropagation();">'
       +(s.briefGenerated?'<a href="/brief/'+s.id+'" class="btn-view" target="_blank">View Brief</a>':'<span style="color:var(--muted);font-size:11px;">Not generated</span>')
       +'</td>'
+      +'<td onclick="event.stopPropagation();" style="white-space:nowrap;">'
+      +'<button class="btn-lock" title="'+(s.locked?'Unlock session':'Lock session — prevent deletion')+'" onclick="toggleLock(''+rowId+'','+!!s.locked+')">'+(s.locked?'🔒':'🔓')+'</button>'
+      +'<button class="btn-delete" title="Delete session" onclick="deleteSession(''+rowId+'',''+( p.business||'Session')+'')" '+(s.locked?'disabled style="opacity:0.3;cursor:not-allowed;"':'')+'>🗑</button>'
+      +'</td>'
       +'</tr>';
   });
 
@@ -115,9 +123,30 @@ var rowId = s.id;
 });
 
 function openSession(id) {
-  // Store the session ID to resume, then go to the tool
   localStorage.setItem('advise_resume_id', id);
   window.location.href = '/?resume=' + id;
+}
+
+function deleteSession(id, name) {
+  if (!confirm('Delete session for "' + name + '"? This cannot be undone.')) return;
+  fetch('/api/session/' + id, { method: 'DELETE' })
+    .then(function() { window.location.reload(); })
+    .catch(function() {
+      // Try anyway - reload to reflect current state
+      window.location.reload();
+    });
+}
+
+function toggleLock(id, isLocked) {
+  fetch('/api/lock/' + id, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ locked: !isLocked })
+  }).then(function() {
+    window.location.reload();
+  }).catch(function() {
+    window.location.reload();
+  });
 }
 </script>
 </body>
