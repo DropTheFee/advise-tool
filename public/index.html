@@ -203,10 +203,10 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
   border:1px solid rgba(184,50,50,0.2);border-radius:16px;
   padding:28px;text-align:center;margin-bottom:20px;
 }
-.impact-lbl{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:rgba(184,50,50,0.8);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
+.impact-lbl{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:rgba(240,244,248,0.7);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
 .impact-num{font-family:'Fraunces',serif;font-size:clamp(48px,6vw,72px);font-weight:900;color:var(--red);line-height:1;text-shadow:0 0 40px rgba(184,50,50,0.3);}
 .impact-sub{font-size:14px;color:var(--muted);margin-top:6px;}
-.ticking-lbl{font-family:'Syne',sans-serif;font-size:10px;color:rgba(184,50,50,0.6);letter-spacing:1px;margin-top:14px;}
+.ticking-lbl{font-family:'Syne',sans-serif;font-size:11px;color:rgba(240,244,248,0.5);letter-spacing:1px;margin-top:14px;}
 .ticking-num{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--red);animation:flicker 1.2s infinite;}
 @keyframes flicker{0%,100%{opacity:1;}50%{opacity:0.7;}}
 .impact-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;}
@@ -819,14 +819,14 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
             <div class="qb" style="margin:16px 24px 0;">
               <div class="qb-label">Owner Time Cost</div>
               <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
-                <div style="font-size:12px;color:var(--muted);">Hours above 35/wk × profit value × 52 weeks</div>
+                <div style="font-size:12px;color:var(--muted);">Time you're spending IN the business instead of ON it</div>
                 <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--red);" id="owner-cost">$0</div>
               </div>
             </div>
             <div class="qb" style="margin:8px 24px 24px;">
               <div class="qb-label">Referral Gap Cost</div>
               <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
-                <div style="font-size:12px;color:var(--muted);">Delta from 30% referral benchmark × revenue × margin</div>
+                <div style="font-size:12px;color:var(--muted);">Revenue you're not getting from repeat customers and referrals</div>
                 <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--goldb);" id="ref-cost">$0</div>
               </div>
             </div>
@@ -1076,7 +1076,7 @@ function goTo(n) {
   document.getElementById('qa-panel').scrollTop = 0;
   // Switch viz to appropriate default tab
   if (n <= 2) { switchViz('map'); setTimeout(drawFlowMap, 300); }
-  else if (n === 3) { switchViz('impact'); recalc(); startTicking(); }
+  else if (n === 3) { switchViz('impact'); recalc(); if(S.calc.totalMo > 0) startTicking(); }
   else if (n === 4) { switchViz('shift'); populateShiftSummary(); }
   else if (n === 5) { switchViz('shift'); buildBriefPreview(); }
   updateProgress();
@@ -2069,7 +2069,8 @@ function restoreSession(d) {
       setInput(fieldId, d.notes[k]);
     });
   }
-  startTimer(); recalc(); drawFlowMap(); buildScorecard(); updateScorecard();
+  startTimer(); recalc(); setTimeout(drawFlowMap, 400); buildScorecard(); updateScorecard();
+  if(S.calc.totalMo > 0) startTicking();
 }
 
 // ══════════════════════════════════════════════════════════════
