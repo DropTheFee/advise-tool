@@ -670,7 +670,7 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
         <div class="shift-step" id="ss-11">
           <div class="qb-label" style="margin-bottom:8px;">Step 11 — Review Together</div>
           <div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px;line-height:1.4;">Let's review what you've shared — and make sure we have this right.</div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5; <em style="color:var(--white);">"Would you agree these are the gaps costing your business?"</em></div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5;">Walk through the summary on the right together. Then ask: <em style="color:var(--white);">"Would you agree these are the gaps costing your business?"</em></div>
           <textarea class="qi" id="s11-notes" placeholder="Their response, corrections, or anything they want to add..." style="min-height:56px;margin-bottom:12px;"></textarea>
           <button class="btn-confirm" style="width:100%;padding:14px;" onclick="shiftNext(11)">Yes, That's Accurate — Continue ›</button>
         </div>
@@ -920,7 +920,7 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
                   <li>Advanced reporting dashboard</li>
                   <li>Monthly strategy session with Steve</li>
                   <li>Priority support — direct to Steve</li>
-                  <li style="color:var(--muted);font-style:italic;">Ads management available once system is running clean<br><span style="font-size:9px;opacity:0.6;">Why get more leads if you have holes in the bucket?</span><br><span style="font-size:9px;opacity:0.6;">(Additional cost + ad spend)</span></li>
+                  <li style="color:var(--muted);font-style:italic;font-size:9px;">Ads mgmt available once system is clean<br><span style="opacity:0.6;">(Additional cost + ad spend)*</span></li>
                 </ul>
                 <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:1px;margin-top:10px;text-align:center;">SCALE</div>
                 <button class="tc-btn">Select Scale</button>
@@ -1446,7 +1446,6 @@ function drawFlowMap() {
   var capSel = getSelected('cap-opts');
   var fuSel = getSelected('fu-opts');
   var k = S.kpi;
-  // Always show all stages that have data regardless of currentStage
   var showAttract = sources.length > 0 || capSel.length > 0 || fuSel.length > 0;
   var showDiagnose = k.leads > 0 || k.quotes > 0;
   var showVisualize = currentStage >= 2 || k.closed > 0;
@@ -1457,146 +1456,123 @@ function drawFlowMap() {
     return;
   }
 
+  // Use a row-based layout system for consistent spacing
+  // Each row is a fixed Y position, left/center/right columns
+  var COL = { left: W*0.22, center: W*0.5, right: W*0.78 };
+  // Dynamic row count based on what's shown
+  var totalRows = 4 + (showDiagnose ? 3 : 0) + (showVisualize ? 3 : 0);
+  var rowH = Math.min(H / (totalRows + 1), 90);
+  var rowY = function(r) { return rowH * r + rowH * 0.5; };
+
   var nodes = [];
   var edges = [];
 
-  // ── ATTRACT LAYER ─────────────────────────────────────────
+  // ── ROW-BASED LAYOUT ──────────────────────────────────────
+  // Row 1: Lead Sources (spread across top)
   var numSrc = Math.max(sources.length, 1);
-  var srcY = H * 0.08;
-  var srcSpacing = Math.min(W / (numSrc + 1), 150);
+  var srcSpacing = Math.min((W - 60) / numSrc, 160);
   var srcStartX = (W - srcSpacing * (numSrc - 1)) / 2;
 
   sources.forEach(function(s, i) {
-    var x = srcStartX + i * srcSpacing;
-    nodes.push({ id:'src_'+i, x:x, y:srcY, label:s.name, sublabel:s.pct+'%', type:'source', active:true });
+    nodes.push({ id:'src_'+i, x:srcStartX + i*srcSpacing, y:rowY(1), label:s.name, sublabel:s.pct+'%', type:'source', active:true });
   });
-
   if (!sources.length) {
-    nodes.push({ id:'src_0', x:W/2, y:srcY, label:'Lead Sources', sublabel:'Add in Stage A', type:'source', active:false });
+    nodes.push({ id:'src_0', x:COL.center, y:rowY(1), label:'Lead Sources', sublabel:'Add in Stage A', type:'source', active:false });
   }
 
-  // Capture
-  var hasNoCRM = capSel.some(function(c){ return c === 'Nothing Formal' || c === 'Paper / Notes'; });
-  var capLabel = capSel.length ? capSel[0] : 'Lead Capture';
-  var capGap = hasNoCRM || capSel.length === 0;
+  var capGap = capSel.some(function(c){ return c==='Nothing Formal'||c==='Paper / Notes'; }) || capSel.length===0;
+  var fuGap = fuSel.some(function(f){ return f==='No System'||f==='Inconsistent'; }) || fuSel.length===0;
 
   if (mapMode === 'surj') {
-    // ALL TIERS: SüRJ CRM replaces manual capture
-    nodes.push({ id:'capture', x:W/2, y:H*0.20, label:'SüRJ CRM', sublabel:'all leads captured automatically', type:'surj', active:true });
-    // ALL TIERS: Missed call text-back
-    nodes.push({ id:'textback', x:W*0.75, y:H*0.14, label:'Missed Call Text-Back', sublabel:'instant auto-response', type:'surj', active:true });
-    nodes.filter(function(n){ return n.id.startsWith('src_'); }).forEach(function(n) {
-      edges.push({ from:n.id, to:'textback', gap:false, surj:true });
-    });
-    edges.push({ from:'textback', to:'capture', gap:false, surj:true });
-    // GROW + SCALE: Conversation AI at top
-    if (tier === 'grow' || tier === 'scale') {
-      nodes.push({ id:'convai', x:W*0.25, y:H*0.14, label:'Conversation AI', sublabel:'24/7 lead response', type:'surj', active:true });
-      nodes.filter(function(n){ return n.id.startsWith('src_'); }).forEach(function(n) {
-        edges.push({ from:n.id, to:'convai', gap:false, surj:true });
-      });
-      edges.push({ from:'convai', to:'capture', gap:false, surj:true });
-    }
-    // SCALE ONLY: Voice AI above everything
+    // Row 2: AI screening nodes (left=ConvAI, center=sources→CRM, right=TextBack)
     if (tier === 'scale') {
-      nodes.push({ id:'voiceai', x:W/2, y:H*0.05, label:'Voice AI Screening', sublabel:'never miss an inbound call', type:'surj', active:true });
-      nodes.filter(function(n){ return n.id.startsWith('src_'); }).forEach(function(n) {
-        edges.push({ from:n.id, to:'voiceai', gap:false, surj:true });
-      });
-      edges.push({ from:'voiceai', to:'convai', gap:false, surj:true });
+      nodes.push({ id:'voiceai', x:COL.center, y:rowY(1.5), label:'Voice AI Screening', sublabel:'never miss a call', type:'surj', active:true });
+      sources.forEach(function(s,i){ edges.push({ from:'src_'+i, to:'voiceai', gap:false, surj:true }); });
     }
-  } else {
-    nodes.push({ id:'capture', x:W/2, y:H*0.20, label:capLabel, sublabel:'capture method', type:capGap?'gap':'capture', active:true });
-  }
-  nodes.filter(function(n){ return n.id.startsWith('src_'); }).forEach(function(n) {
-    edges.push({ from:n.id, to:'capture', gap:capGap && mapMode === 'current', surj:mapMode === 'surj' });
-  });
+    if (tier === 'grow' || tier === 'scale') {
+      nodes.push({ id:'convai', x:COL.left, y:rowY(2), label:'Conversation AI', sublabel:'24/7 lead response', type:'surj', active:true });
+      edges.push({ from:(tier==='scale'?'voiceai':'src_0'), to:'convai', gap:false, surj:true });
+    }
+    nodes.push({ id:'textback', x:COL.right, y:rowY(2), label:'Missed Call Text-Back', sublabel:'instant response', type:'surj', active:true });
+    sources.forEach(function(s,i){ if(tier!=='scale') edges.push({ from:'src_'+i, to:'textback', gap:false, surj:true }); });
+    if(tier==='scale') edges.push({ from:'voiceai', to:'textback', gap:false, surj:true });
 
-  // Follow-up
-  var fuGap = fuSel.some(function(f){ return f === 'No System' || f === 'Inconsistent'; }) || fuSel.length === 0;
-  if (mapMode === 'surj') {
-    // ALL TIERS: Automated follow-up
-    nodes.push({ id:'followup', x:W/2, y:H*0.32, label:'Automated Follow-Up', sublabel:'SMS + Email sequences', type:'surj', active:true });
+    // Row 3: CRM
+    nodes.push({ id:'capture', x:COL.center, y:rowY(3), label:'SüRJ CRM', sublabel:'all leads captured', type:'surj', active:true });
+    if(tier==='grow'||tier==='scale') edges.push({ from:'convai', to:'capture', gap:false, surj:true });
+    edges.push({ from:'textback', to:'capture', gap:false, surj:true });
+    if(tier==='launch') sources.forEach(function(s,i){ edges.push({ from:'src_'+i, to:'capture', gap:false, surj:true }); });
+
+    // Row 4: Follow-up
+    nodes.push({ id:'followup', x:COL.center, y:rowY(4), label:'Automated Follow-Up', sublabel:'SMS + Email sequences', type:'surj', active:true });
+    edges.push({ from:'capture', to:'followup', gap:false, surj:true });
   } else {
+    // Current state
+    var capLabel = capSel.length ? capSel[0] : 'Lead Capture';
+    nodes.push({ id:'capture', x:COL.center, y:rowY(2), label:capLabel, sublabel:'capture method', type:capGap?'gap':'capture', active:true });
+    sources.forEach(function(s,i){ edges.push({ from:'src_'+i, to:'capture', gap:capGap, surj:false }); });
+
     var fuLabel = fuSel.length ? fuSel[0] : 'No Follow-Up';
-    nodes.push({ id:'followup', x:W/2, y:H*0.32, label:fuLabel, sublabel:'lead follow-up', type:fuGap?'gap':'process', active:true });
+    nodes.push({ id:'followup', x:COL.center, y:rowY(3), label:fuLabel, sublabel:'lead follow-up', type:fuGap?'gap':'process', active:fuSel.length>0 });
+    edges.push({ from:'capture', to:'followup', gap:fuGap, surj:false });
   }
-  edges.push({ from:'capture', to:'followup', gap:fuGap && mapMode === 'current', surj:mapMode === 'surj' });
 
   // ── DIAGNOSE LAYER ────────────────────────────────────────
+  var diagRow = (mapMode==='surj') ? 5 : 4;
   if (showDiagnose) {
-    nodes.push({ id:'qualify', x:W/2, y:H*0.44, label:'Qualification', sublabel:k.leads > 0 ? k.leads + ' leads/mo' : 'leads', type:'process', active:true });
-    edges.push({ from:'followup', to:'qualify', gap:false, surj:mapMode === 'surj' });
+    nodes.push({ id:'qualify', x:COL.center, y:rowY(diagRow), label:'Qualification', sublabel:k.leads>0?k.leads+' leads/mo':'leads', type:'process', active:true });
+    edges.push({ from:'followup', to:'qualify', gap:false, surj:mapMode==='surj' });
 
-    if (k.quotes > 0 || showDiagnose) {
-      nodes.push({ id:'quotes', x:W*0.32, y:H*0.55, label:'Proposals', sublabel:k.quotes > 0 ? k.quotes + ' quotes/mo' : 'quotes sent', type:'process', active:true });
-      edges.push({ from:'qualify', to:'quotes', gap:false, surj:mapMode === 'surj' });
+    nodes.push({ id:'quotes', x:COL.left, y:rowY(diagRow+1), label:'Proposals', sublabel:k.quotes>0?k.quotes+' quotes/mo':'quotes sent', type:'process', active:true });
+    edges.push({ from:'qualify', to:'quotes', gap:false, surj:mapMode==='surj' });
 
-      if (k.closed > 0) {
-        nodes.push({ id:'closed', x:W*0.32, y:H*0.66, label:'Closed Deals', sublabel:k.closed > 0 ? k.closed + '/mo · ' + fmt(k.closed*k.deal) : 'closed', type:'revenue', active:true });
-        edges.push({ from:'quotes', to:'closed', gap:false, surj:mapMode === 'surj' });
-      }
+    var lostQ = Math.max(0, k.quotes - k.closed);
+    if (mapMode === 'surj') {
+      nodes.push({ id:'quotefu', x:COL.right, y:rowY(diagRow+1), label:'Quote Follow-Up', sublabel:'auto reminders', type:'surj', active:true });
+      edges.push({ from:'quotes', to:'quotefu', gap:false, surj:true });
+    } else if (lostQ > 0) {
+      nodes.push({ id:'lost', x:COL.right, y:rowY(diagRow+1), label:'Lost / No Follow-Up', sublabel:lostQ+'/mo · '+fmt(S.calc.convLossMo)+' lost', type:'gap', active:true });
+      edges.push({ from:'quotes', to:'lost', gap:true, surj:false });
+    }
 
-      var lostQ = Math.max(0, k.quotes - k.closed);
-      if (lostQ > 0 || k.quotes > 0) {
-        if (mapMode === 'surj') {
-          nodes.push({ id:'lost', x:W*0.68, y:H*0.60, label:'Quote Follow-Up', sublabel:'automated reminders', type:'surj', active:true });
-          edges.push({ from:'quotes', to:'lost', gap:false, surj:true });
-        } else {
-          nodes.push({ id:'lost', x:W*0.68, y:H*0.60, label:'Lost / No Follow-Up', sublabel:lostQ + '/mo · ' + fmt(S.calc.convLossMo) + ' lost', type:'gap', active:true });
-          edges.push({ from:'quotes', to:'lost', gap:true, surj:false });
-        }
-      }
+    if (k.closed > 0) {
+      nodes.push({ id:'closed', x:COL.left, y:rowY(diagRow+2), label:'Closed Deals', sublabel:k.closed+'/mo · '+fmt(k.closed*k.deal), type:'revenue', active:true });
+      edges.push({ from:'quotes', to:'closed', gap:false, surj:mapMode==='surj' });
+      if(mapMode==='surj') edges.push({ from:'quotefu', to:'closed', gap:false, surj:true });
     }
   }
 
   // ── VISUALIZE LAYER ───────────────────────────────────────
+  var vizRow = diagRow + 3;
   if (showVisualize) {
     var hasAutoReview = false;
     document.querySelectorAll('.ob.sel').forEach(function(b){ if(b.textContent==='Automated Requests') hasAutoReview=true; });
-    var refGap = S.kpi.referralSelected && S.kpi.referralDec < 0.20;
 
-    var deliveryY = k.closed > 0 ? H*0.77 : H*0.66;
-    nodes.push({ id:'delivery', x:W*0.32, y:deliveryY, label:'Job Delivery', sublabel:'fulfillment', type:'process', active:true });
-    if (k.closed > 0) edges.push({ from:'closed', to:'delivery', gap:false, surj:mapMode === 'surj' });
+    nodes.push({ id:'delivery', x:COL.left, y:rowY(vizRow), label:'Job Delivery', sublabel:'fulfillment', type:'process', active:true });
+    if(k.closed>0) edges.push({ from:'closed', to:'delivery', gap:false, surj:mapMode==='surj' });
 
     if (mapMode === 'surj') {
-      // ALL TIERS: Quote follow-up automation
-      if (k.quotes > k.closed) {
-        nodes.push({ id:'quotefu', x:W*0.68, y:H*0.60, label:'Quote Follow-Up', sublabel:'auto reminders until closed', type:'surj', active:true });
-        edges.push({ from:'quotes', to:'quotefu', gap:false, surj:true });
-      }
-      // ALL TIERS: Payment
-      nodes.push({ id:'payment', x:W*0.32, y:H*0.76, label:'Payment Collected', sublabel:'invoicing + follow-up', type:'surj', active:true });
+      nodes.push({ id:'payment', x:COL.left, y:rowY(vizRow+1), label:'Payment Collected', sublabel:'invoicing + follow-up', type:'surj', active:true });
       edges.push({ from:'delivery', to:'payment', gap:false, surj:true });
-      // ALL TIERS: Review requests
-      nodes.push({ id:'reviews', x:W*0.32, y:H*0.87, label:tier==='launch'?'Review Requests':'Auto Review Requests', sublabel:tier==='launch'?'post-job SMS':'Google + reputation monitoring', type:'surj', active:true });
+
+      nodes.push({ id:'reviews', x:COL.left, y:rowY(vizRow+2), label:tier==='launch'?'Review Requests':'Auto Review Requests', sublabel:tier==='launch'?'post-job SMS':'Google + reputation', type:'surj', active:true });
       edges.push({ from:'payment', to:'reviews', gap:false, surj:true });
-      // GROW + SCALE: Reputation dashboard + nurture
+
       if (tier === 'grow' || tier === 'scale') {
-        nodes.push({ id:'reputation', x:W*0.68, y:H*0.76, label:'Reputation Dashboard', sublabel:'monitor reviews + respond', type:'surj', active:true });
+        nodes.push({ id:'reputation', x:COL.right, y:rowY(vizRow+1), label:'Reputation Dashboard', sublabel:'monitor + respond', type:'surj', active:true });
         edges.push({ from:'payment', to:'reputation', gap:false, surj:true });
-        nodes.push({ id:'nurture', x:W*0.68, y:H*0.87, label:'Long-Term Nurture', sublabel:'repeat + referral engine', type:'surj', active:true });
+        nodes.push({ id:'nurture', x:COL.right, y:rowY(vizRow+2), label:'Long-Term Nurture', sublabel:'repeat + referral', type:'surj', active:true });
         edges.push({ from:'reviews', to:'nurture', gap:false, surj:true });
         edges.push({ from:'reputation', to:'nurture', gap:false, surj:true });
       }
-      // SCALE: Advanced reporting
       if (tier === 'scale') {
-        nodes.push({ id:'reporting', x:W/2, y:H*0.93, label:'Advanced Reporting', sublabel:'see every dollar + drop-off', type:'surj', active:true });
+        nodes.push({ id:'reporting', x:COL.center, y:rowY(vizRow+3), label:'Advanced Reporting', sublabel:'every dollar tracked', type:'surj', active:true });
         edges.push({ from:'nurture', to:'reporting', gap:false, surj:true });
         edges.push({ from:'reviews', to:'reporting', gap:false, surj:true });
       }
     } else {
-      nodes.push({ id:'retention', x:W*0.32, y:H*0.87, label:hasAutoReview?'Reviews & Referrals':'No Retention System', sublabel:hasAutoReview?'automated':'gap identified', type:hasAutoReview?'revenue':'gap', active:true });
+      nodes.push({ id:'retention', x:COL.left, y:rowY(vizRow+1), label:hasAutoReview?'Reviews & Referrals':'No Retention System', sublabel:hasAutoReview?'automated':'gap identified', type:hasAutoReview?'revenue':'gap', active:true });
       edges.push({ from:'delivery', to:'retention', gap:!hasAutoReview, surj:false });
-    }
-
-    // Voice AI at top for Scale
-    if (mapMode === 'surj' && tier === 'scale') {
-      nodes.push({ id:'voiceai', x:W*0.68, y:H*0.20, label:'Voice AI', sublabel:'never miss a call', type:'surj', active:true });
-      nodes.filter(function(n){ return n.id.startsWith('src_'); }).forEach(function(n) {
-        edges.push({ from:n.id, to:'voiceai', gap:false, surj:true });
-      });
     }
   }
 
