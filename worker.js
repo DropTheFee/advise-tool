@@ -55,7 +55,11 @@ export default {
     }
 
     if (path.startsWith('/brief/')) {
-      return serveBriefPage(path.replace('/brief/', ''), env);
+      return serveBriefPage(path.replace('/brief/', ''), env, 'client');
+    }
+
+    if (path.startsWith('/admin/')) {
+      return serveBriefPage(path.replace('/admin/', ''), env, 'admin');
     }
 
     // Static assets
@@ -147,8 +151,9 @@ async function handleGenerateBrief(id, request, env, headers) {
     const { briefHTML, sessionData } = body;
 
     // Store brief HTML
+    var briefKey = briefType === 'admin' ? 'session:' + id + ':admin' : 'session:' + id + ':brief';
     await env.ADVISE_SESSIONS.put(
-      'session:' + id + ':brief',
+      briefKey,
       briefHTML,
       { expirationTtl: 60 * 60 * 24 * 365 } // 1 year
     );
@@ -158,12 +163,13 @@ async function handleGenerateBrief(id, request, env, headers) {
     if (metaRaw) {
       const meta = JSON.parse(metaRaw);
       meta.briefGenerated = true;
-      meta.briefUrl = 'https://advise.surj.app/brief/' + id;
+      meta.briefUrl = briefType === 'admin' ? 'https://advise.surj.app/admin/' + id : 'https://advise.surj.app/brief/' + id;
+      meta.adminUrl = briefType === 'admin' ? meta.briefUrl : meta.adminUrl;
       await env.ADVISE_SESSIONS.put('session:' + id + ':meta', JSON.stringify(meta));
     }
 
     // Fire GHL integration (non-blocking — don't fail if GHL is slow)
-    const briefUrl = 'https://advise.surj.app/brief/' + id;
+    const briefUrl = briefType === 'admin' ? 'https://advise.surj.app/admin/' + id : 'https://advise.surj.app/brief/' + id;
     env.ctx ? env.ctx.waitUntil(fireGHLIntegration(sessionData, briefUrl)) : null;
     // Also fire without ctx just in case
     fireGHLIntegration(sessionData, briefUrl).catch(() => {});
@@ -308,9 +314,11 @@ async function fireGHLIntegration(sessionData, briefUrl) {
 }
 
 // ─── SERVE BRIEF PAGE ──────────────────────────────────────────────────────────
-async function serveBriefPage(id, env) {
+async function serveBriefPage(id, env, briefType) {
+  briefType = briefType || 'client';
+  const kvKey = briefType === 'admin' ? 'session:' + id + ':admin' : 'session:' + id + ':brief';
   try {
-    const brief = await env.ADVISE_SESSIONS.get('session:' + id + ':brief');
+    const brief = await env.ADVISE_SESSIONS.get(kvKey);
     if (!brief) {
       return new Response(notFoundHTML(), {
         headers: { 'Content-Type': 'text/html' }
