@@ -97,7 +97,17 @@ fetch('/api/sessions').then(function(r){return r.json();}).then(function(data){
     var outcomeLabel = s.outcome==='verbal-yes'?'✅ Verbal Yes':s.outcome==='nurture'?'Nurture':s.outcome==='think'?'Thinking':s.outcome==='proposal'?'Sent Agreement':'—';
     var tierClass = 'tier-'+(s.tier||'launch');
     var tierLabel = s.tier ? s.tier.charAt(0).toUpperCase()+s.tier.slice(1) : '—';
-var rowId = s.id;
+    var rowId = s.id;
+    var bizName = (p.business||'Session').replace(/'/g,'');
+    var lockIcon = s.locked ? '🔒' : '🔓';
+    var lockTitle = s.locked ? 'Unlock session' : 'Lock — prevent deletion';
+    var deleteDisabled = s.locked ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : '';
+
+    var actionTd = '<td onclick="event.stopPropagation();" style="white-space:nowrap;">'
+      + '<button class="btn-lock" onclick="toggleLock(\'' + rowId + '\', ' + (s.locked?'true':'false') + ')" title="' + lockTitle + '">' + lockIcon + '</button>'
+      + '<button class="btn-delete" onclick="deleteSession(\'' + rowId + '\', \'' + bizName + '\')" ' + deleteDisabled + '>🗑</button>'
+      + '</td>';
+
     html += '<tr style="cursor:pointer;" onclick="openSession(this.dataset.id)" data-id="'+rowId+'">'
       +'<td><strong>'+(p.business||'—')+'</strong></td>'
       +'<td>'+(p.first||'')+' '+(p.last||'')+'</td>'
@@ -106,17 +116,12 @@ var rowId = s.id;
       +'<td><span class="leak-val">'+fmt(s.totalLeak/12)+'</span><span style="font-size:10px;color:var(--muted);">/mo</span></td>'
       +'<td>'+(s.tier?'<span class="tier-badge '+tierClass+'">'+tierLabel+'</span>':'<span style="color:var(--muted);">—</span>')+'</td>'
       +'<td>'+(s.outcome?'<span class="outcome-badge '+outcomeClass+'">'+outcomeLabel+'</span>':'<span style="color:var(--muted);">—</span>')+'</td>'
-      +'<td onclick="event.stopPropagation();">'
-      +(s.briefGenerated?'<a href="/brief/'+s.id+'" class="btn-view" target="_blank">View Brief</a>':'<span style="color:var(--muted);font-size:11px;">Not generated</span>')
-      +'</td>'
-      +'<td onclick="event.stopPropagation();" style="white-space:nowrap;">'
-      +'<button class="btn-lock" title="'+(s.locked?'Unlock session':'Lock session — prevent deletion')+'" onclick="toggleLock(''+rowId+'','+!!s.locked+')">'+(s.locked?'🔒':'🔓')+'</button>'
-      +'<button class="btn-delete" title="Delete session" onclick="deleteSession(''+rowId+'',''+( p.business||'Session')+'')" '+(s.locked?'disabled style="opacity:0.3;cursor:not-allowed;"':'')+'>🗑</button>'
-      +'</td>'
+      +'<td onclick="event.stopPropagation();">'+(s.briefGenerated?'<a href="/brief/'+s.id+'" class="btn-view" target="_blank">View Brief</a>':'<span style="color:var(--muted);font-size:11px;">Not generated</span>')+'</td>'
+      + actionTd
       +'</tr>';
   });
 
-  html += '</tbody></table>';
+    html += '</tbody></table>';
   document.getElementById('table-wrap').innerHTML = html;
 }).catch(function(){
   document.getElementById('table-wrap').innerHTML = '<div class="empty-state"><h2>Could not load sessions</h2><p>Make sure the Worker is deployed and KV is connected.</p></div>';
