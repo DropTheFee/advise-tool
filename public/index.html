@@ -668,12 +668,11 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
         <div class="panel-desc">Work through each step. Right panel shows the prospect their own numbers.</div>
 
         <div class="shift-step" id="ss-11">
-          <div class="qb-label" style="margin-bottom:6px;">Step 11 — Confirm Alignment</div>
-          <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5;">Read the summary on the right back to them. Let it land. Capture any corrections here.</div>
-          <div class="shift-confirm-row">
-            <textarea class="qi" id="s11-notes" placeholder="Their response or corrections..."></textarea>
-            <button class="btn-confirm" onclick="shiftNext(11)">Confirmed ›</button>
-          </div>
+          <div class="qb-label" style="margin-bottom:8px;">Step 11 — Review Together</div>
+          <div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px;line-height:1.4;">Let's review what you've shared — and make sure we have this right.</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5;">Walk through the summary on the right together. Then ask: <em style="color:var(--white);">"Would you agree these are the gaps costing your business?"</em></div>
+          <textarea class="qi" id="s11-notes" placeholder="Their response, corrections, or anything they want to add..." style="min-height:56px;margin-bottom:12px;"></textarea>
+          <button class="btn-confirm" style="width:100%;padding:14px;" onclick="shiftNext(11)">Yes, That's Accurate — Continue ›</button>
         </div>
 
         <div class="shift-step locked" id="ss-12">
@@ -684,9 +683,9 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
           <textarea class="qi" id="s12-30" placeholder="Their answer..." style="margin-bottom:10px;" oninput="autoSave()"></textarea>
           <div class="probe-lbl">What's at risk if nothing changes in 90 days?</div>
           <textarea class="qi" id="s12-90" placeholder="Their answer..." oninput="autoSave()"></textarea>
-          <div class="shift-confirm-row" style="margin-top:10px;">
-            <button class="btn-confirm" onclick="shiftNext(12)">Ready to See Options ›</button>
-            <button class="btn-hesitate" onclick="showReframe()">Need More Time</button>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px;">
+            <button class="btn-confirm" style="width:100%;padding:14px;font-size:13px;" onclick="shiftNext(12)">Yes, I Want to Fix This — Show Me the Options ›</button>
+            <button class="btn-hesitate" style="width:100%;padding:10px;text-align:center;" onclick="showReframe()">I Need More Time to Think</button>
           </div>
         </div>
 
@@ -694,8 +693,8 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
           <div class="qb-label" style="margin-bottom:6px;">Step 13 — Cost of Waiting</div>
           <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Right panel shows the numbers. Walk through them together.</div>
           <textarea class="qi" id="s13-notes" placeholder="Their response after seeing the cost of waiting..." oninput="autoSave()"></textarea>
-          <div class="shift-confirm-row" style="margin-top:10px;">
-            <button class="btn-confirm" onclick="shiftNext(13)">Ready to See Options ›</button>
+          <div style="margin-top:14px;">
+            <button class="btn-confirm" style="width:100%;padding:14px;font-size:13px;" onclick="shiftNext(13)">I Understand — Show Me the Options ›</button>
           </div>
         </div>
 
@@ -741,7 +740,10 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
           <textarea class="qi" id="e-notes" placeholder="Any final notes, agreed next steps, follow-up timing..." oninput="autoSave()"></textarea>
         </div>
 
-        <button onclick="generateBrief()" style="width:100%;padding:16px;background:linear-gradient(135deg,var(--gold),var(--goldb));border:none;border-radius:10px;color:var(--bg);font-family:'Syne',sans-serif;font-size:14px;font-weight:800;cursor:pointer;margin-top:8px;letter-spacing:0.5px;">⚡ GENERATE &amp; SAVE IMPLEMENTATION BRIEF</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+          <button onclick="generateBrief('client')" style="padding:16px;background:linear-gradient(135deg,var(--teal),var(--tealb));border:none;border-radius:10px;color:var(--bg);font-family:'Syne',sans-serif;font-size:12px;font-weight:800;cursor:pointer;letter-spacing:0.5px;line-height:1.4;">📤 SEND TO CLIENT<br><span style="font-size:10px;font-weight:600;opacity:0.8;">Clean brief + flow map</span></button>
+          <button onclick="generateBrief('admin')" style="padding:16px;background:linear-gradient(135deg,var(--gold),var(--goldb));border:none;border-radius:10px;color:var(--bg);font-family:'Syne',sans-serif;font-size:12px;font-weight:800;cursor:pointer;letter-spacing:0.5px;line-height:1.4;">⚙ ADMIN BRIEF<br><span style="font-size:10px;font-weight:600;opacity:0.8;">Full build checklist</span></button>
+        </div>
 
         <div class="nav-btns">
           <button class="btn-prev" onclick="prev()">← Shift</button>
@@ -1457,7 +1459,12 @@ function drawFlowMap() {
   var capGap = hasNoCRM || capSel.length === 0;
 
   if (mapMode === 'surj') {
-    nodes.push({ id:'capture', x:W/2, y:H*0.20, label:'SüRJ CRM', sublabel:'automated capture', type:'surj', active:true });
+    nodes.push({ id:'capture', x:W/2, y:H*0.20, label:'SüRJ CRM', sublabel:'all leads captured', type:'surj', active:true });
+    // Add missed call text-back and contact form nodes for all tiers
+    nodes.push({ id:'textback', x:W*0.75, y:H*0.20, label:'Missed Call Text-Back', sublabel:'instant response', type:'surj', active:true });
+    nodes.filter(function(n){ return n.id.startsWith('src_'); }).forEach(function(n) {
+      edges.push({ from:n.id, to:'textback', gap:false, surj:true });
+    });
   } else {
     nodes.push({ id:'capture', x:W/2, y:H*0.20, label:capLabel, sublabel:'capture method', type:capGap?'gap':'capture', active:true });
   }
@@ -1512,14 +1519,19 @@ function drawFlowMap() {
     nodes.push({ id:'delivery', x:W*0.32, y:deliveryY, label:'Job Delivery', sublabel:'fulfillment', type:'process', active:true });
     if (k.closed > 0) edges.push({ from:'closed', to:'delivery', gap:false, surj:mapMode === 'surj' });
 
-    if (mapMode === 'surj' && (tier === 'grow' || tier === 'scale')) {
-      nodes.push({ id:'reviews', x:W*0.32, y:H*0.87, label:'Auto Review Requests', sublabel:'Google + reputation', type:'surj', active:true });
-      edges.push({ from:'delivery', to:'reviews', gap:false, surj:true });
-      nodes.push({ id:'nurture', x:W*0.68, y:H*0.82, label:'Long-Term Nurture', sublabel:'repeat & referral engine', type:'surj', active:true });
-      edges.push({ from:'reviews', to:'nurture', gap:false, surj:true });
-    } else if (mapMode === 'surj') {
-      nodes.push({ id:'reviews', x:W*0.32, y:H*0.87, label:'Review Requests', sublabel:'basic follow-up', type:'surj', active:true });
-      edges.push({ from:'delivery', to:'reviews', gap:false, surj:true });
+    if (mapMode === 'surj') {
+      // Payment & completion flow
+      nodes.push({ id:'payment', x:W*0.32, y:H*0.78, label:'Payment Collected', sublabel:'automated invoicing', type:'surj', active:true });
+      edges.push({ from:'delivery', to:'payment', gap:false, surj:true });
+      // Reviews always included
+      nodes.push({ id:'reviews', x:W*0.32, y:H*0.87, label:tier==='launch'?'Review Requests':'Auto Review Requests', sublabel:tier==='launch'?'post-job follow-up':'Google + reputation monitoring', type:'surj', active:true });
+      edges.push({ from:'payment', to:'reviews', gap:false, surj:true });
+      if (tier === 'grow' || tier === 'scale') {
+        nodes.push({ id:'nurture', x:W*0.68, y:H*0.87, label:'Long-Term Nurture', sublabel:'repeat & referral engine', type:'surj', active:true });
+        edges.push({ from:'reviews', to:'nurture', gap:false, surj:true });
+        nodes.push({ id:'reputation', x:W*0.68, y:H*0.76, label:'Reputation Dashboard', sublabel:'monitor & respond', type:'surj', active:true });
+        edges.push({ from:'payment', to:'reputation', gap:false, surj:true });
+      }
     } else {
       nodes.push({ id:'retention', x:W*0.32, y:H*0.87, label:hasAutoReview?'Reviews & Referrals':'No Retention System', sublabel:hasAutoReview?'automated':'gap identified', type:hasAutoReview?'revenue':'gap', active:true });
       edges.push({ from:'delivery', to:'retention', gap:!hasAutoReview, surj:false });
@@ -1804,7 +1816,9 @@ function buildBriefPreview() {
   // Called when entering Execute — show summary in right panel
 }
 
-function generateBrief() {
+function generateBrief(briefType) {
+  briefType = briefType || "client";
+  var isAdmin = briefType === "admin";
   var p = S.prospect; var c = S.calc; var k = S.kpi;
   var tier = S.selectedTier || recommendTier();
   var tierNames = { launch:'Launch', grow:'Grow', scale:'Scale' };
@@ -1857,7 +1871,7 @@ function generateBrief() {
 
   var today = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
   var briefId = S.sessionId;
-  var briefUrl = 'https://advise.surj.app/brief/' + briefId;
+  var briefUrl = isAdmin ? 'https://advise.surj.app/admin/' + briefId : 'https://advise.surj.app/brief/' + briefId;
 
   var html = '<!DOCTYPE html><html><head><meta charset="UTF-8">'
     + '<title>SüRJ Implementation Brief — ' + p.business + '</title>'
@@ -1869,7 +1883,7 @@ function generateBrief() {
     // Header
     + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid rgba(110,223,200,0.15);">'
     + '<div><div style="font-family:Fraunces,serif;font-size:36px;font-weight:900;background:linear-gradient(135deg,#9B6FD0,#6EDFC8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">SüRJ</div>'
-    + '<div style="font-family:Syne,sans-serif;font-size:10px;color:#7A9BB5;letter-spacing:2px;text-transform:uppercase;margin-top:4px;">GHL Implementation Brief</div></div>'
+    + '<div style="font-family:Syne,sans-serif;font-size:10px;color:#7A9BB5;letter-spacing:2px;text-transform:uppercase;margin-top:4px;">SüRJ Implementation Brief</div></div>'
     + '<div style="text-align:right;"><div style="font-family:Syne,sans-serif;font-size:16px;font-weight:700;">' + p.business + '</div>'
     + '<div style="font-size:12px;color:#7A9BB5;margin-top:2px;">' + p.first + ' ' + p.last + ' — ' + today + '</div>'
     + '<div style="font-size:11px;color:#6EDFC8;margin-top:4px;">Steve Wilson · Recherché Merchant Solutions</div></div></div>'
@@ -1913,30 +1927,35 @@ function generateBrief() {
     // Lead Sources
     + (sources ? bsec('LEAD SOURCES', '<div style="font-size:13px;color:#F0F4F8;line-height:1.8;">' + sources + '</div>') : '')
 
-    // Notes from each stage
-    + noteSection('Lead Capture Method', 'a-capture')
-    + noteSection('Current Follow-Up Process', 'a-followup')
-    + noteSection('Lead Filtering', 'a-filter')
-    + noteSection('Qualification Process', 'd-qualify')
-    + noteSection('Proposal Presentation', 'd-proposal')
-    + noteSection('Common Objections', 'd-objections')
-    + noteSection('Post-Quote Follow-Up', 'd-qfu')
-    + noteSection('Onboarding Process', 'v-onboard')
-    + noteSection('Client Communication', 'v-comms')
-    + noteSection('Delivery Consistency', 'v-consist')
-    + noteSection('Review & Referral System', 'v-reviews')
-    + noteSection('Competitive Differentiators', 'v-diff')
-    + noteSection('Known Problem Areas', 'v-problems')
-    + noteSection('Owner — Burnout & Bottleneck', 'i-burnout')
-    + noteSection('Scalability Notes', 'i-scale')
-    + noteSection('Outcome / Next Steps', 's-notes')
-    + noteSection('Final Call Notes', 'e-notes')
+    // Notes — admin gets all, client gets selected highlights
+    + (isAdmin ? (
+        noteSection('Lead Capture Method', 'a-capture')
+        + noteSection('Current Follow-Up Process', 'a-followup')
+        + noteSection('Lead Filtering', 'a-filter')
+        + noteSection('Qualification Process', 'd-qualify')
+        + noteSection('Proposal Presentation', 'd-proposal')
+        + noteSection('Common Objections', 'd-objections')
+        + noteSection('Post-Quote Follow-Up', 'd-qfu')
+        + noteSection('Onboarding Process', 'v-onboard')
+        + noteSection('Client Communication', 'v-comms')
+        + noteSection('Delivery Consistency', 'v-consist')
+        + noteSection('Review & Referral System', 'v-reviews')
+        + noteSection('Competitive Differentiators', 'v-diff')
+        + noteSection('Known Problem Areas', 'v-problems')
+        + noteSection('Owner — Burnout & Bottleneck', 'i-burnout')
+        + noteSection('Scalability Notes', 'i-scale')
+        + noteSection('Outcome / Next Steps', 's-notes')
+        + noteSection('Final Call Notes', 'e-notes')
+      ) : (
+        noteSection('What You're Great At', 'v-diff')
+        + noteSection('Next Steps', 'e-notes')
+      ))
 
-    // GHL Checklist
-    + bsec('GHL ADMIN BUILD CHECKLIST',
+    // Admin-only checklist
+    + (isAdmin ? bsec('SURJ ADMIN BUILD CHECKLIST',
         '<div style="background:#0d1d30;border:1px solid rgba(110,223,200,0.1);border-radius:10px;padding:16px;">'
         + checklist.map(function(item){ return '<div style="font-size:12px;color:#F0F4F8;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);">' + item + '</div>'; }).join('')
-        + '</div>')
+        + '</div>') : '')
 
     // Footer
     + '<div style="margin-top:32px;padding:20px;background:rgba(110,223,200,0.04);border:1px solid rgba(110,223,200,0.12);border-radius:10px;text-align:center;">'
@@ -1946,17 +1965,42 @@ function generateBrief() {
     + '</div>'
     + '</div></body></html>';
 
+  // Capture flow map as image for brief
+  var flowMapImg = '';
+  try {
+    var canvas = document.getElementById('flow-canvas');
+    if (canvas && canvas.width > 0) {
+      // Switch to SüRJ view to capture it
+      var prevMode = mapMode;
+      mapMode = 'surj';
+      drawFlowMap();
+      flowMapImg = canvas.toDataURL('image/png');
+      mapMode = prevMode;
+      drawFlowMap();
+    }
+  } catch(e) {}
+
+  // Add flow map to client brief
+  if (!isAdmin && flowMapImg) {
+    var flowMapSection = '<div style="margin-bottom:28px;">'
+      + '<div style="font-family:Syne,sans-serif;font-size:10px;font-weight:700;color:#6EDFC8;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(110,223,200,0.12);">YOUR BUSINESS — WITH SüRJ</div>'
+      + '<img src="' + flowMapImg + '" style="width:100%;border-radius:10px;border:1px solid rgba(110,223,200,0.15);" />'
+      + '<div style="font-size:11px;color:#7A9BB5;margin-top:8px;text-align:center;">This is what your business looks like once every gap identified today is closed.</div>'
+      + '</div>';
+    html = html.replace('</div></body></html>', flowMapSection + '</div></body></html>');
+  }
+
   // Save to localStorage
   localStorage.setItem('advise_brief_' + briefId, html);
 
   // Show brief screen
   document.getElementById('brief-content').innerHTML = html.replace(/<!DOCTYPE.*?<body>/s,'').replace('</body></html>','');
   document.getElementById('brief-share-url').style.display = 'flex';
-  document.getElementById('brief-url-text').textContent = briefUrl;
+  document.getElementById('brief-url-text').textContent = (isAdmin ? '🔧 Admin: ' : '📤 Client: ') + briefUrl;
   showScreen('brief');
 
   // Save to KV via API
-  saveBriefToKV(briefId, html);
+  saveBriefToKV(briefId, html, briefType);
 }
 
 function bsec(title, content) {
@@ -2025,9 +2069,10 @@ function autoSave() {
   }, 1500);
 }
 
-function saveBriefToKV(id, html) {
+function saveBriefToKV(id, html, briefType) {
+  var apiPath = briefType === 'admin' ? '/api/admin/' + id : '/api/brief/' + id;
   var data = collectSessionData();
-  fetch('/api/brief/' + id, {
+  fetch(apiPath, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ briefHTML: html, sessionData: data })
