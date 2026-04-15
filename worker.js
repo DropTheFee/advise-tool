@@ -38,7 +38,12 @@ export default {
 
     if (path.startsWith('/api/brief/') && method === 'POST') {
       const id = path.replace('/api/brief/', '');
-      return handleGenerateBrief(id, request, env, corsHeaders);
+      return handleGenerateBrief(id, 'client', request, env, corsHeaders);
+    }
+
+    if (path.startsWith('/api/admin/') && method === 'POST') {
+      const id = path.replace('/api/admin/', '');
+      return handleGenerateBrief(id, 'admin', request, env, corsHeaders);
     }
 
     if (path === '/api/sessions' && method === 'GET') {
@@ -155,7 +160,7 @@ async function handleListSessions(env, headers) {
 }
 
 // ─── GENERATE BRIEF + GHL WEBHOOK ─────────────────────────────────────────────
-async function handleGenerateBrief(id, request, env, headers) {
+async function handleGenerateBrief(id, briefType, request, env, headers) {
   try {
     const body = await request.json();
     const { briefHTML, sessionData } = body;
@@ -331,7 +336,7 @@ async function serveBriefPage(id, env, briefType) {
     const brief = await env.ADVISE_SESSIONS.get(kvKey);
     if (!brief) {
       return new Response(notFoundHTML(), {
-        headers: { 'Content-Type': 'text/html' }
+        headers: { 'Content-Type': 'text/html;charset=UTF-8' }
       });
     }
     return new Response(brief, {
