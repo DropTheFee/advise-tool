@@ -63,7 +63,7 @@ if (err) {
     return;
   }
 
-  fetch('/api/login', {
+  fetch('/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password),
