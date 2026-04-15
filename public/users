@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SüRJ — User Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700;900&family=DM+Sans:wght@300;400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#060F18;--card:#0a1624;--card2:#0d1d30;--gold:#C8860A;--goldb:#F5C842;--teal:#1A8A72;--tealb:#6EDFC8;--purple:#6B3FA0;--purpleb:#9B6FD0;--red:#B83232;--white:#F0F4F8;--muted:#7A9BB5;--border:rgba(110,223,200,0.12);}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;}
+.header{padding:20px 40px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.header-left{display:flex;align-items:center;gap:20px;}
+.logo{font-family:'Fraunces',serif;font-size:24px;font-weight:900;background:linear-gradient(135deg,var(--purpleb),var(--tealb));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.back-link{font-family:'Syne',sans-serif;font-size:11px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:4px;}
+.back-link:hover{color:var(--tealb);}
+.header-actions{display:flex;gap:10px;}
+.btn-primary{padding:10px 20px;background:linear-gradient(135deg,var(--purple),var(--teal));border:none;border-radius:8px;color:var(--white);font-family:'Syne',sans-serif;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:0.5px;}
+.btn-secondary{padding:10px 16px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:11px;cursor:pointer;text-decoration:none;display:inline-block;}
+.main{padding:28px 40px;}
+.page-title{font-family:'Fraunces',serif;font-size:28px;font-weight:900;margin-bottom:6px;}
+.page-sub{font-size:13px;color:var(--muted);margin-bottom:28px;}
+.users-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:32px;}
+.user-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;position:relative;}
+.user-card.disabled-card{opacity:0.5;}
+.uc-role{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:100px;display:inline-block;margin-bottom:10px;}
+.uc-role.admin{background:rgba(200,134,10,0.15);color:var(--goldb);border:1px solid rgba(200,134,10,0.25);}
+.uc-role.rep{background:rgba(110,223,200,0.1);color:var(--tealb);border:1px solid rgba(110,223,200,0.2);}
+.uc-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;margin-bottom:2px;}
+.uc-username{font-family:'Syne',sans-serif;font-size:10px;color:var(--purpleb);margin-bottom:10px;}
+.uc-detail{font-size:12px;color:var(--muted);margin-bottom:3px;display:flex;align-items:center;gap:6px;}
+.uc-detail span{color:var(--white);}
+.uc-login{font-size:11px;color:var(--muted);margin-top:8px;padding-top:10px;border-top:1px solid var(--border);}
+.uc-actions{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;}
+.btn-reset{padding:7px 14px;background:transparent;border:1px solid rgba(200,134,10,0.3);border-radius:6px;color:var(--gold);font-family:'Syne',sans-serif;font-size:10px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.btn-reset:hover{border-color:var(--goldb);color:var(--goldb);}
+.btn-disable{padding:7px 14px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'Syne',sans-serif;font-size:10px;cursor:pointer;transition:all 0.2s;}
+.btn-disable:hover{border-color:var(--muted);}
+.btn-delete{padding:7px 10px;background:rgba(184,50,50,0.1);border:1px solid rgba(184,50,50,0.2);border-radius:6px;color:var(--red);font-family:'Syne',sans-serif;font-size:10px;cursor:pointer;transition:all 0.2s;}
+.btn-delete:hover{background:rgba(184,50,50,0.25);}
+.disabled-badge{position:absolute;top:16px;right:16px;font-family:'Syne',sans-serif;font-size:8px;font-weight:700;color:var(--red);background:rgba(184,50,50,0.1);border:1px solid rgba(184,50,50,0.2);border-radius:4px;padding:2px 7px;letter-spacing:1px;text-transform:uppercase;}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(6,15,24,0.85);display:flex;align-items:center;justify-content:center;z-index:1000;padding:24px;display:none;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;width:100%;max-width:460px;}
+.modal-title{font-family:'Fraunces',serif;font-size:22px;font-weight:900;margin-bottom:6px;}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:24px;}
+.modal-error{background:rgba(184,50,50,0.12);border:1px solid rgba(184,50,50,0.3);border-radius:8px;padding:10px 14px;font-size:13px;color:#E05555;margin-bottom:16px;display:none;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.form-row.single{grid-template-columns:1fr;}
+.fg label{display:block;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--tealb);letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;}
+.fg input,.fg select{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
+.fg input:focus,.fg select:focus{border-color:rgba(110,223,200,0.4);}
+.fg select option{background:var(--card2);}
+.modal-actions{display:flex;gap:10px;margin-top:20px;}
+.btn-create{flex:1;padding:12px;background:linear-gradient(135deg,var(--purple),var(--teal));border:none;border-radius:8px;color:var(--white);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;}
+.btn-cancel{padding:12px 20px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:12px;cursor:pointer;}
+
+/* Temp password reveal */
+.temp-reveal{background:rgba(200,134,10,0.08);border:1px solid rgba(200,134,10,0.25);border-radius:12px;padding:20px;text-align:center;}
+.temp-label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.temp-password{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--goldb);letter-spacing:2px;margin-bottom:10px;word-break:break-all;}
+.temp-warning{font-size:12px;color:var(--muted);line-height:1.6;}
+.temp-warning strong{color:var(--white);}
+.btn-copy{padding:8px 18px;background:var(--card2);border:1px solid var(--border);border-radius:6px;color:var(--tealb);font-family:'Syne',sans-serif;font-size:10px;font-weight:700;cursor:pointer;margin-top:10px;}
+.empty-state{text-align:center;padding:60px 40px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo">SüRJ</div>
+    <a href="/dashboard" class="back-link">← Dashboard</a>
+  </div>
+  <div class="header-actions">
+    <button class="btn-primary" onclick="openModal()">+ Add User</button>
+    <a href="/logout" class="btn-secondary">Sign Out</a>
+  </div>
+</div>
+
+<div class="main">
+  <div class="page-title">User Management</div>
+  <div class="page-sub">Create and manage access for your sales team. Admins see all sessions; reps see only their own.</div>
+  <div class="users-grid" id="users-grid"><div class="empty-state">Loading users...</div></div>
+</div>
+
+<!-- CREATE USER MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" id="modal-inner">
+    <div id="modal-form-view">
+      <div class="modal-title">Add New User</div>
+      <div class="modal-sub">They'll log in with a temporary password and set their own on first login.</div>
+      <div class="modal-error" id="modal-err"></div>
+      <div class="form-row">
+        <div class="fg"><label>Full Name</label><input type="text" id="m-name" placeholder="Jordan Smith"></div>
+        <div class="fg"><label>Username</label><input type="text" id="m-username" placeholder="jordan"></div>
+      </div>
+      <div class="form-row">
+        <div class="fg"><label>Email</label><input type="email" id="m-email" placeholder="jordan@surj.app"></div>
+        <div class="fg"><label>Phone</label><input type="tel" id="m-phone" placeholder="(405) 555-1234"></div>
+      </div>
+      <div class="form-row single">
+        <div class="fg">
+          <label>Role</label>
+          <select id="m-role">
+            <option value="rep">Sales Rep — sees own sessions only</option>
+            <option value="admin">Admin — sees all sessions</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-create" id="m-btn" onclick="createUser()">Create User →</button>
+      </div>
+    </div>
+    <div id="modal-temp-view" style="display:none;">
+      <div class="modal-title" style="margin-bottom:16px;">User Created ✓</div>
+      <div class="temp-reveal">
+        <div class="temp-label">Temporary Password — Show Once</div>
+        <div class="temp-password" id="temp-pw-display">—</div>
+        <button class="btn-copy" onclick="copyTemp()">Copy Password</button>
+        <div class="temp-warning" style="margin-top:12px;"><strong>This is the only time this password is shown.</strong> Send it to the user now — they'll be required to change it on first login.</div>
+      </div>
+      <div class="modal-actions" style="margin-top:20px;">
+        <button class="btn-create" onclick="closeModal();loadUsers();">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var currentTempPw = '';
+
+function loadUsers() {
+  fetch('/api/users').then(function(r){
+    if(r.status===403||r.status===401){ window.location.href='/login'; return null; }
+    return r.json();
+  }).then(function(data){
+    if(!data) return;
+    renderUsers(data.users||[]);
+  }).catch(function(){
+    document.getElementById('users-grid').innerHTML = '<div class="empty-state">Failed to load users.</div>';
+  });
+}
+
+function renderUsers(users) {
+  var grid = document.getElementById('users-grid');
+  if (!users.length) {
+    grid.innerHTML = '<div class="empty-state">No users yet. Click "Add User" to create the first one.</div>';
+    return;
+  }
+  grid.innerHTML = users.map(function(u) {
+    var lastLogin = u.lastLogin ? new Date(u.lastLogin).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : 'Never logged in';
+    return '<div class="user-card' + (u.disabled?' disabled-card':'') + '">'
+      + (u.disabled ? '<div class="disabled-badge">Disabled</div>' : '')
+      + '<div class="uc-role ' + u.role + '">' + (u.role==='admin'?'Admin':'Sales Rep') + '</div>'
+      + '<div class="uc-name">' + u.displayName + '</div>'
+      + '<div class="uc-username">@' + u.username + '</div>'
+      + '<div class="uc-detail">✉ <span>' + u.email + '</span></div>'
+      + (u.phone ? '<div class="uc-detail">📞 <span>' + u.phone + '</span></div>' : '')
+      + '<div class="uc-login">Last login: ' + lastLogin + '</div>'
+      + '<div class="uc-actions">'
+      + '<button class="btn-reset" onclick="resetPassword(\'' + u.username + '\',\'' + u.displayName.replace(/'/g,"\\'") + '\')">Reset Password</button>'
+      + '<button class="btn-disable" onclick="toggleDisable(\'' + u.username + '\',' + u.disabled + ')">' + (u.disabled?'Enable':'Disable') + '</button>'
+      + (u.username !== getCurrentUser() ? '<button class="btn-delete" onclick="deleteUser(\'' + u.username + '\',\'' + u.displayName.replace(/'/g,"\\'") + '\')">Delete</button>' : '')
+      + '</div></div>';
+  }).join('');
+}
+
+var _currentUser = null;
+function getCurrentUser() { return _currentUser; }
+
+fetch('/api/me').then(function(r){ return r.json(); }).then(function(d){ _currentUser = d.username; loadUsers(); }).catch(function(){ window.location.href='/login'; });
+
+function openModal() {
+  document.getElementById('modal-form-view').style.display = 'block';
+  document.getElementById('modal-temp-view').style.display = 'none';
+  document.getElementById('modal-err').style.display = 'none';
+  ['m-name','m-username','m-email','m-phone'].forEach(function(id){ document.getElementById(id).value = ''; });
+  document.getElementById('m-role').value = 'rep';
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+function createUser() {
+  var name = document.getElementById('m-name').value.trim();
+  var username = document.getElementById('m-username').value.trim().toLowerCase();
+  var email = document.getElementById('m-email').value.trim();
+  var phone = document.getElementById('m-phone').value.trim();
+  var role = document.getElementById('m-role').value;
+  var err = document.getElementById('modal-err');
+  err.style.display = 'none';
+
+  if (!name||!username||!email) {
+    err.textContent = 'Name, username, and email are required.'; err.style.display = 'block'; return;
+  }
+
+  var btn = document.getElementById('m-btn');
+  btn.disabled = true; btn.textContent = 'Creating...';
+
+  fetch('/api/users', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, displayName:name, email, phone, role })
+  }).then(function(r){ return r.json(); })
+  .then(function(d) {
+    if (d.ok) {
+      currentTempPw = d.tempPassword;
+      document.getElementById('temp-pw-display').textContent = d.tempPassword;
+      document.getElementById('modal-form-view').style.display = 'none';
+      document.getElementById('modal-temp-view').style.display = 'block';
+    } else {
+      err.textContent = d.error || 'Failed to create user.'; err.style.display = 'block';
+    }
+    btn.disabled = false; btn.textContent = 'Create User →';
+  }).catch(function(){
+    err.textContent = 'Network error.'; err.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Create User →';
+  });
+}
+
+function copyTemp() {
+  var pw = document.getElementById('temp-pw-display').textContent;
+  navigator.clipboard.writeText(pw).then(function(){
+    var btn = document.querySelector('.btn-copy');
+    btn.textContent = '✓ Copied!';
+    setTimeout(function(){ btn.textContent = 'Copy Password'; }, 2000);
+  });
+}
+
+function resetPassword(username, displayName) {
+  if (!confirm('Reset password for ' + displayName + '? They\'ll get a new temp password and must change it on next login.')) return;
+  fetch('/api/users/' + username + '/reset', { method:'POST', headers:{'Content-Type':'application/json'}, body:'{}' })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (d.ok) {
+        currentTempPw = d.tempPassword;
+        document.getElementById('temp-pw-display').textContent = d.tempPassword;
+        document.getElementById('modal-form-view').style.display = 'none';
+        document.getElementById('modal-temp-view').style.display = 'block';
+        document.getElementById('modal').classList.add('open');
+      } else {
+        alert(d.error || 'Failed to reset password.');
+      }
+    });
+}
+
+function toggleDisable(username, isDisabled) {
+  fetch('/api/users/' + username, {
+    method: 'PUT',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ disabled: !isDisabled })
+  }).then(function(){ loadUsers(); });
+}
+
+function deleteUser(username, displayName) {
+  if (!confirm('Permanently delete ' + displayName + '? This cannot be undone.')) return;
+  fetch('/api/users/' + username, { method:'DELETE' }).then(function(){ loadUsers(); });
+}
+
+document.getElementById('modal').addEventListener('click', function(e){
+  if (e.target === this) closeModal();
+});
+</script>
+</body>
+</html>
