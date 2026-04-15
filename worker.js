@@ -129,11 +129,7 @@ function fmtNum(n) {
 }
 
 async function serveAsset(filename, env) {
-  try {
-    return await env.ASSETS.fetch('https://assets/' + filename);
-  } catch(e) {
-    return new Response('Not found: ' + filename, { status: 404 });
-  }
+  return env.ASSETS.fetch(new Request('https://dummy-host/' + filename));
 }
 
 // ─── ROUTER ───────────────────────────────────────────────────────────────────
@@ -258,17 +254,9 @@ export default {
         // ── ADMIN BRIEF + USER MANAGEMENT PAGE ────────────────────────────────
         // ── ADMIN BRIEF + USER MANAGEMENT PAGE ────────────────────────────────
     if (path.startsWith('/admin/')) {
-      if (path === '/admin/users') {
-        try {
-          var adminSess = await getAuthSession(request);
-
-          if (!adminSess) {
-            return new Response('NO SESSION', {
-              status: 401,
-              headers: { 'Content-Type': 'text/plain' }
-            });
-          }
-
+ if (path === '/admin/users') {
+  return serveAsset('users.html', env);
+}
           return new Response(
             'ADMIN ROUTE OK\n' +
             'username=' + (adminSess.username || '') + '\n' +
