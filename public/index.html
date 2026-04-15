@@ -670,7 +670,7 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
         <div class="shift-step" id="ss-11">
           <div class="qb-label" style="margin-bottom:8px;">Step 11 — Review Together</div>
           <div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px;line-height:1.4;">Let's review what you've shared — and make sure we have this right.</div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5;">Walk through the summary on the right together. Then ask: <em style="color:var(--white);">"Would you agree these are the gaps costing your business?"</em></div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5;"><em style="color:var(--white);">"Would you agree these are the gaps costing your business?"</em></div>
           <textarea class="qi" id="s11-notes" placeholder="Their response, corrections, or anything they want to add..." style="min-height:56px;margin-bottom:12px;"></textarea>
           <button class="btn-confirm" style="width:100%;padding:14px;" onclick="shiftNext(11)">Yes, That's Accurate — Continue ›</button>
         </div>
@@ -920,7 +920,6 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
                   <li>Advanced reporting dashboard</li>
                   <li>Monthly strategy session with Steve</li>
                   <li>Priority support — direct to Steve</li>
-                  <li style="color:var(--muted);font-style:italic;font-size:9px;">Ads mgmt available once system is clean<br><span style="opacity:0.6;">(Additional cost + ad spend)*</span></li>
                 </ul>
                 <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:1px;margin-top:10px;text-align:center;">SCALE</div>
                 <button class="tc-btn">Select Scale</button>
@@ -1671,7 +1670,7 @@ function drawLegend(ctx, W, H) {
   var items = mapMode === 'surj'
     ? [{ color:'#9B6FD0', label:'Lead Source' }, { color:'#6EDFC8', label:'Revenue' }, { color:'#1A8A72', label:'Process' }, { color:'#F5C842', label:'SüRJ Fix' }]
     : [{ color:'#9B6FD0', label:'Lead Source' }, { color:'#6EDFC8', label:'Revenue' }, { color:'#1A8A72', label:'Process' }, { color:'#B83232', label:'Gap' }];
-  var x = 16; var y = H - 20;
+  var x = 16; var y = 20;
   ctx.font = '10px DM Sans, sans-serif';
   items.forEach(function(item) {
     ctx.fillStyle = item.color;
@@ -1906,7 +1905,26 @@ function generateBrief(briefType) {
   var html = '<!DOCTYPE html><html><head><meta charset="UTF-8">'
     + '<title>SüRJ Implementation Brief — ' + p.business + '</title>'
     + '<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700;900&family=DM+Sans:wght@300;400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">'
-    + '<style>*{margin:0;padding:0;box-sizing:border-box;}body{background:#060F18;color:#F0F4F8;font-family:DM Sans,sans-serif;padding:40px;}h1,h2,h3{font-family:Fraunces,serif;}@media print{body{background:white;color:black;}}</style>'
+   + '<style>*{margin:0;padding:0;box-sizing:border-box;}body{background:#060F18;color:#F0F4F8;font-family:DM Sans,sans-serif;padding:40px;}h1,h2,h3{font-family:Fraunces,serif;}'
+    + '@media print{'
+    + 'body{background:white!important;color:#111!important;padding:20px;font-size:11px;}'
+    + '*{-webkit-print-color-adjust:exact;print-color-adjust:exact;}'
+    + 'body>div{max-width:100%!important;}'
+    + 'div[style*="background:linear-gradient"]{background:#f5f0ff!important;border:1px solid #ccc!important;}'
+    + 'div[style*="background:#0d1d30"]{background:#f8f8f8!important;border:1px solid #ddd!important;}'
+    + 'div[style*="background:rgba(110,223,200"]{background:#f0faf8!important;}'
+    + 'div[style*="color:#F0F4F8"]{color:#111!important;}'
+    + 'div[style*="color:#7A9BB5"]{color:#555!important;}'
+    + 'div[style*="color:#6EDFC8"]{color:#1A8A72!important;}'
+    + 'div[style*="color:#B83232"],div[style*="color:#E05555"]{color:#cc0000!important;}'
+    + 'div[style*="color:#F5C842"],div[style*="color:#C8860A"]{color:#7a5800!important;}'
+    + 'div[style*="-webkit-text-fill-color:transparent"]{-webkit-text-fill-color:#1A3A6B!important;}'
+    + 'img{max-width:100%!important;page-break-inside:avoid;}'
+    + '.no-print{display:none!important;}'
+    + 'div{page-break-inside:avoid;}'
+    + 'h1,h2,h3{page-break-after:avoid;}'
+    + '}'
+    + '</style>'
     + '</head><body>'
     + '<div style="max-width:820px;margin:0 auto;">'
 
