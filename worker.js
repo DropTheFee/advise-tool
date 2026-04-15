@@ -259,7 +259,7 @@ export default {
     if (path.startsWith('/admin/')) {
       var adminSess = await getAuthSession(request);
       if (!adminSess) return redir('/login');
-      if (path === '/admin/users') return env.ASSETS.fetch(new Request(url.origin + '/users.html', request));
+      if (path === '/admin/users') return env.ASSETS.fetch(new Request('https://advise.surj.app/users.html'));
       return serveBriefPage(path.replace('/admin/', ''), env, 'admin');
     }
 
