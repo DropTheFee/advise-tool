@@ -256,14 +256,42 @@ export default {
     }
 
         // ── ADMIN BRIEF + USER MANAGEMENT PAGE ────────────────────────────────
+        // ── ADMIN BRIEF + USER MANAGEMENT PAGE ────────────────────────────────
     if (path.startsWith('/admin/')) {
+      if (path === '/admin/users') {
+        try {
+          var adminSess = await getAuthSession(request);
+
+          if (!adminSess) {
+            return new Response('NO SESSION', {
+              status: 401,
+              headers: { 'Content-Type': 'text/plain' }
+            });
+          }
+
+          return new Response(
+            'ADMIN ROUTE OK\n' +
+            'username=' + (adminSess.username || '') + '\n' +
+            'role=' + (adminSess.role || '') + '\n' +
+            'displayName=' + (adminSess.displayName || ''),
+            {
+              status: 200,
+              headers: { 'Content-Type': 'text/plain' }
+            }
+          );
+        } catch (e) {
+          return new Response(
+            'ADMIN ROUTE ERROR:\n' + (e && e.stack ? e.stack : String(e)),
+            {
+              status: 500,
+              headers: { 'Content-Type': 'text/plain' }
+            }
+          );
+        }
+      }
+
       var adminSess = await getAuthSession(request);
       if (!adminSess) return redir('/login');
-
-      if (path === '/admin/users') {
-        var usersReq = new Request(request.url.replace('/admin/users', '/users.html'), request);
-        return env.ASSETS.fetch(usersReq);
-      }
     }
 
     // ── ALL OTHER PROTECTED ROUTES ─────────────────────────────────────────
