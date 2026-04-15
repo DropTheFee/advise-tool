@@ -132,7 +132,6 @@ if (path === '/api/login' && method === 'POST') return handleLogin(request, env)
       if (method === 'POST') return handleLogin(request, env);
       return new Response('Method Not Allowed', { status: 405 });
     }
-    if (path === '/login' && method === 'POST') return handleLogin(request, env);
     if (path === '/logout') return new Response(null, { status:302, headers:{ 'Location':'/login', 'Set-Cookie':clearCookie() } });
     if (path === '/change-password') {
       if (method === 'POST') return handleChangePassword(request, env, cors);
