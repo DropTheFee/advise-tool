@@ -51,6 +51,41 @@ if (err) {
   box.textContent = err;
   box.style.display = 'block';
 }
+  function doLogin() {
+  var username = document.getElementById('username').value.trim();
+  var password = document.getElementById('password').value.trim();
+  var box = document.getElementById('err-box');
+  box.style.display = 'none';
+
+  if (!username || !password) {
+    box.textContent = 'Please enter your username and password.';
+    box.style.display = 'block';
+    return;
+  }
+
+  fetch('/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password),
+    redirect: 'follow'
+  }).then(function(r) {
+    if (r.ok || r.redirected) {
+      window.location.href = r.url || '/dashboard';
+    } else {
+      return r.text().then(function() {
+        box.textContent = 'Invalid username or password.';
+        box.style.display = 'block';
+      });
+    }
+  }).catch(function() {
+    box.textContent = 'Network error — please try again.';
+    box.style.display = 'block';
+  });
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
 </script>
 </body>
 </html>
