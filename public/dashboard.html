@@ -9,22 +9,35 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{--bg:#060F18;--card:#0a1624;--card2:#0d1d30;--gold:#C8860A;--goldb:#F5C842;--teal:#1A8A72;--tealb:#6EDFC8;--purple:#6B3FA0;--purpleb:#9B6FD0;--red:#B83232;--white:#F0F4F8;--muted:#7A9BB5;--border:rgba(110,223,200,0.12);}
 body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;}
-.header{padding:24px 40px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.logo{font-family:'Fraunces',serif;font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--purpleb),var(--tealb));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.header-sub{font-family:'Syne',sans-serif;font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
-.btn-new{padding:12px 24px;background:linear-gradient(135deg,var(--purple),var(--teal));border:none;border-radius:8px;color:var(--white);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;}
-.main{padding:32px 40px;}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;}
-.stat-label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
-.stat-value{font-family:'Fraunces',serif;font-size:32px;font-weight:900;color:var(--white);}
-.stat-sub{font-size:11px;color:var(--muted);margin-top:4px;}
-.section-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--tealb);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;}
+.header{padding:20px 40px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.header-left{display:flex;align-items:center;gap:16px;}
+.logo{font-family:'Fraunces',serif;font-size:26px;font-weight:900;background:linear-gradient(135deg,var(--purpleb),var(--tealb));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.header-sub{font-family:'Syne',sans-serif;font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+.user-pill{display:flex;align-items:center;gap:8px;background:rgba(107,63,160,0.12);border:1px solid rgba(107,63,160,0.25);border-radius:100px;padding:6px 14px;}
+.user-pill .name{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--purpleb);}
+.role-badge{font-family:'Syne',sans-serif;font-size:8px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:100px;}
+.role-admin{background:rgba(200,134,10,0.2);color:var(--goldb);}
+.role-rep{background:rgba(110,223,200,0.1);color:var(--tealb);}
+.header-actions{display:flex;align-items:center;gap:8px;}
+.btn-new{padding:10px 20px;background:linear-gradient(135deg,var(--purple),var(--teal));border:none;border-radius:8px;color:var(--white);font-family:'Syne',sans-serif;font-size:11px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;letter-spacing:0.5px;}
+.btn-users{padding:10px 16px;background:transparent;border:1px solid rgba(200,134,10,0.25);border-radius:8px;color:var(--gold);font-family:'Syne',sans-serif;font-size:11px;font-weight:600;cursor:pointer;text-decoration:none;display:none;}
+.btn-users.visible{display:inline-block;}
+.btn-logout{padding:10px 16px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'Syne',sans-serif;font-size:11px;cursor:pointer;text-decoration:none;}
+.main{padding:28px 40px;}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;}
+.stat-label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.stat-value{font-family:'Fraunces',serif;font-size:30px;font-weight:900;}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:3px;}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.section-title{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--tealb);letter-spacing:2px;text-transform:uppercase;}
+.filter-row{display:flex;gap:6px;}
+.filter-btn{padding:5px 12px;border-radius:6px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all 0.15s;}
+.filter-btn.active{background:rgba(107,63,160,0.15);border-color:rgba(107,63,160,0.35);color:var(--purpleb);}
 .sessions-table{width:100%;border-collapse:collapse;}
 .sessions-table th{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);}
-.sessions-table td{padding:12px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px;vertical-align:middle;}
-.sessions-table tr:hover td{background:rgba(107,63,160,0.08);cursor:pointer;}
-.sessions-table tr:hover td:first-child{border-left:2px solid var(--purpleb);}
+.sessions-table td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px;vertical-align:middle;}
+.sessions-table tr:hover td{background:rgba(107,63,160,0.06);}
 .tier-badge{display:inline-block;padding:3px 10px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
 .tier-launch{background:rgba(26,90,138,0.2);color:#6EDFC8;border:1px solid rgba(26,90,138,0.3);}
 .tier-grow{background:rgba(107,63,160,0.2);color:var(--purpleb);border:1px solid rgba(107,63,160,0.3);}
@@ -33,126 +46,171 @@ body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;mi
 .outcome-yes{background:rgba(26,138,114,0.15);color:var(--tealb);}
 .outcome-nurture{background:rgba(184,50,50,0.1);color:var(--red);}
 .outcome-think{background:rgba(200,134,10,0.1);color:var(--goldb);}
-.outcome-other{background:rgba(122,155,181,0.1);color:var(--muted);}
-.btn-view{padding:6px 14px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'Syne',sans-serif;font-size:10px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s;}
-.btn-view:hover{border-color:var(--tealb);color:var(--tealb);}
-.btn-delete{background:rgba(184,50,50,0.1);border:1px solid rgba(184,50,50,0.2);border-radius:6px;padding:5px 8px;cursor:pointer;font-size:13px;margin-left:6px;transition:all 0.2s;}
-.btn-delete:hover{background:rgba(184,50,50,0.3);}
-.btn-lock{background:rgba(122,155,181,0.08);border:1px solid var(--border);border-radius:6px;padding:5px 8px;cursor:pointer;font-size:13px;transition:all 0.2s;}
-.btn-lock:hover{background:rgba(122,155,181,0.15);}
+.rep-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;background:rgba(107,63,160,0.12);color:var(--purpleb);border:1px solid rgba(107,63,160,0.2);}
 .leak-val{font-family:'Fraunces',serif;font-weight:700;color:var(--red);}
+.btn-view{padding:5px 12px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'Syne',sans-serif;font-size:10px;cursor:pointer;text-decoration:none;transition:all 0.2s;}
+.btn-view:hover{border-color:var(--tealb);color:var(--tealb);}
+.btn-view-admin{padding:5px 12px;background:transparent;border:1px solid rgba(200,134,10,0.2);border-radius:6px;color:var(--gold);font-family:'Syne',sans-serif;font-size:10px;cursor:pointer;text-decoration:none;transition:all 0.2s;margin-left:4px;}
+.btn-view-admin:hover{border-color:var(--goldb);color:var(--goldb);}
+.btn-delete{background:rgba(184,50,50,0.1);border:1px solid rgba(184,50,50,0.2);border-radius:6px;padding:5px 8px;cursor:pointer;font-size:12px;margin-left:4px;}
+.btn-lock{background:rgba(122,155,181,0.08);border:1px solid var(--border);border-radius:6px;padding:5px 8px;cursor:pointer;font-size:12px;}
 .empty-state{text-align:center;padding:80px 40px;color:var(--muted);}
-.empty-state h2{font-family:'Fraunces',serif;font-size:28px;font-weight:700;margin-bottom:8px;color:var(--white);}
-.loading{text-align:center;padding:40px;color:var(--muted);font-family:'Syne',sans-serif;font-size:12px;letter-spacing:1px;}
+.empty-state h2{font-family:'Fraunces',serif;font-size:28px;margin-bottom:8px;color:var(--white);}
+.loading{text-align:center;padding:40px;color:var(--muted);font-family:'Syne',sans-serif;font-size:11px;letter-spacing:1px;}
 </style>
 </head>
 <body>
 <div class="header">
-  <div>
-    <div class="logo">SüRJ ADVISE</div>
-    <div class="header-sub">Discovery Session Dashboard</div>
+  <div class="header-left">
+    <div>
+      <div class="logo">SüRJ ADVISE</div>
+      <div class="header-sub">Discovery Session Dashboard</div>
+    </div>
+    <div class="user-pill" id="user-pill" style="display:none;">
+      <span class="name" id="user-name">—</span>
+      <span class="role-badge" id="user-role-badge">—</span>
+    </div>
   </div>
-  <a href="/" class="btn-new">+ New Session</a>
+  <div class="header-actions">
+    <a href="/admin/users" class="btn-users" id="btn-users">⚙ Manage Users</a>
+    <a href="/" class="btn-new">+ New Session</a>
+    <a href="/logout" class="btn-logout">Sign Out</a>
+  </div>
 </div>
+
 <div class="main">
-  <div class="stats-row" id="stats-row">
-    <div class="stat-card"><div class="stat-label">Total Sessions</div><div class="stat-value" id="stat-total">—</div></div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-label">Total Sessions</div><div class="stat-value" id="stat-total">—</div><div class="stat-sub" id="stat-scope">loading...</div></div>
     <div class="stat-card"><div class="stat-label">Briefs Generated</div><div class="stat-value" id="stat-briefs">—</div></div>
     <div class="stat-card"><div class="stat-label">Avg Monthly Leak</div><div class="stat-value" id="stat-avg-leak">—</div></div>
     <div class="stat-card"><div class="stat-label">Verbal Yes Rate</div><div class="stat-value" id="stat-yes">—</div></div>
   </div>
-  <div class="section-title">All Sessions</div>
+  <div class="section-header">
+    <div class="section-title" id="section-label">All Sessions</div>
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('verbal-yes',this)">Verbal Yes</button>
+      <button class="filter-btn" onclick="setFilter('think',this)">Thinking</button>
+      <button class="filter-btn" onclick="setFilter('nurture',this)">Nurture</button>
+      <button class="filter-btn" onclick="setFilter('brief',this)">Brief Sent</button>
+    </div>
+  </div>
   <div id="table-wrap" class="loading">Loading sessions...</div>
 </div>
+
 <script>
-function fmt(n){if(!n||isNaN(n))return'$0';if(n>=1000000)return'$'+(n/1000000).toFixed(1)+'M';if(n>=1000)return'$'+Math.round(n).toLocaleString();return'$'+Math.round(n);}
-function fmtDate(iso){if(!iso)return'—';var d=new Date(iso);return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+var allSessions = [];
+var currentFilter = 'all';
+var currentRole = '';
 
-fetch('/api/sessions').then(function(r){return r.json();}).then(function(data){
-  var sessions = data.sessions || [];
+function fmt(n){ if(!n||isNaN(n))return'$0'; if(n>=1000000)return'$'+(n/1000000).toFixed(1)+'M'; if(n>=1000)return'$'+Math.round(n).toLocaleString(); return'$'+Math.round(n); }
+function fmtDate(iso){ if(!iso)return'—'; return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
 
-  // Stats
+fetch('/api/me').then(function(r){
+  if(r.status===401){ window.location.href='/login'; return null; }
+  return r.json();
+}).then(function(user){
+  if(!user) return;
+  currentRole = user.role;
+  document.getElementById('user-name').textContent = user.displayName;
+  var badge = document.getElementById('user-role-badge');
+  badge.textContent = user.role==='admin'?'Admin':'Rep';
+  badge.className = 'role-badge ' + (user.role==='admin'?'role-admin':'role-rep');
+  document.getElementById('user-pill').style.display = 'flex';
+  if(user.role==='admin') {
+    document.getElementById('btn-users').classList.add('visible');
+    document.getElementById('section-label').textContent = 'All Sessions';
+    document.getElementById('stat-scope').textContent = 'across all reps';
+  } else {
+    document.getElementById('section-label').textContent = 'My Sessions';
+    document.getElementById('stat-scope').textContent = 'your sessions only';
+  }
+  loadSessions();
+}).catch(function(){ window.location.href='/login'; });
+
+function loadSessions() {
+  fetch('/api/sessions').then(function(r){
+    if(r.status===401){ window.location.href='/login'; return null; }
+    return r.json();
+  }).then(function(data){
+    if(!data) return;
+    allSessions = data.sessions||[];
+    renderStats(allSessions);
+    renderTable(allSessions);
+  });
+}
+
+function renderStats(sessions) {
   document.getElementById('stat-total').textContent = sessions.length;
-  var withBrief = sessions.filter(function(s){return s.briefGenerated;}).length;
-  document.getElementById('stat-briefs').textContent = withBrief;
-  var totalLeak = sessions.reduce(function(a,s){return a+(s.totalLeak||0);},0);
-  var avgAnnualLeak = sessions.length ? totalLeak/sessions.length : 0;
-  document.getElementById('stat-avg-leak').textContent = sessions.length ? fmt(avgAnnualLeak/12) + '/mo' : '$0';
-  var yesCount = sessions.filter(function(s){return s.outcome==='verbal-yes';}).length;
-  document.getElementById('stat-yes').textContent = sessions.length ? Math.round(yesCount/sessions.length*100)+'%' : '—';
+  document.getElementById('stat-briefs').textContent = sessions.filter(function(s){return s.briefGenerated;}).length;
+  var total = sessions.reduce(function(a,s){return a+(s.totalLeak||0);},0);
+  document.getElementById('stat-avg-leak').textContent = sessions.length ? fmt((total/sessions.length)/12)+'/mo' : '$0';
+  var yes = sessions.filter(function(s){return s.outcome==='verbal-yes';}).length;
+  document.getElementById('stat-yes').textContent = sessions.length ? Math.round(yes/sessions.length*100)+'%' : '—';
+}
 
-  if (!sessions.length) {
-    document.getElementById('table-wrap').innerHTML = '<div class="empty-state"><h2>No sessions yet</h2><p>Start your first ADVISE discovery call to see it here.</p></div>';
+function setFilter(f,btn) {
+  currentFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderTable(allSessions);
+}
+
+function renderTable(sessions) {
+  var filtered = sessions.filter(function(s){
+    if(currentFilter==='all') return true;
+    if(currentFilter==='brief') return s.briefGenerated;
+    return s.outcome===currentFilter;
+  });
+
+  if(!filtered.length) {
+    document.getElementById('table-wrap').innerHTML='<div class="empty-state"><h2>'+(sessions.length?'No sessions match this filter':'No sessions yet')+'</h2><p>'+(sessions.length?'Try a different filter.':'Start your first ADVISE call.')+'</p></div>';
     return;
   }
 
-  var html = '<table class="sessions-table"><thead><tr>'
-    +'<th>Business</th><th>Contact</th><th>Industry</th><th>Date</th>'
-    +'<th>Monthly Leak</th><th>Tier</th><th>Outcome</th><th>Brief</th>'
-    +'</tr></thead><tbody>';
+  var isAdmin = currentRole==='admin';
+  var html = '<table class="sessions-table"><thead><tr><th>Business</th><th>Contact</th><th>Date</th><th>Monthly Leak</th><th>Tier</th><th>Outcome</th>'+(isAdmin?'<th>Rep</th>':'')+'<th>Brief</th><th></th></tr></thead><tbody>';
 
-  sessions.forEach(function(s){
-    var p = s.prospect || {};
-    var outcomeClass = s.outcome==='verbal-yes'?'outcome-yes':s.outcome==='nurture'?'outcome-nurture':s.outcome==='think'?'outcome-think':'outcome-other';
-    var outcomeLabel = s.outcome==='verbal-yes'?'✅ Verbal Yes':s.outcome==='nurture'?'Nurture':s.outcome==='think'?'Thinking':s.outcome==='proposal'?'Sent Agreement':'—';
-    var tierClass = 'tier-'+(s.tier||'launch');
-    var tierLabel = s.tier ? s.tier.charAt(0).toUpperCase()+s.tier.slice(1) : '—';
-    var rowId = s.id;
-    var bizName = (p.business||'Session').replace(/'/g,'');
-    var lockIcon = s.locked ? '🔒' : '🔓';
-    var lockTitle = s.locked ? 'Unlock session' : 'Lock — prevent deletion';
-    var deleteDisabled = s.locked ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : '';
+  filtered.forEach(function(s){
+    var p=s.prospect||{};
+    var oc=s.outcome==='verbal-yes'?'outcome-yes':s.outcome==='nurture'?'outcome-nurture':s.outcome==='think'?'outcome-think':'';
+    var ol=s.outcome==='verbal-yes'?'✅ Verbal Yes':s.outcome==='nurture'?'Nurture':s.outcome==='think'?'Thinking':s.outcome==='proposal'?'Agreement Sent':'—';
+    var tc='tier-'+(s.tier||'launch');
+    var tl=s.tier?s.tier.charAt(0).toUpperCase()+s.tier.slice(1):'—';
+    var lockIcon=s.locked?'🔒':'🔓';
+    var delDis=s.locked?'disabled style="opacity:0.3;cursor:not-allowed;"':'';
+    var biz=(p.business||'Session').replace(/'/g,"\\'");
 
-    var actionTd = '<td onclick="event.stopPropagation();" style="white-space:nowrap;">'
-      + '<button class="btn-lock" onclick="toggleLock(\'' + rowId + '\', ' + (s.locked?'true':'false') + ')" title="' + lockTitle + '">' + lockIcon + '</button>'
-      + '<button class="btn-delete" onclick="deleteSession(\'' + rowId + '\', \'' + bizName + '\')" ' + deleteDisabled + '>🗑</button>'
-      + '</td>';
+    var briefLinks='';
+    if(s.briefGenerated){
+      if(s.briefUrl) briefLinks+='<a href="'+s.briefUrl+'" class="btn-view" target="_blank">Client</a>';
+      if(isAdmin&&s.adminUrl) briefLinks+='<a href="'+s.adminUrl+'" class="btn-view-admin" target="_blank">Admin</a>';
+    } else {
+      briefLinks='<span style="color:var(--muted);font-size:11px;">None yet</span>';
+    }
 
-    html += '<tr style="cursor:pointer;" onclick="openSession(this.dataset.id)" data-id="'+rowId+'">'
+    html+='<tr style="cursor:pointer;" onclick="openSession(\''+s.id+'\''+')">'
       +'<td><strong>'+(p.business||'—')+'</strong></td>'
       +'<td>'+(p.first||'')+' '+(p.last||'')+'</td>'
-      +'<td style="color:var(--muted);font-size:12px;">'+(p.industry||'—')+'</td>'
       +'<td style="color:var(--muted);font-size:12px;">'+fmtDate(s.updatedAt)+'</td>'
       +'<td><span class="leak-val">'+fmt(s.totalLeak/12)+'</span><span style="font-size:10px;color:var(--muted);">/mo</span></td>'
-      +'<td>'+(s.tier?'<span class="tier-badge '+tierClass+'">'+tierLabel+'</span>':'<span style="color:var(--muted);">—</span>')+'</td>'
-      +'<td>'+(s.outcome?'<span class="outcome-badge '+outcomeClass+'">'+outcomeLabel+'</span>':'<span style="color:var(--muted);">—</span>')+'</td>'
-      +'<td onclick="event.stopPropagation();">'+(s.briefGenerated?'<a href="/brief/'+s.id+'" class="btn-view" target="_blank">View Brief</a>':'<span style="color:var(--muted);font-size:11px;">Not generated</span>')+'</td>'
-      + actionTd
-      +'</tr>';
+      +'<td>'+(s.tier?'<span class="tier-badge '+tc+'">'+tl+'</span>':'<span style="color:var(--muted);">—</span>')+'</td>'
+      +'<td>'+(s.outcome?'<span class="outcome-badge '+oc+'">'+ol+'</span>':'<span style="color:var(--muted);">—</span>')+'</td>'
+      +(isAdmin?'<td><span class="rep-tag">'+(s.createdByName||s.createdBy||'—')+'</span></td>':'')
+      +'<td onclick="event.stopPropagation();">'+briefLinks+'</td>'
+      +'<td onclick="event.stopPropagation();" style="white-space:nowrap;">'
+      +'<button class="btn-lock" onclick="toggleLock(\''+s.id+'\','+s.locked+')" title="'+(s.locked?'Unlock':'Lock')+'">'+lockIcon+'</button>'
+      +'<button class="btn-delete" onclick="deleteSession(\''+s.id+'\',\''+biz+'\')" '+delDis+'>🗑</button>'
+      +'</td></tr>';
   });
 
-    html += '</tbody></table>';
-  document.getElementById('table-wrap').innerHTML = html;
-}).catch(function(){
-  document.getElementById('table-wrap').innerHTML = '<div class="empty-state"><h2>Could not load sessions</h2><p>Make sure the Worker is deployed and KV is connected.</p></div>';
-});
-
-function openSession(id) {
-  localStorage.setItem('advise_resume_id', id);
-  window.location.href = '/?resume=' + id;
+  html+='</tbody></table>';
+  document.getElementById('table-wrap').innerHTML=html;
 }
 
-function deleteSession(id, name) {
-  if (!confirm('Delete session for "' + name + '"? This cannot be undone.')) return;
-  fetch('/api/session/' + id, { method: 'DELETE' })
-    .then(function() { window.location.reload(); })
-    .catch(function() {
-      // Try anyway - reload to reflect current state
-      window.location.reload();
-    });
-}
-
-function toggleLock(id, isLocked) {
-  fetch('/api/lock/' + id, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ locked: !isLocked })
-  }).then(function() {
-    window.location.reload();
-  }).catch(function() {
-    window.location.reload();
-  });
-}
+function openSession(id){ localStorage.setItem('advise_resume_id',id); window.location.href='/?resume='+id; }
+function deleteSession(id,name){ if(!confirm('Delete session for "'+name+'"?')) return; fetch('/api/session/'+id,{method:'DELETE'}).then(function(){loadSessions();}); }
+function toggleLock(id,locked){ fetch('/api/lock/'+id,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({locked:!locked})}).then(function(){loadSessions();}); }
 </script>
 </body>
 </html>
