@@ -2044,7 +2044,7 @@ function generateBrief(briefType) {
   // Show brief screen
   document.getElementById('brief-content').innerHTML = html.replace(/<!DOCTYPE.*?<body>/s,'').replace('</body></html>','');
   document.getElementById('brief-share-url').style.display = 'flex';
-  document.getElementById('brief-url-text').textContent = (isAdmin ? '🔧 Admin: ' : '📤 Client: ') + briefUrl;
+  document.getElementById('brief-url-text').innerHTML = (isAdmin ? '🔧 Admin: ' : '📤 Client: ') + '<a href="' + briefUrl + '" target="_blank" style="color:var(--tealb);text-decoration:underline;font-family:\'Syne\',sans-serif;">' + briefUrl + '</a>';
   showScreen('brief');
 
   // Save to KV via API
