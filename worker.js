@@ -115,6 +115,7 @@ export default {
     // SETUP — one-time bootstrap
     if (path === '/setup') {
       if (await usersExist(env)) return redir('/login');
+      if (method === 'POST') return handleSetup(request, env, cors);
       return serveAsset('setup.html', env);
     }
     if (path === '/api/setup' && method === 'POST') return handleSetup(request, env, cors);
@@ -123,13 +124,20 @@ export default {
     if (path.startsWith('/brief/')) return serveBriefPage(path.replace('/brief/',''), env, 'client');
 
     // AUTH
-    if (path === '/login' && method === 'GET') {
-      if (await getAuthSession(request)) return redir('/');
-      return serveAsset('login.html', env);
+    if (path === '/login') {
+      if (method === 'GET') {
+        if (await getAuthSession(request)) return redir('/dashboard');
+        return serveAsset('login.html', env);
+      }
+      if (method === 'POST') return handleLogin(request, env);
+      return new Response('Method Not Allowed', { status: 405 });
     }
     if (path === '/login' && method === 'POST') return handleLogin(request, env);
     if (path === '/logout') return new Response(null, { status:302, headers:{ 'Location':'/login', 'Set-Cookie':clearCookie() } });
-    if (path === '/change-password' && method === 'GET') return serveAsset('change-password.html', env);
+    if (path === '/change-password') {
+      if (method === 'POST') return handleChangePassword(request, env, cors);
+      return serveAsset('change-password.html', env);
+    }
     if (path === '/api/change-password' && method === 'POST') return handleChangePassword(request, env, cors);
 
     // API — sessions
