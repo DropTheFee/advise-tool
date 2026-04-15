@@ -125,10 +125,10 @@ export default {
 
     // AUTH
     if (path === '/login') {
-      if (method === 'GET') {
-        if (await getAuthSession(request)) return redir('/dashboard');
-        return serveAsset('login.html', env);
-      }
+      if (await getAuthSession(request)) return redir('/dashboard');
+      return serveAsset('login.html', env);
+    }
+if (path === '/api/login' && method === 'POST') return handleLogin(request, env);
       if (method === 'POST') return handleLogin(request, env);
       return new Response('Method Not Allowed', { status: 405 });
     }
