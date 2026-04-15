@@ -408,5 +408,5 @@ function fmtNum(n) {
 }
 
 function notFoundHTML() {
-  return '<!DOCTYPE html><html><head><title>Brief Not Found</title><style>body{background:#060F18;color:#F0F4F8;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;text-align:center;}</style></head><body><div><h1 style="font-size:48px;margin-bottom:16px;">SüRJ</h1><p style="color:#7A9BB5;">This brief link has expired or does not exist.</p><p style="margin-top:24px;"><a href="https://surj.app" style="color:#6EDFC8;">Return to surj.app</a></p></div></body></html>';
+  return '<!DOCTYPE html><html><head><title>Brief Not Found</title><style>body{background:#060F18;color:#F0F4F8;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;text-align:center;}</style></head><body><div><h1 style="font-size:48px;margin-bottom:16px;">SüRJ</h1><p style="color:#7A9BB5;">This brief link has expired or does not exist.</p><p style="margin-top:24px;"><a href="https://advise.surj.app" style="color:#6EDFC8;">Return to surj.app</a></p></div></body></html>';
 }
