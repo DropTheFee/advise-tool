@@ -2016,15 +2016,15 @@ function generateBrief(briefType) {
   // Capture flow map as image for brief
   var flowMapImg = '';
   try {
+    switchViz('map');
+    setMapMode('surj');
     var canvas = document.getElementById('flow-canvas');
-    if (canvas && canvas.width > 0) {
-      // Switch to SüRJ view to capture it
-      var prevMode = mapMode;
-      mapMode = 'surj';
+    if (canvas) {
+      canvas.width = document.getElementById('flow-map-wrap').offsetWidth || 800;
+      canvas.height = document.getElementById('flow-map-wrap').offsetHeight || 500;
       drawFlowMap();
       flowMapImg = canvas.toDataURL('image/png');
-      mapMode = prevMode;
-      drawFlowMap();
+      setMapMode('current');
     }
   } catch(e) {}
 
