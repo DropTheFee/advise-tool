@@ -255,14 +255,18 @@ export default {
       return handleDeleteUser(path.replace('/api/users/', ''), request, env, cors);
     }
 
-    // ── ADMIN BRIEF + USER MANAGEMENT PAGE ────────────────────────────────
+        // ── ADMIN BRIEF + USER MANAGEMENT PAGE ────────────────────────────────
     if (path.startsWith('/admin/')) {
       var adminSess = await getAuthSession(request);
       if (!adminSess) return redir('/login');
-     if (path === '/admin/users') {
-  var usersReq = new Request(request.url.replace('/admin/users', '/users.html'), request);
-  return env.ASSETS.fetch(usersReq);
-}
+
+      if (path === '/admin/users') {
+        var usersReq = new Request(request.url.replace('/admin/users', '/users.html'), request);
+        return env.ASSETS.fetch(usersReq);
+      }
+    }
+
+    // ── ALL OTHER PROTECTED ROUTES ─────────────────────────────────────────
 
     // ── ALL OTHER PROTECTED ROUTES ─────────────────────────────────────────
     var protectedSess = await getAuthSession(request);
