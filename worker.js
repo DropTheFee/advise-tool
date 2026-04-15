@@ -259,9 +259,10 @@ export default {
     if (path.startsWith('/admin/')) {
       var adminSess = await getAuthSession(request);
       if (!adminSess) return redir('/login');
-      if (path === '/admin/users') return env.ASSETS.fetch(new Request('https://advise.surj.app/users.html'));
-      return serveBriefPage(path.replace('/admin/', ''), env, 'admin');
-    }
+     if (path === '/admin/users') {
+  var usersReq = new Request(request.url.replace('/admin/users', '/users.html'), request);
+  return env.ASSETS.fetch(usersReq);
+}
 
     // ── ALL OTHER PROTECTED ROUTES ─────────────────────────────────────────
     var protectedSess = await getAuthSession(request);
