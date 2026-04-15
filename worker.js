@@ -125,12 +125,9 @@ export default {
 
     // AUTH
     if (path === '/login') {
+      if (method === 'POST') return handleLogin(request, env);
       if (await getAuthSession(request)) return redir('/dashboard');
       return serveAsset('login.html', env);
-    }
-if (path === '/api/login' && method === 'POST') return handleLogin(request, env);
-      if (method === 'POST') return handleLogin(request, env);
-      return new Response('Method Not Allowed', { status: 405 });
     }
     if (path === '/logout') return new Response(null, { status:302, headers:{ 'Location':'/login', 'Set-Cookie':clearCookie() } });
     if (path === '/change-password') {
