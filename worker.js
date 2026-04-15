@@ -773,20 +773,23 @@ function notFoundHTML(rep) {
   var email = (rep && rep.email) ? rep.email : 'admin@surj.app';
   var phoneClean = phone.replace(/[^0-9]/g, '');
   var first = name.split(' ')[0];
-
-  return '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Brief Unavailable \\u2014 S\\u00fcRJ</title>'
+  return '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+    + '<title>Brief Unavailable - SuRJ</title>'
     + '<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">'
     + '<style>*{margin:0;padding:0;box-sizing:border-box;}body{background:#060F18;color:#F0F4F8;font-family:"DM Sans",sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background-image:radial-gradient(ellipse at 20% 50%,rgba(107,63,160,0.15),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(26,138,114,0.1),transparent 50%);}.wrap{max-width:520px;width:100%;text-align:center;}.logo{font-family:"Fraunces",serif;font-size:52px;font-weight:900;background:linear-gradient(135deg,#9B6FD0,#6EDFC8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}.logo-sub{font-family:"Syne",sans-serif;font-size:9px;font-weight:700;color:#7A9BB5;letter-spacing:3px;text-transform:uppercase;margin-bottom:40px;}.card{background:#0a1624;border:1px solid rgba(110,223,200,0.12);border-radius:20px;padding:40px 36px;}.icon{font-size:40px;margin-bottom:16px;}h1{font-family:"Fraunces",serif;font-size:28px;font-weight:900;margin-bottom:8px;line-height:1.2;}h1 em{font-style:italic;font-weight:300;color:#9B6FD0;}.desc{font-size:15px;color:#7A9BB5;line-height:1.7;margin-bottom:32px;}.divider{height:1px;background:rgba(110,223,200,0.1);margin:28px 0;}.rep-label{font-family:"Syne",sans-serif;font-size:9px;font-weight:700;color:#6EDFC8;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;}.rep-name{font-family:"Fraunces",serif;font-size:22px;font-weight:700;margin-bottom:4px;}.rep-title{font-size:12px;color:#7A9BB5;margin-bottom:20px;}.cta-row{display:flex;flex-direction:column;gap:10px;}.cta-call{display:block;padding:16px 24px;background:linear-gradient(135deg,#C8860A,#F5C842);border-radius:10px;color:#060F18;font-family:"Syne",sans-serif;font-size:13px;font-weight:800;text-decoration:none;}.cta-email{display:block;padding:14px 24px;background:transparent;border:1px solid rgba(110,223,200,0.25);border-radius:10px;color:#6EDFC8;font-family:"Syne",sans-serif;font-size:12px;font-weight:700;text-decoration:none;}.cta-sms{display:block;padding:14px 24px;background:transparent;border:1px solid rgba(107,63,160,0.3);border-radius:10px;color:#9B6FD0;font-family:"Syne",sans-serif;font-size:12px;font-weight:700;text-decoration:none;}.footer-note{font-size:11px;color:#4a6a80;margin-top:24px;line-height:1.6;}</style>'
-    + '</head><body><div class="wrap"><div class="logo">S\\u00fcRJ</div><div class="logo-sub">Business Growth Platform</div>'
-    + '<div class="card"><div class="icon">\\uD83D\\uDCCB</div><h1>Your brief is <em>temporarily</em> unavailable</h1>'
-    + '<p class="desc">The link you followed may have expired or the document is being updated. ' + first + ' can resend it in seconds \\u2014 reach out directly below.</p>'
-    + '<div class="divider"></div><div class="rep-label">Your S\\u00fcRJ Representative</div>'
-    + '<div class="rep-name">' + name + '</div><div class="rep-title">Recherch\\u00e9 Merchant Solutions</div>'
+    + '</head><body><div class="wrap"><div class="logo">SuRJ</div><div class="logo-sub">Business Growth Platform</div>'
+    + '<div class="card"><div class="icon">📋</div>'
+    + '<h1>Your brief is <em>temporarily</em> unavailable</h1>'
+    + '<p class="desc">The link you followed may have expired or the document is being updated. ' + first + ' can resend it in seconds - reach out directly below.</p>'
+    + '<div class="divider"></div>'
+    + '<div class="rep-label">Your SuRJ Representative</div>'
+    + '<div class="rep-name">' + name + '</div>'
+    + '<div class="rep-title">Recherche Merchant Solutions</div>'
     + '<div class="cta-row">'
-    + '<a href="tel:' + phoneClean + '" class="cta-call">\\uD83D\\uDCDE Call ' + first + ' \\u2014 ' + phone + '</a>'
-    + '<a href="mailto:' + email + '?subject=My%20S%C3%BCRj%20Brief&body=Hi%20' + first + '%2C%20my%20brief%20link%20is%20not%20working.%20Can%20you%20resend%20it%3F" class="cta-email">\\u2709 Email \\u2014 ' + email + '</a>'
-    + '<a href="sms:' + phoneClean + '" class="cta-sms">\\uD83D\\uDCAC Text ' + first + ' directly</a>'
+    + '<a href="tel:' + phoneClean + '" class="cta-call">Call ' + first + ' - ' + phone + '</a>'
+    + '<a href="mailto:' + email + '?subject=My%20SuRJ%20Brief&body=Hi%20' + first + '%2C%20my%20brief%20link%20is%20not%20working.%20Can%20you%20resend%20it%3F" class="cta-email">Email - ' + email + '</a>'
+    + '<a href="sms:' + phoneClean + '" class="cta-sms">Text ' + first + ' directly</a>'
     + '</div></div>'
-    + '<p class="footer-note">surj.app \\u00b7 Powered by Recherch\\u00e9 Merchant Solutions \\u00b7 Edmond, Oklahoma</p>'
+    + '<p class="footer-note">surj.app - Powered by Recherche Merchant Solutions - Edmond, Oklahoma</p>'
     + '</div></body></html>';
 }
