@@ -125,9 +125,10 @@ export default {
 
     // AUTH
     if (path === '/login') {
-      if (method === 'POST') return handleLogin(request, env);
       if (await getAuthSession(request)) return redir('/dashboard');
       return serveAsset('login.html', env);
+    }
+if (path === '/do-login' && method === 'POST') return handleLogin(request, env);
     }
     if (path === '/logout') return new Response(null, { status:302, headers:{ 'Location':'/login', 'Set-Cookie':clearCookie() } });
     if (path === '/change-password') {
