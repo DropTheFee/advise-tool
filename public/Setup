@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SüRJ — Initial Setup</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;400;700;900&family=DM+Sans:wght@300;400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#060F18;--card:#0a1624;--gold:#C8860A;--goldb:#F5C842;--teal:#1A8A72;--tealb:#6EDFC8;--purple:#6B3FA0;--purpleb:#9B6FD0;--white:#F0F4F8;--muted:#7A9BB5;--border:rgba(110,223,200,0.12);}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background-image:radial-gradient(ellipse at 20% 50%,rgba(107,63,160,0.15),transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(26,138,114,0.1),transparent 50%);}
+.wrap{width:100%;max-width:480px;}
+.logo{font-family:'Fraunces',serif;font-size:48px;font-weight:900;background:linear-gradient(135deg,#9B6FD0,#6EDFC8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;margin-bottom:4px;}
+.logo-sub{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:3px;text-transform:uppercase;text-align:center;margin-bottom:8px;}
+.setup-badge{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:28px;}
+.setup-badge span{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--goldb);letter-spacing:2px;text-transform:uppercase;background:rgba(200,134,10,0.12);border:1px solid rgba(200,134,10,0.25);border-radius:100px;padding:4px 12px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px;}
+.card-title{font-family:'Fraunces',serif;font-size:24px;font-weight:900;margin-bottom:6px;}
+.card-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:28px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.form-row.single{grid-template-columns:1fr;}
+.fg label{display:block;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--tealb);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.fg input{width:100%;background:#0d1d30;border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s;}
+.fg input:focus{border-color:rgba(110,223,200,0.4);}
+.strength-row{display:flex;gap:4px;margin-top:6px;height:3px;}
+.strength-bar{flex:1;border-radius:2px;background:rgba(255,255,255,0.08);transition:background 0.3s;}
+.strength-bar.weak{background:var(--red,#B83232);}
+.strength-bar.ok{background:var(--goldb);}
+.strength-bar.strong{background:var(--tealb);}
+.strength-label{font-size:10px;color:var(--muted);margin-top:4px;}
+.error-msg{background:rgba(184,50,50,0.12);border:1px solid rgba(184,50,50,0.3);border-radius:8px;padding:10px 14px;font-size:13px;color:#E05555;margin-bottom:16px;display:none;}
+.btn-setup{width:100%;margin-top:20px;padding:16px;background:linear-gradient(135deg,var(--purple),var(--teal));border:none;border-radius:10px;color:var(--white);font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.3s;letter-spacing:0.5px;}
+.btn-setup:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(107,63,160,0.3);}
+.btn-setup:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.notice{font-size:11px;color:var(--muted);text-align:center;margin-top:16px;line-height:1.6;}
+.notice strong{color:var(--goldb);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">SüRJ</div>
+  <div class="logo-sub">ADVISE Discovery Tool</div>
+  <div class="setup-badge"><span>⚡ First-Time Setup</span></div>
+  <div class="card">
+    <div class="card-title">Create Your Admin Account</div>
+    <div class="card-sub">This page only appears once. Once your account is created, this setup page is permanently disabled and you'll manage all users from the dashboard.</div>
+    <div class="error-msg" id="err"></div>
+    <div class="form-row">
+      <div class="fg"><label>First &amp; Last Name</label><input type="text" id="displayName" placeholder="Steve Wilson" autocomplete="name"></div>
+      <div class="fg"><label>Username</label><input type="text" id="username" placeholder="steve" autocomplete="username"></div>
+    </div>
+    <div class="form-row">
+      <div class="fg"><label>Email</label><input type="email" id="email" placeholder="admin@surj.app" autocomplete="email"></div>
+      <div class="fg"><label>Phone</label><input type="tel" id="phone" placeholder="(405) 913-1956"></div>
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Min 8 characters" oninput="checkStrength()">
+        <div class="strength-row"><div class="strength-bar" id="sb1"></div><div class="strength-bar" id="sb2"></div><div class="strength-bar" id="sb3"></div><div class="strength-bar" id="sb4"></div></div>
+        <div class="strength-label" id="strength-label"></div>
+      </div>
+      <div class="fg"><label>Confirm Password</label><input type="password" id="confirm" placeholder="Repeat password"></div>
+    </div>
+    <button class="btn-setup" id="btn" onclick="doSetup()">Create Admin Account &amp; Launch →</button>
+    <div class="notice"><strong>Important:</strong> Save your username and password somewhere safe. This is your permanent admin account — use it to add and manage all other users.</div>
+  </div>
+</div>
+<script>
+function checkStrength() {
+  var p = document.getElementById('password').value;
+  var score = 0;
+  if (p.length >= 8) score++;
+  if (p.length >= 12) score++;
+  if (/[A-Z]/.test(p) && /[a-z]/.test(p)) score++;
+  if (/[0-9!@#$%^&*]/.test(p)) score++;
+  var bars = ['sb1','sb2','sb3','sb4'];
+  var labels = ['','Too short','Weak','Good','Strong'];
+  var classes = ['','weak','weak','ok','strong'];
+  bars.forEach(function(id, i) {
+    var el = document.getElementById(id);
+    el.className = 'strength-bar' + (i < score ? ' ' + classes[score] : '');
+  });
+  document.getElementById('strength-label').textContent = labels[score] || '';
+}
+
+function doSetup() {
+  var displayName = document.getElementById('displayName').value.trim();
+  var username = document.getElementById('username').value.trim().toLowerCase();
+  var email = document.getElementById('email').value.trim();
+  var phone = document.getElementById('phone').value.trim();
+  var password = document.getElementById('password').value.trim();
+  var confirm = document.getElementById('confirm').value.trim();
+  var err = document.getElementById('err');
+  err.style.display = 'none';
+
+  if (!displayName || !username || !email || !password) {
+    err.textContent = 'Please fill in all required fields.'; err.style.display = 'block'; return;
+  }
+  if (password.length < 8) {
+    err.textContent = 'Password must be at least 8 characters.'; err.style.display = 'block'; return;
+  }
+  if (password !== confirm) {
+    err.textContent = 'Passwords do not match.'; err.style.display = 'block'; return;
+  }
+
+  var btn = document.getElementById('btn');
+  btn.disabled = true; btn.textContent = 'Creating account...';
+
+  fetch('/api/setup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, displayName, email, phone, password })
+  }).then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.ok) {
+      btn.textContent = '✓ Account created — redirecting...';
+      setTimeout(function(){ window.location.href = '/login'; }, 1200);
+    } else {
+      err.textContent = d.error || 'Setup failed.'; err.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Create Admin Account & Launch →';
+    }
+  }).catch(function() {
+    err.textContent = 'Network error — please try again.'; err.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Create Admin Account & Launch →';
+  });
+}
+</script>
+</body>
+</html>
