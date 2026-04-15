@@ -267,16 +267,6 @@ export default {
               headers: { 'Content-Type': 'text/plain' }
             }
           );
-        } catch (e) {
-          return new Response(
-            'ADMIN ROUTE ERROR:\n' + (e && e.stack ? e.stack : String(e)),
-            {
-              status: 500,
-              headers: { 'Content-Type': 'text/plain' }
-            }
-          );
-        }
-      }
 
       var adminSess = await getAuthSession(request);
       if (!adminSess) return redir('/login');
