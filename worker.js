@@ -255,25 +255,24 @@ export default {
         // ── ADMIN BRIEF + USER MANAGEMENT PAGE ────────────────────────────────
     if (path.startsWith('/admin/')) {
  if (path === '/admin/users') {
-  return serveAsset('users.html', env);
+  try {
+    var assetReq = new Request('https://dummy-host/users.html');
+    var assetResp = await env.ASSETS.fetch(assetReq);
+
+    return new Response(await assetResp.text(), {
+      status: assetResp.status,
+      headers: { 'Content-Type': 'text/html; charset=UTF-8' }
+    });
+  } catch (e) {
+    return new Response(
+      'USERS ASSET ERROR:\n' + (e && e.stack ? e.stack : String(e)),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'text/plain' }
+      }
+    );
+  }
 }
-          return new Response(
-            'ADMIN ROUTE OK\n' +
-            'username=' + (adminSess.username || '') + '\n' +
-            'role=' + (adminSess.role || '') + '\n' +
-            'displayName=' + (adminSess.displayName || ''),
-            {
-              status: 200,
-              headers: { 'Content-Type': 'text/plain' }
-            }
-          );
-
-      var adminSess = await getAuthSession(request);
-      if (!adminSess) return redir('/login');
-    }
-
-    // ── ALL OTHER PROTECTED ROUTES ─────────────────────────────────────────
-
     // ── ALL OTHER PROTECTED ROUTES ─────────────────────────────────────────
     var protectedSess = await getAuthSession(request);
     if (!protectedSess) {
