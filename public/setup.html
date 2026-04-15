@@ -107,7 +107,7 @@ function doSetup() {
   var btn = document.getElementById('btn');
   btn.disabled = true; btn.textContent = 'Creating account...';
 
-  fetch('/api/setup', {
+  fetch('/do-setup', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, displayName, email, phone, password })
