@@ -33,13 +33,13 @@ button:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(107,63,160,0.
     <div class="card-title">Sign In</div>
     <div class="card-sub">Internal access only</div>
     <div id="err-box" style="display:none;" class="error-msg"></div>
-    <form method="POST" action="/login">
+  <div>
       <label>Username</label>
-      <input type="text" name="username" autocomplete="username" autofocus required>
+      <input type="text" id="username" autocomplete="username" autofocus>
       <label>Password</label>
-      <input type="password" name="password" autocomplete="current-password" required>
-      <button type="submit">Sign In →</button>
-    </form>
+      <input type="password" id="password" autocomplete="current-password">
+      <button type="button" onclick="doLogin()">Sign In →</button>
+    </div>
   </div>
   <div class="footer">Need access? Contact <a href="mailto:admin@surj.app">Steve</a></div>
 </div>
