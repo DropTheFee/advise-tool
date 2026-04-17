@@ -2076,9 +2076,16 @@ function generateBrief(briefType) {
         noteSection('Lead Capture Method', 'a-capture')
         + noteSection('Current Follow-Up Process', 'a-followup')
         + noteSection('Lead Filtering', 'a-filter')
-        + noteSection('Qualification Process', 'd-qualify')
-        + noteSection('Proposal Presentation', 'd-proposal')
+        + noteSection('Qualification Criteria', 'd-qualify-criteria')
+        + noteSection('Who Decides Lead Moves Forward', 'd-qualify-who')
+        + noteSection('Consultation / Discovery Process', 'd-consult-prereqs')
+        + noteSection('Who Handles Consultations', 'd-consult-who')
+        + noteSection('Proposal Details Gathering', 'd-proposal-gather')
+        + noteSection('Who Builds the Proposal', 'd-proposal-who')
+        + noteSection('Proposal Process Notes', 'd-proposal')
         + noteSection('Common Objections', 'd-objections')
+        + noteSection('How Objections Are Handled', 'd-objections-how')
+        + noteSection('Self-Identified Sales Weakness', 'd-self-weakness')
         + noteSection('Post-Quote Follow-Up', 'd-qfu')
         + noteSection('Onboarding Process', 'v-onboard')
         + noteSection('Client Communication', 'v-comms')
@@ -2203,7 +2210,11 @@ function collectSessionData() {
     referralSelection: refSel,
     notes: {
       a_capture: gv('a-capture'), a_followup: gv('a-followup'), a_filter: gv('a-filter'), a_notes: gv('a-notes'),
-      d_qualify: gv('d-qualify'), d_proposal: gv('d-proposal'), d_objections: gv('d-objections'), d_qfu: gv('d-qfu'), d_notes: gv('d-notes'),
+     d_qualify_criteria: gv('d-qualify-criteria'), d_qualify_who: gv('d-qualify-who'),
+      d_consult_prereqs: gv('d-consult-prereqs'), d_consult_who: gv('d-consult-who'),
+      d_proposal_gather: gv('d-proposal-gather'), d_proposal_who: gv('d-proposal-who'), d_proposal: gv('d-proposal'),
+      d_objections: gv('d-objections'), d_objections_how: gv('d-objections-how'),
+      d_self_weakness: gv('d-self-weakness'), d_qfu: gv('d-qfu'), d_notes: gv('d-notes'),
       v_onboard: gv('v-onboard'), v_comms: gv('v-comms'), v_consist: gv('v-consist'), v_reviews: gv('v-reviews'), v_diff: gv('v-diff'), v_problems: gv('v-problems'), v_notes: gv('v-notes'),
       i_missed: gv('i-missed'), i_scale: gv('i-scale'), i_burnout: gv('i-burnout'),
       s11_notes: gv('s11-notes'), s12_30: gv('s12-30'), s12_90: gv('s12-90'), s13_notes: gv('s13-notes'), s_notes: gv('s-notes'),
