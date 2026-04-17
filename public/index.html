@@ -538,7 +538,8 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
               <div class="ki-wrap"><input class="ki np" type="number" id="d-consult-conv" placeholder="%" min="0" max="100" oninput="autoSave();"></div>
             </div>
           </div>
-          <div class="opts" style="margin-top:8px;" id="d-consult-fee-opts">
+          <div class="qb-q" style="margin-top:14px;margin-bottom:6px;">Is there a fee, deposit, or booking requirement before the consultation?</div>
+          <div class="opts" id="d-consult-fee-opts">
             <div class="ob" onclick="tog(this,'d-consult-fee')">Free Consultation</div>
             <div class="ob" onclick="tog(this,'d-consult-fee')">Deposit Required</div>
             <div class="ob" onclick="tog(this,'d-consult-fee')">Paid Discovery</div>
@@ -591,11 +592,12 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
             <div class="ob" onclick="tog(this,'d-closeloop')">One Touch Then Done</div>
             <div class="ob" onclick="tog(this,'d-closeloop')">No Follow-Up at All</div>
           </div>
-          <div class="opts" style="margin-top:8px;" id="d-objtrack-opts">
-            <div class="ob" onclick="tog(this,'d-objtrack')">Tracks Lost Deals in CRM</div>
-            <div class="ob" onclick="tog(this,'d-objtrack')">Tracks Response Times</div>
-            <div class="ob" onclick="tog(this,'d-objtrack')">Tracks Objection Trends</div>
-            <div class="ob" onclick="tog(this,'d-objtrack')">No Tracking at All</div>
+          <div class="qb-q" style="margin-top:14px;margin-bottom:6px;">What happens to proposals that go completely silent after 2+ weeks?</div>
+          <div class="opts" id="d-qfu-silent-opts">
+            <div class="ob" onclick="tog(this,'d-qfu-silent')">Re-Engage Sequence</div>
+            <div class="ob" onclick="tog(this,'d-qfu-silent')">One Final Call</div>
+            <div class="ob" onclick="tog(this,'d-qfu-silent')">Mark Lost in CRM</div>
+            <div class="ob" onclick="tog(this,'d-qfu-silent')">Nothing — Gone Forever</div>
           </div>
           <div class="qb" style="margin-top:12px;background:rgba(107,63,160,0.08);border-color:rgba(107,63,160,0.25);">
             <div class="qb-label" style="color:var(--goldb);">Self-Identified Weakness</div>
@@ -631,11 +633,12 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
               <div class="ki-wrap"><input class="ki np" type="number" id="d-qfu-days" placeholder="0" oninput="autoSave();"></div>
             </div>
           </div>
-          <div class="opts" style="margin-top:8px;" id="d-qfu-silent-opts">
-            <div class="ob" onclick="tog(this,'d-qfu-silent')">Re-Engage Sequence</div>
-            <div class="ob" onclick="tog(this,'d-qfu-silent')">One Final Call</div>
-            <div class="ob" onclick="tog(this,'d-qfu-silent')">Mark Lost in CRM</div>
-            <div class="ob" onclick="tog(this,'d-qfu-silent')">Nothing — Gone Forever</div>
+         <div class="qb-q" style="margin-top:14px;margin-bottom:6px;">Are you using any tools or automations for this step?</div>
+          <div class="opts" id="d-qualify-tools-opts">
+            <div class="ob" onclick="tog(this,'d-qualify-tools')">CRM Filters</div>
+            <div class="ob" onclick="tog(this,'d-qualify-tools')">Scheduling Workflow</div>
+            <div class="ob" onclick="tog(this,'d-qualify-tools')">Online Form</div>
+            <div class="ob" onclick="tog(this,'d-qualify-tools')">No Tools</div>
           </div>
           <textarea class="qi" id="d-qfu" placeholder="Notes on proposal follow-up process..." oninput="autoSave()" style="margin-top:8px;"></textarea>
         </div>
