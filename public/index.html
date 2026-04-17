@@ -550,25 +550,34 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
         <div class="qb">
           <div class="qb-label">Section 4 — Sales Presentation / Offer Process</div>
           <div class="qb-q">"Let's walk through how you move from that first consult or discovery into a signed deal."</div>
-          <textarea class="qi" id="d-proposal-gather" placeholder="How do you gather the details needed — client goals, preferences, project specs, etc.?" oninput="autoSave()"></textarea>
-          <textarea class="qi" id="d-proposal-who" placeholder="Who reviews that info before putting together the proposal or quote?" oninput="autoSave()" style="margin-top:8px;"></textarea>
-          <div class="opts" style="margin-top:8px;" id="d-proposal-opts-opts">
+          <div class="qb-q" style="margin-bottom:8px;">How do you gather everything you need before building the quote — goals, specs, measurements?</div>
+          <textarea class="qi" id="d-proposal-gather" placeholder="Walk me through it..." oninput="autoSave()"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:8px;">Who reviews that information before the proposal goes out?</div>
+          <textarea class="qi" id="d-proposal-who" placeholder="Just you? An estimator? Anyone?" oninput="autoSave()"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:6px;">Do you present multiple pricing options?</div>
+          <div class="opts" id="d-proposal-opts-opts">
             <div class="ob" onclick="tog(this,'d-proposal-pricing')">Single Price Only</div>
             <div class="ob" onclick="tog(this,'d-proposal-pricing')">Good / Better / Best</div>
             <div class="ob" onclick="tog(this,'d-proposal-pricing')">Custom Per Job</div>
           </div>
-          <div class="opts" style="margin-top:8px;" id="d-proposal-delivery-opts">
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:6px;">How is the proposal actually delivered to the prospect?</div>
+          <div class="opts" id="d-proposal-delivery-opts">
             <div class="ob" onclick="tog(this,'d-proposal-delivery')">Live Walkthrough</div>
             <div class="ob" onclick="tog(this,'d-proposal-delivery')">Email Only</div>
             <div class="ob" onclick="tog(this,'d-proposal-delivery')">Portal / Software</div>
             <div class="ob" onclick="tog(this,'d-proposal-delivery')">Both Live + Email</div>
           </div>
-          <div class="opts" style="margin-top:8px;" id="d-proposal-structure-opts">
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:6px;">When you present — do you walk them through it, or just send the numbers?</div>
+          <div class="opts" id="d-proposal-structure-opts">
             <div class="ob" onclick="tog(this,'d-proposal-structure')">Structured Walkthrough</div>
             <div class="ob" onclick="tog(this,'d-proposal-structure')">Just Sends Numbers</div>
             <div class="ob" onclick="tog(this,'d-proposal-structure')">Verbal Only</div>
           </div>
-          <textarea class="qi" id="d-proposal" placeholder="Notes on their proposal process..." oninput="autoSave()" style="margin-top:8px;"></textarea>
+          <textarea class="qi" id="d-proposal" placeholder="Any other notes on how proposals work..." oninput="autoSave()" style="margin-top:8px;"></textarea>
         </div>
 
         <div class="qb">
