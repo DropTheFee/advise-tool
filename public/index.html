@@ -2134,11 +2134,17 @@ function generateBrief(briefType) {
         + noteSection('Self-Identified Sales Weakness', 'd-self-weakness')
         + noteSection('Post-Quote Follow-Up', 'd-qfu')
         + noteSection('Onboarding Process', 'v-onboard')
-        + noteSection('Client Communication', 'v-comms')
+        + noteSection('Who Handles Delivery & Tools Used', 'v-delivery-who')
         + noteSection('Delivery Consistency', 'v-consist')
+        + noteSection('Client Touchpoints During Delivery', 'v-comms')
+        + noteSection('How Client Feels Informed & Valued', 'v-client-feel')
+        + noteSection('Recurring Delays & Problem Areas', 'v-problems')
+        + noteSection('How Complaints & Changes Are Handled', 'v-complaints')
         + noteSection('Review & Referral System', 'v-reviews')
         + noteSection('Competitive Differentiators', 'v-diff')
-        + noteSection('Known Problem Areas', 'v-problems')
+        + noteSection('Consistent Positive Feedback', 'v-praise')
+        + noteSection('Process Elements Others Overlook', 'v-proud')
+        + noteSection('Why Pay Your Price vs Cheaper Option', 'v-why-price')
         + noteSection('Owner — Burnout & Bottleneck', 'i-burnout')
         + noteSection('Scalability Notes', 'i-scale')
         + noteSection('Outcome / Next Steps', 's-notes')
@@ -2261,7 +2267,10 @@ function collectSessionData() {
       d_proposal_gather: gv('d-proposal-gather'), d_proposal_who: gv('d-proposal-who'), d_proposal: gv('d-proposal'),
       d_objections: gv('d-objections'), d_objections_how: gv('d-objections-how'),
       d_self_weakness: gv('d-self-weakness'), d_qfu: gv('d-qfu'), d_notes: gv('d-notes'),
-      v_onboard: gv('v-onboard'), v_comms: gv('v-comms'), v_consist: gv('v-consist'), v_reviews: gv('v-reviews'), v_diff: gv('v-diff'), v_problems: gv('v-problems'), v_notes: gv('v-notes'),
+      v_onboard: gv('v-onboard'), v_delivery_who: gv('v-delivery-who'), v_consist: gv('v-consist'),
+      v_comms: gv('v-comms'), v_client_feel: gv('v-client-feel'), v_problems: gv('v-problems'),
+      v_complaints: gv('v-complaints'), v_reviews: gv('v-reviews'), v_diff: gv('v-diff'),
+      v_praise: gv('v-praise'), v_proud: gv('v-proud'), v_why_price: gv('v-why-price'), v_notes: gv('v-notes'),
       i_missed: gv('i-missed'), i_scale: gv('i-scale'), i_burnout: gv('i-burnout'),
       s11_notes: gv('s11-notes'), s12_30: gv('s12-30'), s12_90: gv('s12-90'), s13_notes: gv('s13-notes'), s_notes: gv('s-notes'),
       e_notes: gv('e-notes')
