@@ -459,11 +459,11 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
         </div>
       </div>
 
-      <!-- D: DIAGNOSE -->
+     <!-- D: DIAGNOSE -->
       <div class="stage-panel" id="panel-1">
         <div class="panel-eyebrow">Stage D — Diagnose</div>
         <div class="panel-title">Where is the sales process leaking?</div>
-        <div class="panel-desc">Enter the real numbers. Every dollar of identified loss starts here.</div>
+        <div class="panel-desc">"Let's walk through how someone goes from being a potential lead to a paying client — and identify where that flow might be breaking down."</div>
 
         <div class="kpi-row">
           <div class="kc">
@@ -503,37 +503,134 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
         </div>
 
         <div class="qb">
-          <div class="qb-label">Qualification</div>
-          <div class="qb-q">How do YOU separate serious buyers from people just shopping around?</div>
-          <textarea class="qi" id="d-qualify" placeholder="Intake form? Discovery call? Pre-screen?" oninput="autoSave()"></textarea>
-        </div>
-        <div class="qb">
-          <div class="qb-label">Proposal Presentation</div>
-          <div class="qb-q">When you present a quote — how does that actually happen?</div>
-          <div class="opts">
-            <div class="ob" onclick="tog(this,'proposal')">Live Walkthrough</div>
-            <div class="ob" onclick="tog(this,'proposal')">Email Only</div>
-            <div class="ob" onclick="tog(this,'proposal')">Multiple Options</div>
-            <div class="ob" onclick="tog(this,'proposal')">Just Sends Numbers</div>
+          <div class="qb-label">Section 2 — Qualification Process</div>
+          <div class="qb-q">"Now let's look at how you separate serious buyers from people who are just browsing."</div>
+          <div class="opts" id="d-screen-opts">
+            <div class="ob" onclick="tog(this,'d-screen')">Intake Form</div>
+            <div class="ob" onclick="tog(this,'d-screen')">Discovery Call</div>
+            <div class="ob" onclick="tog(this,'d-screen')">Pre-Screening Step</div>
+            <div class="ob" onclick="tog(this,'d-screen')">No Pre-Screen</div>
           </div>
-          <textarea class="qi" id="d-proposal" placeholder="Notes..." oninput="autoSave()" style="margin-top:8px;"></textarea>
-        </div>
-        <div class="qb">
-          <div class="qb-label">Objections</div>
-          <div class="qb-q">What objections come up most often — and how do YOU handle them?</div>
-          <textarea class="qi" id="d-objections" placeholder="Price? Trust? Timing? Ghosted?" oninput="autoSave()"></textarea>
-        </div>
-        <div class="qb">
-          <div class="qb-label">Post-Quote Follow-Up</div>
-          <div class="qb-q">What happens to quotes that don't close right away?</div>
-          <div class="opts">
-            <div class="ob" onclick="tog(this,'qfu')">Automated Reminders</div>
-            <div class="ob" onclick="tog(this,'qfu')">Manual Follow-Up</div>
-            <div class="ob" onclick="tog(this,'qfu')">One Shot Then Drop</div>
-            <div class="ob" onclick="tog(this,'qfu')">Nothing — Waits</div>
+          <textarea class="qi" id="d-qualify-criteria" placeholder="What questions or criteria do you use to qualify someone?" oninput="autoSave()" style="margin-top:8px;"></textarea>
+          <div class="opts" style="margin-top:8px;" id="d-qualify-tools-opts">
+            <div class="ob" onclick="tog(this,'d-qualify-tools')">CRM Filters</div>
+            <div class="ob" onclick="tog(this,'d-qualify-tools')">Scheduling Workflow</div>
+            <div class="ob" onclick="tog(this,'d-qualify-tools')">Online Form</div>
+            <div class="ob" onclick="tog(this,'d-qualify-tools')">No Tools</div>
           </div>
-          <textarea class="qi" id="d-qfu" placeholder="Notes..." oninput="autoSave()" style="margin-top:8px;"></textarea>
+          <textarea class="qi" id="d-qualify-who" placeholder="Who decides if a lead gets pushed forward for a proposal or deeper conversation?" oninput="autoSave()" style="margin-top:8px;"></textarea>
         </div>
+
+        <div class="qb">
+          <div class="qb-label">Section 3 — Consultation or Discovery Process</div>
+          <div class="qb-q">"Once someone is qualified — what's your process for having that first deeper interaction?"</div>
+          <div class="opts" id="d-consult-mode-opts">
+            <div class="ob" onclick="tog(this,'d-consult-mode')">Virtual / Zoom</div>
+            <div class="ob" onclick="tog(this,'d-consult-mode')">In-Person</div>
+            <div class="ob" onclick="tog(this,'d-consult-mode')">Phone Call</div>
+            <div class="ob" onclick="tog(this,'d-consult-mode')">Mix of Both</div>
+          </div>
+          <textarea class="qi" id="d-consult-prereqs" placeholder="Do you require context, photos, or documentation before that first meeting or call?" oninput="autoSave()" style="margin-top:8px;"></textarea>
+          <div class="kpi-row single" style="grid-template-columns:1fr;margin-top:8px;">
+            <div class="kc">
+              <div class="kc-lbl">% That Become Serious Opportunities</div>
+              <div class="kc-desc">Of those you meet with, how many are real buyers?</div>
+              <div class="ki-wrap"><input class="ki np" type="number" id="d-consult-conv" placeholder="%" min="0" max="100" oninput="autoSave();"></div>
+            </div>
+          </div>
+          <div class="opts" style="margin-top:8px;" id="d-consult-fee-opts">
+            <div class="ob" onclick="tog(this,'d-consult-fee')">Free Consultation</div>
+            <div class="ob" onclick="tog(this,'d-consult-fee')">Deposit Required</div>
+            <div class="ob" onclick="tog(this,'d-consult-fee')">Paid Discovery</div>
+            <div class="ob" onclick="tog(this,'d-consult-fee')">Booking Fee</div>
+          </div>
+          <textarea class="qi" id="d-consult-who" placeholder="Who handles that call or meeting — and is it consistent every time?" oninput="autoSave()" style="margin-top:8px;"></textarea>
+        </div>
+
+        <div class="qb">
+          <div class="qb-label">Section 4 — Sales Presentation / Offer Process</div>
+          <div class="qb-q">"Let's walk through how you move from that first consult or discovery into a signed deal."</div>
+          <textarea class="qi" id="d-proposal-gather" placeholder="How do you gather the details needed — client goals, preferences, project specs, etc.?" oninput="autoSave()"></textarea>
+          <textarea class="qi" id="d-proposal-who" placeholder="Who reviews that info before putting together the proposal or quote?" oninput="autoSave()" style="margin-top:8px;"></textarea>
+          <div class="opts" style="margin-top:8px;" id="d-proposal-opts-opts">
+            <div class="ob" onclick="tog(this,'d-proposal-pricing')">Single Price Only</div>
+            <div class="ob" onclick="tog(this,'d-proposal-pricing')">Good / Better / Best</div>
+            <div class="ob" onclick="tog(this,'d-proposal-pricing')">Custom Per Job</div>
+          </div>
+          <div class="opts" style="margin-top:8px;" id="d-proposal-delivery-opts">
+            <div class="ob" onclick="tog(this,'d-proposal-delivery')">Live Walkthrough</div>
+            <div class="ob" onclick="tog(this,'d-proposal-delivery')">Email Only</div>
+            <div class="ob" onclick="tog(this,'d-proposal-delivery')">Portal / Software</div>
+            <div class="ob" onclick="tog(this,'d-proposal-delivery')">Both Live + Email</div>
+          </div>
+          <div class="opts" style="margin-top:8px;" id="d-proposal-structure-opts">
+            <div class="ob" onclick="tog(this,'d-proposal-structure')">Structured Walkthrough</div>
+            <div class="ob" onclick="tog(this,'d-proposal-structure')">Just Sends Numbers</div>
+            <div class="ob" onclick="tog(this,'d-proposal-structure')">Verbal Only</div>
+          </div>
+          <textarea class="qi" id="d-proposal" placeholder="Notes on their proposal process..." oninput="autoSave()" style="margin-top:8px;"></textarea>
+        </div>
+
+        <div class="qb">
+          <div class="qb-label">Section 5 — Close Rate & Objections</div>
+          <div class="qb-q">"Now let's talk about how you convert — and what's standing in the way."</div>
+          <textarea class="qi" id="d-objections" placeholder="What objections come up most often?" oninput="autoSave()"></textarea>
+          <textarea class="qi" id="d-objections-how" placeholder="How are those objections handled? Walk me through what you actually say..." oninput="autoSave()" style="margin-top:8px;"></textarea>
+          <div class="opts" style="margin-top:8px;" id="d-closeloop-opts">
+            <div class="ob" onclick="tog(this,'d-closeloop')">Actively Following Up</div>
+            <div class="ob" onclick="tog(this,'d-closeloop')">Passive — Waits for Response</div>
+            <div class="ob" onclick="tog(this,'d-closeloop')">One Touch Then Done</div>
+            <div class="ob" onclick="tog(this,'d-closeloop')">No Follow-Up at All</div>
+          </div>
+          <div class="opts" style="margin-top:8px;" id="d-objtrack-opts">
+            <div class="ob" onclick="tog(this,'d-objtrack')">Tracks Lost Deals in CRM</div>
+            <div class="ob" onclick="tog(this,'d-objtrack')">Tracks Response Times</div>
+            <div class="ob" onclick="tog(this,'d-objtrack')">Tracks Objection Trends</div>
+            <div class="ob" onclick="tog(this,'d-objtrack')">No Tracking at All</div>
+          </div>
+          <div class="qb" style="margin-top:12px;background:rgba(107,63,160,0.08);border-color:rgba(107,63,160,0.25);">
+            <div class="qb-label" style="color:var(--goldb);">Self-Identified Weakness</div>
+            <div class="qb-q" style="color:var(--white);">"What's one part of your sales process you know could work better?"</div>
+            <textarea class="qi" id="d-self-weakness" placeholder="Let them tell you. This is gold." oninput="autoSave()"></textarea>
+          </div>
+        </div>
+
+        <div class="qb">
+          <div class="qb-label">Proposal Follow-Up</div>
+          <div class="qb-q">What happens after you send a quote — do you know if they even opened it?</div>
+          <div class="opts" id="d-quote-tracking-opts">
+            <div class="ob" onclick="tog(this,'d-quote-tracking')">Yes — Tracked / Notified</div>
+            <div class="ob" onclick="tog(this,'d-quote-tracking')">Sometimes</div>
+            <div class="ob" onclick="tog(this,'d-quote-tracking')">No Visibility at All</div>
+          </div>
+          <div class="opts" style="margin-top:8px;" id="d-qfu-opts">
+            <div class="ob" onclick="tog(this,'d-qfu-method')">Automated Follow-Up Sequence</div>
+            <div class="ob" onclick="tog(this,'d-qfu-method')">Manual — Scheduled</div>
+            <div class="ob" onclick="tog(this,'d-qfu-method')">Follow Up Once Then Wait</div>
+            <div class="ob" onclick="tog(this,'d-qfu-method')">Wait for Them to Respond</div>
+            <div class="ob" onclick="tog(this,'d-qfu-method')">Nothing — Move On</div>
+          </div>
+          <div class="kpi-row" style="margin-top:8px;">
+            <div class="kc">
+              <div class="kc-lbl">Follow-Up Touches Before Lost</div>
+              <div class="kc-desc">How many attempts before marking dead?</div>
+              <div class="ki-wrap"><input class="ki np" type="number" id="d-qfu-touches" placeholder="0" oninput="autoSave();"></div>
+            </div>
+            <div class="kc">
+              <div class="kc-lbl">Avg Days — Proposal to Decision</div>
+              <div class="kc-desc">How long does it typically take?</div>
+              <div class="ki-wrap"><input class="ki np" type="number" id="d-qfu-days" placeholder="0" oninput="autoSave();"></div>
+            </div>
+          </div>
+          <div class="opts" style="margin-top:8px;" id="d-qfu-silent-opts">
+            <div class="ob" onclick="tog(this,'d-qfu-silent')">Re-Engage Sequence</div>
+            <div class="ob" onclick="tog(this,'d-qfu-silent')">One Final Call</div>
+            <div class="ob" onclick="tog(this,'d-qfu-silent')">Mark Lost in CRM</div>
+            <div class="ob" onclick="tog(this,'d-qfu-silent')">Nothing — Gone Forever</div>
+          </div>
+          <textarea class="qi" id="d-qfu" placeholder="Notes on proposal follow-up process..." oninput="autoSave()" style="margin-top:8px;"></textarea>
+        </div>
+
         <div class="qb">
           <div class="qb-label">Additional Notes</div>
           <textarea class="qi" id="d-notes" style="min-height:56px;" placeholder="Free notes..." oninput="autoSave()"></textarea>
@@ -545,7 +642,6 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
           <button class="btn-next" onclick="next()">Visualize →</button>
         </div>
       </div>
-
       <!-- V: VISUALIZE -->
       <div class="stage-panel" id="panel-2">
         <div class="panel-eyebrow">Stage V — Visualize</div>
