@@ -657,58 +657,92 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
       <!-- V: VISUALIZE -->
       <div class="stage-panel" id="panel-2">
         <div class="panel-eyebrow">Stage V — Visualize</div>
-        <div class="panel-title">What does the client experience look like?</div>
-        <div class="panel-desc">Map the fulfillment process and retention gaps.</div>
+        <div class="panel-title">What happens after a client says yes?</div>
+        <div class="panel-desc">"Let's map out what happens after the sale — how you deliver your service, and what the client experience actually looks like."</div>
 
         <div class="qb">
-          <div class="qb-label">Onboarding</div>
-          <div class="qb-q">The moment someone says yes — what happens next?</div>
-          <div class="opts">
+          <div class="qb-label">Section 6 — Fulfillment &amp; Client Experience</div>
+          <div class="qb-q">"Walk me through what happens after a client says yes — step by step."</div>
+
+          <div class="qb-q" style="margin-bottom:6px;">What does your onboarding or kickoff process look like?</div>
+          <div class="opts" id="v-onboard-opts">
             <div class="ob" onclick="tog(this,'onboard')">Automated</div>
-            <div class="ob" onclick="tog(this,'onboard')">Manual Process</div>
+            <div class="ob" onclick="tog(this,'onboard')">Manual — Documented</div>
+            <div class="ob" onclick="tog(this,'onboard')">Manual — Informal</div>
             <div class="ob" onclick="tog(this,'onboard')">Phone Call Only</div>
-            <div class="ob" onclick="tog(this,'onboard')">Informal / Varies</div>
+            <div class="ob" onclick="tog(this,'onboard')">Varies Every Time</div>
             <div class="ob" onclick="tog(this,'onboard')">No Formal Process</div>
           </div>
-          <textarea class="qi" id="v-onboard" placeholder="Walk me through it..." oninput="autoSave()" style="margin-top:8px;"></textarea>
-        </div>
-        <div class="qb">
-          <div class="qb-label">Client Communication</div>
-          <div class="qb-q">How do clients know what's happening at any given moment during a job?</div>
-          <textarea class="qi" id="v-comms" placeholder="SMS updates? Email? They just call in?" oninput="autoSave()"></textarea>
-        </div>
-        <div class="qb">
-          <div class="qb-label">Process Consistency</div>
-          <div class="qb-q">Is delivery consistent across every client — or does it vary?</div>
-          <div class="opts">
+          <textarea class="qi" id="v-onboard" placeholder="Walk me through it step by step..." oninput="autoSave()" style="margin-top:8px;"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:6px;">Who handles delivery — and what tools or systems are used?</div>
+          <textarea class="qi" id="v-delivery-who" placeholder="Is it you, a crew, a team member? What software or systems?" oninput="autoSave()"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:6px;">Is the process consistent across every client — or does it vary?</div>
+          <div class="opts" id="v-consist-opts">
             <div class="ob" onclick="tog(this,'consist')">Fully Documented SOPs</div>
             <div class="ob" onclick="tog(this,'consist')">Mostly Consistent</div>
             <div class="ob" onclick="tog(this,'consist')">Varies by Person</div>
             <div class="ob" onclick="tog(this,'consist')">No SOPs Exist</div>
           </div>
-          <textarea class="qi" id="v-consist" placeholder="Notes..." oninput="autoSave()" style="margin-top:8px;"></textarea>
+          <textarea class="qi" id="v-consist" placeholder="Notes on consistency..." oninput="autoSave()" style="margin-top:8px;"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:6px;">What touchpoints does a client receive while work is in progress?</div>
+          <div class="opts" id="v-touchpoints-opts">
+            <div class="ob" onclick="tog(this,'v-touchpoints')">Automated Status Updates</div>
+            <div class="ob" onclick="tog(this,'v-touchpoints')">Manual Calls / Check-ins</div>
+            <div class="ob" onclick="tog(this,'v-touchpoints')">Email Updates</div>
+            <div class="ob" onclick="tog(this,'v-touchpoints')">Client Has to Call In</div>
+            <div class="ob" onclick="tog(this,'v-touchpoints')">No Touchpoints</div>
+          </div>
+          <textarea class="qi" id="v-comms" placeholder="How do clients know what's happening at any given moment?" oninput="autoSave()" style="margin-top:8px;"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:8px;">How do you make sure the client feels informed, confident, and valued during the process?</div>
+          <textarea class="qi" id="v-client-feel" placeholder="What specifically do you do to keep them in the loop and feeling good?" oninput="autoSave()"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:8px;">What delays, frustrations, or recurring issues tend to pop up once delivery begins?</div>
+          <textarea class="qi" id="v-problems" placeholder="Scheduling? Communication gaps? Payment delays? Same fires every time?" oninput="autoSave()"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:6px;">How do you handle changes, complaints, or client concerns mid-project?</div>
+          <div class="opts" id="v-complaints-opts">
+            <div class="ob" onclick="tog(this,'v-complaints')">Formal Change Order Process</div>
+            <div class="ob" onclick="tog(this,'v-complaints')">Handle Case by Case</div>
+            <div class="ob" onclick="tog(this,'v-complaints')">Customer Always Right</div>
+            <div class="ob" onclick="tog(this,'v-complaints')">No Defined Process</div>
+          </div>
+          <textarea class="qi" id="v-complaints" placeholder="Walk me through what actually happens when something goes sideways..." oninput="autoSave()" style="margin-top:8px;"></textarea>
         </div>
+
         <div class="qb">
           <div class="qb-label">Reviews &amp; Referrals</div>
-          <div class="qb-q">How systematically are YOU capturing reviews, referrals, and repeat business?</div>
-          <div class="opts">
+          <div class="qb-q">How systematically are you capturing reviews, referrals, and repeat business?</div>
+          <div class="opts" id="v-reviews-opts">
             <div class="ob" onclick="tog(this,'reviews')">Automated Requests</div>
             <div class="ob" onclick="tog(this,'reviews')">Manual Asks Sometimes</div>
-            <div class="ob" onclick="tog(this,'reviews')">Referral Program</div>
+            <div class="ob" onclick="tog(this,'reviews')">Referral Program Exists</div>
             <div class="ob" onclick="tog(this,'reviews')">Hopes They Come Back</div>
+            <div class="ob" onclick="tog(this,'reviews')">Nothing Systematic</div>
           </div>
-          <textarea class="qi" id="v-reviews" placeholder="Notes..." oninput="autoSave()" style="margin-top:8px;"></textarea>
+          <textarea class="qi" id="v-reviews" placeholder="Notes on how reviews and referrals are captured..." oninput="autoSave()" style="margin-top:8px;"></textarea>
         </div>
+
         <div class="qb">
-          <div class="qb-label">Differentiation</div>
-          <div class="qb-q">What sets YOUR delivery apart from the competition? What do clients praise you for most?</div>
+          <div class="qb-label">Section 7 — Value &amp; Differentiation</div>
+          <div class="qb-q">"What makes your delivery or experience feel premium — and worth your price?"</div>
+
+          <div class="qb-q" style="margin-bottom:8px;">What are you doing that truly sets you apart from competitors?</div>
           <textarea class="qi" id="v-diff" placeholder="What do you do better than anyone else in your market?" oninput="autoSave()"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:8px;">What do you consistently get positive feedback about?</div>
+          <textarea class="qi" id="v-praise" placeholder="What do clients thank you for or mention in reviews?" oninput="autoSave()"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:8px;">Are there specific parts of your process you're proud of that others often overlook?</div>
+          <textarea class="qi" id="v-proud" placeholder="The things you do that most competitors skip or don't think about..." oninput="autoSave()"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:8px;">Why should a client pay YOUR price instead of choosing someone cheaper?</div>
+          <textarea class="qi" id="v-why-price" placeholder="Make the case. This goes in the brief." oninput="autoSave()"></textarea>
         </div>
-        <div class="qb">
-          <div class="qb-label">Problem Areas</div>
-          <div class="qb-q">What delays or the same problems keep coming up on your end after a sale?</div>
-          <textarea class="qi" id="v-problems" placeholder="Scheduling? Communication? Payment delays? Same fires?" oninput="autoSave()"></textarea>
-        </div>
+
         <div class="qb">
           <div class="qb-label">Additional Notes</div>
           <textarea class="qi" id="v-notes" style="min-height:56px;" placeholder="Free notes..." oninput="autoSave()"></textarea>
