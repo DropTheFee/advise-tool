@@ -914,44 +914,97 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
       <div class="stage-panel" id="panel-4">
         <div class="panel-eyebrow">Stage S — Shift</div>
         <div class="panel-title">The decision point.</div>
-        <div class="panel-desc">Work through each step. Right panel shows the prospect their own numbers.</div>
+        <div class="panel-desc">"Based on everything we've uncovered — is this something you want to figure out on your own, or are you ready to shift into a smarter system?"</div>
 
         <div class="shift-step" id="ss-11">
-          <div class="qb-label" style="margin-bottom:8px;">Step 11 — Review Together</div>
+          <div class="qb-label" style="margin-bottom:8px;">Step 11 — Confirm Alignment</div>
           <div style="font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px;line-height:1.4;">Let's review what you've shared — and make sure we have this right.</div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5;"><em style="color:var(--white);">"Would you agree these are the gaps costing your business?"</em></div>
-          <textarea class="qi" id="s11-notes" placeholder="Their response, corrections, or anything they want to add..." style="min-height:56px;margin-bottom:12px;"></textarea>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:6px;line-height:1.5;">Right panel shows their numbers. Walk through each one together, then ask:</div>
+          <div style="background:rgba(110,223,200,0.06);border:1px solid rgba(110,223,200,0.2);border-radius:8px;padding:12px;margin-bottom:12px;">
+            <div style="font-size:13px;color:var(--tealb);font-style:italic;line-height:1.6;">"Does that sound accurate based on everything we've mapped out?"</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:6px;">→ Wait for confirmation before proceeding. Don't rush this moment.</div>
+          </div>
+          <textarea class="qi" id="s11-notes" placeholder="Their response, corrections, or anything they want to add..." style="min-height:56px;margin-bottom:12px;" oninput="autoSave()"></textarea>
           <button class="btn-confirm" style="width:100%;padding:14px;" onclick="shiftNext(11)">Yes, That's Accurate — Continue ›</button>
         </div>
 
         <div class="shift-step locked" id="ss-12">
-          <div class="qb-label" style="margin-bottom:6px;">Step 12 — Ownership</div>
+          <div class="qb-label" style="margin-bottom:6px;">Step 12 — Ownership of the Problem</div>
           <div class="ownership-q">Is this something you want to fix?</div>
           <div class="ownership-sub">Or are you comfortable continuing to manage it the way it's been going?</div>
+          <div style="background:rgba(110,223,200,0.06);border:1px solid rgba(110,223,200,0.2);border-radius:8px;padding:12px;margin-bottom:14px;">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">Ask all three — let them answer each one fully:</div>
+            <div style="font-size:12px;color:var(--tealb);font-style:italic;line-height:1.8;">
+              "Are you open to support — or still thinking about handling it internally?"<br>
+              "What would it mean for your business if you had this solved in 30 days?"<br>
+              "What's at risk if you wait?"
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:6px;">→ Wait for confirmation before proceeding.</div>
+          </div>
           <div class="probe-lbl">What would change in 30 days if this was solved?</div>
           <textarea class="qi" id="s12-30" placeholder="Their answer..." style="margin-bottom:10px;" oninput="autoSave()"></textarea>
           <div class="probe-lbl">What's at risk if nothing changes in 90 days?</div>
           <textarea class="qi" id="s12-90" placeholder="Their answer..." oninput="autoSave()"></textarea>
           <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px;">
             <button class="btn-confirm" style="width:100%;padding:14px;font-size:13px;" onclick="shiftNext(12)">Yes, I Want to Fix This — Show Me the Options ›</button>
-            <button class="btn-hesitate" style="width:100%;padding:10px;text-align:center;" onclick="showReframe()">I Need More Time to Think</button>
+            <button class="btn-hesitate" style="width:100%;padding:10px;text-align:center;" onclick="showObjPath('unclear')">I'm Not Sure This Is Right for Me</button>
+            <button class="btn-hesitate" style="width:100%;padding:10px;text-align:center;" onclick="showObjPath('diy')">I Think I Can Handle It Myself</button>
+            <button class="btn-hesitate" style="width:100%;padding:10px;text-align:center;" onclick="showObjPath('time')">I Need More Time to Think</button>
           </div>
         </div>
 
-        <div class="shift-step locked" id="ss-13" style="display:none;">
-          <div class="qb-label" style="margin-bottom:6px;">Step 13 — Cost of Waiting</div>
-          <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Right panel shows the numbers. Walk through them together.</div>
-          <textarea class="qi" id="s13-notes" placeholder="Their response after seeing the cost of waiting..." oninput="autoSave()"></textarea>
-          <div style="margin-top:14px;">
-            <button class="btn-confirm" style="width:100%;padding:14px;font-size:13px;" onclick="shiftNext(13)">I Understand — Show Me the Options ›</button>
+        <div class="shift-step locked" id="ss-obj" style="display:none;">
+          <div class="qb-label" style="margin-bottom:8px;">Step 13 — Objection Handling</div>
+
+          <div id="obj-path-unclear" style="display:none;">
+            <div style="background:rgba(107,63,160,0.1);border:1px solid rgba(107,63,160,0.25);border-radius:8px;padding:14px;margin-bottom:12px;">
+              <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--purpleb);letter-spacing:2px;margin-bottom:8px;">PATH A — CLARIFY</div>
+              <div style="font-size:12px;color:var(--white);font-style:italic;line-height:1.7;">"Are you uncertain about the next step — or unsure this is the right solution?"</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6;">These are two different objections:<br>
+              <strong style="color:var(--white);">Uncertain about next step</strong> → Walk them through exactly what happens after they say yes. Remove the unknown.<br>
+              <strong style="color:var(--white);">Unsure it's the right solution</strong> → Go back to their numbers. Ask: "What part of what we identified doesn't feel accurate?"</div>
+            </div>
+            <textarea class="qi" id="s-obj-unclear" placeholder="Their response and how you clarified..." oninput="autoSave()"></textarea>
+          </div>
+
+          <div id="obj-path-diy" style="display:none;">
+            <div style="background:rgba(107,63,160,0.1);border:1px solid rgba(107,63,160,0.25);border-radius:8px;padding:14px;margin-bottom:12px;">
+              <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--purpleb);letter-spacing:2px;margin-bottom:8px;">PATH B — OPPORTUNITY COST</div>
+              <div style="font-size:12px;color:var(--white);font-style:italic;line-height:1.7;">"How long do you think it would take to fix this yourself?"</div>
+              <div style="font-size:12px;color:var(--white);font-style:italic;line-height:1.7;margin-top:6px;">"What's likely to slip through the cracks in the meantime — leads, clients, peace of mind?"</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6;">Let them calculate the cost of DIY. They already told you they're maxed out — ask them where the time to build this comes from.</div>
+            </div>
+            <textarea class="qi" id="s-obj-diy" placeholder="Their response to the DIY challenge..." oninput="autoSave()"></textarea>
+          </div>
+
+          <div id="obj-path-time" style="display:none;">
+            <div style="background:rgba(184,50,50,0.08);border:1px solid rgba(184,50,50,0.2);border-radius:8px;padding:14px;margin-bottom:12px;">
+              <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--red);letter-spacing:2px;margin-bottom:8px;">PATH C — TIME &amp; ENERGY REFRAME</div>
+              <div style="font-size:12px;color:var(--white);font-style:italic;line-height:1.7;">"Even if this is only costing you <span class="s-reframe-mo" style="color:var(--red);font-weight:700;">—</span> a month in missed revenue or inefficiencies... you're looking at <span class="s-reframe-90" style="color:var(--red);font-weight:700;">—</span> lost in the next 90 days."</div>
+              <div style="font-size:12px;color:var(--white);font-style:italic;line-height:1.7;margin-top:8px;">"You're not saving money by waiting — you're just leaking it slowly."</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6;">Right panel shows their cost-of-waiting numbers. Point to the 90-day and 180-day figures specifically.</div>
+            </div>
+            <textarea class="qi" id="s-obj-time" placeholder="Their response after seeing the cost of waiting..." oninput="autoSave()"></textarea>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px;">
+            <button class="btn-confirm" style="width:100%;padding:14px;font-size:13px;" onclick="shiftNext(13)">Objection Handled — Show Me the Options ›</button>
+            <button class="btn-hesitate" style="width:100%;padding:10px;text-align:center;" onclick="showObjPath('time')">Still Hesitating — Use Time Reframe</button>
           </div>
         </div>
 
         <div class="shift-step locked" id="ss-14">
           <div class="qb-label" style="margin-bottom:8px;">Step 14 — Select Plan</div>
-          <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Right panel shows all three tiers. Recommended tier is highlighted based on their profile.</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Right panel shows all three tiers. Recommended tier is highlighted based on their numbers.</div>
+
+          <div style="background:rgba(110,223,200,0.06);border:1px solid rgba(110,223,200,0.2);border-radius:8px;padding:12px;margin-bottom:14px;">
+            <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--tealb);letter-spacing:2px;margin-bottom:8px;">LEAKY BUCKET CLOSE</div>
+            <div style="font-size:12px;color:var(--white);font-style:italic;line-height:1.7;" id="s-bucket-close">Loading your numbers...</div>
+          </div>
+
           <div class="qb-label" style="margin-bottom:4px;margin-top:8px;">Call Notes</div>
           <textarea class="qi" id="s-notes" placeholder="Any hesitation, pricing concerns, next steps discussed..." oninput="autoSave()"></textarea>
+
           <div style="margin-top:12px;padding:12px;background:rgba(122,155,181,0.05);border:1px dashed rgba(122,155,181,0.15);border-radius:8px;">
             <div class="qb-label" style="margin-bottom:6px;color:var(--muted);">INTERNAL — Call Outcome</div>
             <div class="outcome-opts" id="outcome-opts">
@@ -1988,6 +2041,21 @@ function populateShiftSummary() {
   var sa = document.getElementById('s-annual'); if(sa) sa.textContent = fmt(c.totalAnn);
   var s3 = document.getElementById('s-3year'); if(s3) s3.textContent = fmt(c.totalAnn * 3);
   updateTierROI();
+  // Populate leaky bucket close script with their numbers
+  var bc = document.getElementById('s-bucket-close');
+  if (bc) {
+    var leads = S.kpi.leads || 0;
+    var quotes = S.kpi.quotes || 0;
+    var closed = S.kpi.closed || 0;
+    var lostQ = Math.max(0, quotes - closed);
+    var closeRate = quotes > 0 ? Math.round((closed / quotes) * 100) : 0;
+    var loseRate = quotes > 0 ? Math.round((lostQ / quotes) * 100) : 0;
+    if (leads > 0 && quotes > 0) {
+      bc.textContent = '"You\'re sending ' + leads + ' leads into a system that converts ' + closeRate + '% and loses ' + loseRate + '% with no follow-up. If we doubled your leads tomorrow, you\'d double your revenue AND double your losses. The bucket has holes. We seal the bucket first — then we fill it faster."';
+    } else {
+      bc.textContent = '"More leads into a broken system just means more losses. We seal the bucket first — then we fill it faster."';
+    }
+  }
 }
 
 function updateShiftNumbers() {
@@ -2017,14 +2085,38 @@ function shiftNext(step) {
   }
 }
 
-function showReframe() {
-  var el = document.getElementById('ss-13');
+function showObjPath(path) {
+  var el = document.getElementById('ss-obj');
   el.style.display = 'block';
   el.classList.remove('locked'); el.classList.add('open');
+  el.scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+  // Hide all paths first
+  ['unclear','diy','time'].forEach(function(p) {
+    var pd = document.getElementById('obj-path-' + p);
+    if (pd) pd.style.display = 'none';
+  });
+
+  // Show selected path
+  var selected = document.getElementById('obj-path-' + path);
+  if (selected) selected.style.display = 'block';
+
+  // Update reframe numbers with their actual data
+  var c = S.calc;
+  document.querySelectorAll('.s-reframe-mo').forEach(function(el) {
+    el.textContent = fmt(c.totalMo);
+  });
+  document.querySelectorAll('.s-reframe-90').forEach(function(el) {
+    el.textContent = fmt(c.totalMo * 3);
+  });
+
+  // Show reframe panel on right
   updateShiftNumbers();
   document.getElementById('sv-11').style.display = 'none';
   document.getElementById('sv-13').style.display = 'block';
 }
+
+function showReframe() { showObjPath('time'); }
 
 function showTiers() {
   updateTierROI();
@@ -2274,7 +2366,10 @@ function generateBrief(briefType) {
         + noteSection('What They Want More Time For', 'i-want-more')
         + noteSection('Personal Cost — Burnout & Bottleneck', 'i-burnout')
         + noteSection('90-Day Tipping Point Response', 'i-90days')
-        + noteSection('Outcome / Next Steps', 's-notes')
+        + noteSection('Objection — Clarification Path', 's-obj-unclear')
+        + noteSection('Objection — DIY Challenge Response', 's-obj-diy')
+        + noteSection('Objection — Cost of Waiting Response', 's-obj-time')
+        + noteSection('Call Notes & Pricing Discussion', 's-notes')
         + noteSection('Final Call Notes', 'e-notes')
       ) : (
         noteSection('What You\'re Great At', 'v-diff')
@@ -2403,7 +2498,9 @@ function collectSessionData() {
       i_bad_clients: gv('i-bad-clients'), i_missed: gv('i-missed'), i_scale: gv('i-scale'),
       i_stories: gv('i-stories'), i_referral_notes: gv('i-referral-notes'),
       i_want_more: gv('i-want-more'), i_burnout: gv('i-burnout'), i_90days: gv('i-90days'),
-      s11_notes: gv('s11-notes'), s12_30: gv('s12-30'), s12_90: gv('s12-90'), s13_notes: gv('s13-notes'), s_notes: gv('s-notes'),
+      s11_notes: gv('s11-notes'), s12_30: gv('s12-30'), s12_90: gv('s12-90'),
+      s_obj_unclear: gv('s-obj-unclear'), s_obj_diy: gv('s-obj-diy'), s_obj_time: gv('s-obj-time'),
+      s_notes: gv('s-notes'),
       e_notes: gv('e-notes')
     },
     kpiInputs: {
