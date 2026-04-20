@@ -759,19 +759,124 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
       <div class="stage-panel" id="panel-3">
         <div class="panel-eyebrow">Stage I — Impact</div>
         <div class="panel-title">The cost of staying the same.</div>
-        <div class="panel-desc">Two more inputs — then the full picture appears.</div>
+        <div class="panel-desc">"Let's take a second to look at what it's actually costing you to keep these gaps in place."</div>
 
-        <div class="kpi-row single" style="grid-template-columns:1fr;">
-          <div class="kc">
-            <div class="kc-lbl">Owner Hours / Week</div>
-            <div class="kc-desc">Total hours IN the business per week</div>
-            <div class="ki-wrap"><input class="ki np" type="number" id="i-ownerhrs" placeholder="45" oninput="recalc();autoSave();"></div>
+        <div class="qb">
+          <div class="qb-label">Section 8 — Owner Time & E-Myth Breakdown</div>
+          <div class="qb-q">"Let's be real about where your time is actually going."</div>
+
+          <div class="kpi-row" style="margin-bottom:8px;">
+            <div class="kc">
+              <div class="kc-lbl">Total Hours / Week</div>
+              <div class="kc-desc">All hours in the business</div>
+              <div class="ki-wrap"><input class="ki np" type="number" id="i-ownerhrs" placeholder="45" oninput="recalc();autoSave();"></div>
+            </div>
+            <div class="kc">
+              <div class="kc-lbl">Hours Working IN the Business</div>
+              <div class="kc-desc">Doing the work, fighting fires</div>
+              <div class="ki-wrap"><input class="ki np" type="number" id="i-inhrs" placeholder="40" oninput="recalc();autoSave();"></div>
+            </div>
+          </div>
+
+          <div style="background:rgba(107,63,160,0.08);border:1px solid rgba(107,63,160,0.2);border-radius:8px;padding:12px;margin-bottom:12px;">
+            <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--purpleb);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;">E-MYTH FRAMEWORK</div>
+            <div style="font-size:11px;color:var(--muted);line-height:1.7;">
+              <strong style="color:var(--white);">Working IN</strong> — answering calls, doing the work, fighting fires, handling admin. If you left, this stops.<br>
+              <strong style="color:var(--white);">Working ON</strong> — building systems, strategy, growth. If you left, this keeps running.
+            </div>
+            <div style="display:flex;gap:12px;margin-top:10px;">
+              <div style="flex:1;text-align:center;background:rgba(184,50,50,0.1);border:1px solid rgba(184,50,50,0.2);border-radius:6px;padding:8px;">
+                <div style="font-family:'Syne',sans-serif;font-size:9px;color:var(--red);letter-spacing:1px;margin-bottom:2px;">IN THE BUSINESS</div>
+                <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:900;color:var(--red);" id="i-inhrs-display">—</div>
+                <div style="font-size:9px;color:var(--muted);">hrs/wk · <span id="i-inpct-display">—</span></div>
+              </div>
+              <div style="flex:1;text-align:center;background:rgba(26,138,114,0.1);border:1px solid rgba(26,138,114,0.2);border-radius:6px;padding:8px;">
+                <div style="font-family:'Syne',sans-serif;font-size:9px;color:var(--tealb);letter-spacing:1px;margin-bottom:2px;">ON THE BUSINESS</div>
+                <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:900;color:var(--tealb);" id="i-onhrs-display">—</div>
+                <div style="font-size:9px;color:var(--muted);">hrs/wk · <span id="i-onpct-display">—</span></div>
+              </div>
+              <div style="flex:1;text-align:center;background:rgba(200,134,10,0.1);border:1px solid rgba(200,134,10,0.2);border-radius:6px;padding:8px;">
+                <div style="font-family:'Syne',sans-serif;font-size:9px;color:var(--gold);letter-spacing:1px;margin-bottom:2px;">FREEDOM SCORE</div>
+                <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:900;color:var(--goldb);" id="i-freedom-display">—</div>
+                <div style="font-size:9px;color:var(--muted);">goal: 60%+ ON</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="qb-q" style="margin-bottom:8px;">How much time are you spending putting out fires or chasing things that should be automated?</div>
+          <textarea class="qi" id="i-fires" placeholder="What's taking up most of your reactive time?" oninput="autoSave()"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:8px;">Is your team operating in their strengths — or are they stuck in reactive mode too?</div>
+          <div class="opts" id="i-team-opts">
+            <div class="ob" onclick="tog(this,'i-team')">Team Runs Independently</div>
+            <div class="ob" onclick="tog(this,'i-team')">Mostly Self-Sufficient</div>
+            <div class="ob" onclick="tog(this,'i-team')">Reactive / Needs Direction</div>
+            <div class="ob" onclick="tog(this,'i-team')">No Team — Just Me</div>
           </div>
         </div>
 
         <div class="qb">
+          <div class="qb-label">Section 8 — Missed Revenue &amp; Opportunity Cost</div>
+          <div class="qb-q">"If nothing changes in the next 3–6 months, what's that going to cost you?"</div>
+
+          <div class="qb-q" style="margin-bottom:8px;">How many leads or deals do you think you're missing because of system breakdowns or lack of follow-up?</div>
+          <textarea class="qi" id="i-missed-leads" placeholder="Their own estimate — this is self-identified, powerful." oninput="autoSave()"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:6px;">Are you spending more on ads, discounts, or manual labor to compensate for weak processes?</div>
+          <div class="opts" id="i-compensating-opts">
+            <div class="ob" onclick="tog(this,'i-compensating')">Running Ads to Offset Attrition</div>
+            <div class="ob" onclick="tog(this,'i-compensating')">Discounting to Win Work</div>
+            <div class="ob" onclick="tog(this,'i-compensating')">Hiring to Cover Manual Tasks</div>
+            <div class="ob" onclick="tog(this,'i-compensating')">None of These</div>
+          </div>
+          <textarea class="qi" id="i-compensating" placeholder="Notes on what they're spending to compensate for broken processes..." oninput="autoSave()" style="margin-top:8px;"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:8px;">What types of jobs, clients, or sales do you say yes to that drain your time or profit?</div>
+          <textarea class="qi" id="i-bad-clients" placeholder="The work they should be turning down but aren't..." oninput="autoSave()"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:8px;">If nothing changes in the next 3–6 months, what's that going to cost you?</div>
+          <textarea class="qi" id="i-missed" placeholder="Their answer..." oninput="autoSave()"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:8px;">Is your current model scalable — or are you maxed out and stuck?</div>
+          <textarea class="qi" id="i-scale" placeholder="Their answer..." oninput="autoSave()"></textarea>
+        </div>
+
+        <div class="qb">
+          <div class="qb-label">Section 9 — Reputation, Referrals &amp; Visibility</div>
+          <div class="qb-q">"Let's talk about what you're not getting — even when you do good work."</div>
+
+          <div class="qb-q" style="margin-bottom:6px;">Are you consistently asking for reviews, testimonials, or referrals after every job?</div>
+          <div class="opts" id="i-reviews-ask-opts">
+            <div class="ob" onclick="tog(this,'i-reviews-ask')">Every Single Job — Automated</div>
+            <div class="ob" onclick="tog(this,'i-reviews-ask')">Sometimes — Manual</div>
+            <div class="ob" onclick="tog(this,'i-reviews-ask')">Rarely</div>
+            <div class="ob" onclick="tog(this,'i-reviews-ask')">Never</div>
+          </div>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:8px;">What client success stories or content opportunities are being missed right now?</div>
+          <textarea class="qi" id="i-stories" placeholder="Jobs they're proud of that nobody ever heard about..." oninput="autoSave()"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:6px;">Do you feel like your best work is generating new business — or just ending quietly?</div>
+          <div class="opts" id="i-work-visibility-opts">
+            <div class="ob" onclick="tog(this,'i-work-visibility')">Generating Referrals Consistently</div>
+            <div class="ob" onclick="tog(this,'i-work-visibility')">Sometimes Gets Referrals</div>
+            <div class="ob" onclick="tog(this,'i-work-visibility')">Good Work Ends Quietly</div>
+            <div class="ob" onclick="tog(this,'i-work-visibility')">No Visibility at All</div>
+          </div>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:6px;">Are repeat buyers or referral partners part of your current growth strategy?</div>
+          <div class="opts" id="i-referral-strategy-opts">
+            <div class="ob" onclick="tog(this,'i-referral-strategy')">Formal Referral Program</div>
+            <div class="ob" onclick="tog(this,'i-referral-strategy')">Informal — Hope They Refer</div>
+            <div class="ob" onclick="tog(this,'i-referral-strategy')">Focused on New Leads Only</div>
+            <div class="ob" onclick="tog(this,'i-referral-strategy')">No Strategy</div>
+          </div>
+          <textarea class="qi" id="i-referral-notes" placeholder="Notes on referral and repeat business strategy..." oninput="autoSave()" style="margin-top:8px;"></textarea>
+        </div>
+
+        <div class="qb">
           <div class="qb-label">Referral &amp; Repeat Revenue</div>
-          <div class="qb-q">What % of YOUR revenue comes from referrals or repeat customers?</div>
+          <div class="qb-q">What % of your revenue currently comes from referrals or repeat customers?</div>
           <div class="opts" id="ref-opts">
             <div class="ob" onclick="setRef(this,0.60)">50%+ Strong</div>
             <div class="ob" onclick="setRef(this,0.375)">25–50%</div>
@@ -781,19 +886,21 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
         </div>
 
         <div class="qb">
-          <div class="qb-label">Missed Revenue</div>
-          <div class="qb-q">If nothing changes in the next 3–6 months, what's that going to cost you?</div>
-          <textarea class="qi" id="i-missed" placeholder="Their answer..." oninput="autoSave()"></textarea>
-        </div>
-        <div class="qb">
-          <div class="qb-label">Scalability</div>
-          <div class="qb-q">Is your current model scalable — or are you maxed out and stuck?</div>
-          <textarea class="qi" id="i-scale" placeholder="Their answer..." oninput="autoSave()"></textarea>
-        </div>
-        <div class="qb">
-          <div class="qb-label">Personal Cost</div>
-          <div class="qb-q">Honestly — what is all of this costing you personally? What do you WANT to be working on that you can't get to?</div>
-          <textarea class="qi" id="i-burnout" placeholder="Let them answer. Don't jump in." oninput="autoSave()"></textarea>
+          <div class="qb-label">Section 10 — Energy &amp; Burnout</div>
+          <div class="qb-q">"Let's be real — what's all of this costing you personally?"</div>
+
+          <div class="qb-q" style="margin-bottom:8px;">What do you want to spend more time on — but can't right now?</div>
+          <textarea class="qi" id="i-want-more" placeholder="Family? Strategy? Growth? Travel? Let them answer." oninput="autoSave()"></textarea>
+
+          <div class="qb-q" style="margin-top:14px;margin-bottom:8px;">Honestly — what is all of this costing you personally?</div>
+          <textarea class="qi" id="i-burnout" placeholder="Let them answer. Don't jump in. This is the tipping point." oninput="autoSave()"></textarea>
+
+          <div class="qb" style="margin-top:12px;background:rgba(184,50,50,0.06);border-color:rgba(184,50,50,0.2);">
+            <div class="qb-label" style="color:var(--red);">Tipping Point — Let Them Sit In It</div>
+            <div class="qb-q" style="color:var(--white);">"What happens if nothing changes in the next 90 days?"</div>
+            <textarea class="qi" id="i-90days" placeholder="Don't answer for them. Wait. Let the silence work." oninput="autoSave()"></textarea>
+            <div style="font-size:10px;color:var(--muted);margin-top:6px;font-style:italic;">Let them acknowledge the problem before you jump into solving it. This moment is the close.</div>
+          </div>
         </div>
 
         <div class="nav-btns">
@@ -802,7 +909,7 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
           <button class="btn-next" onclick="next()" style="background:linear-gradient(135deg,var(--red),var(--purple));">Shift — The Decision →</button>
         </div>
       </div>
-
+      
       <!-- S: SHIFT (Q&A side) -->
       <div class="stage-panel" id="panel-4">
         <div class="panel-eyebrow">Stage S — Shift</div>
@@ -1362,7 +1469,18 @@ function recalc() {
   var totalAnn = (convLossMo * 12) + refCost + ownerCost;
   var leakPct = revenue > 0 ? Math.min(Math.round((totalAnn / revenue) * 100), 99) : 0;
 
-  S.kpi = { leads:leads, quotes:quotes, closed:closed, deal:deal, margin:margin*100, revenue:revenue, ownerHrs:ownerHrs, referralDec:S.kpi.referralDec, referralSelected:S.kpi.referralSelected };
+ var inHrs = parseFloat(document.getElementById('i-inhrs').value) || 0;
+  var onHrs = inHrs > 0 ? Math.max(0, ownerHrs - inHrs) : 0;
+  var freedomScore = ownerHrs > 0 && inHrs > 0 ? Math.round((onHrs / ownerHrs) * 100) : 0;
+  var inPct = ownerHrs > 0 && inHrs > 0 ? Math.round((inHrs / ownerHrs) * 100) : 0;
+
+  var inD = document.getElementById('i-inhrs-display'); if(inD) inD.textContent = inHrs || '—';
+  var inP = document.getElementById('i-inpct-display'); if(inP) inP.textContent = inHrs ? inPct + '%' : '—';
+  var onD = document.getElementById('i-onhrs-display'); if(onD) onD.textContent = onHrs || '—';
+  var onP = document.getElementById('i-onpct-display'); if(onP) onP.textContent = onHrs ? (100 - inPct) + '%' : '—';
+  var fD = document.getElementById('i-freedom-display'); if(fD) fD.textContent = freedomScore ? freedomScore + '%' : '—';
+
+  S.kpi = { leads:leads, quotes:quotes, closed:closed, deal:deal, margin:margin*100, revenue:revenue, ownerHrs:ownerHrs, inHrs:inHrs, onHrs:onHrs, freedomScore:freedomScore, referralDec:S.kpi.referralDec, referralSelected:S.kpi.referralSelected };
   S.calc = { convLossMo:convLossMo, ownerCost:ownerCost, refCost:refCost, totalMo:totalMo, totalAnn:totalAnn, leakPct:leakPct };
 
   // Update sidebar
@@ -2145,8 +2263,17 @@ function generateBrief(briefType) {
         + noteSection('Consistent Positive Feedback', 'v-praise')
         + noteSection('Process Elements Others Overlook', 'v-proud')
         + noteSection('Why Pay Your Price vs Cheaper Option', 'v-why-price')
-        + noteSection('Owner — Burnout & Bottleneck', 'i-burnout')
+        + noteSection('Owner Time — Fires & Reactive Work', 'i-fires')
+        + noteSection('Self-Estimated Missed Leads & Deals', 'i-missed-leads')
+        + noteSection('Compensating Costs — Ads / Discounts / Labor', 'i-compensating')
+        + noteSection('Profit-Draining Work — Bad Client Trap', 'i-bad-clients')
+        + noteSection('Missed Revenue — 3-6 Month Cost', 'i-missed')
         + noteSection('Scalability Notes', 'i-scale')
+        + noteSection('Missed Success Stories & Content', 'i-stories')
+        + noteSection('Referral & Repeat Strategy', 'i-referral-notes')
+        + noteSection('What They Want More Time For', 'i-want-more')
+        + noteSection('Personal Cost — Burnout & Bottleneck', 'i-burnout')
+        + noteSection('90-Day Tipping Point Response', 'i-90days')
         + noteSection('Outcome / Next Steps', 's-notes')
         + noteSection('Final Call Notes', 'e-notes')
       ) : (
@@ -2271,7 +2398,11 @@ function collectSessionData() {
       v_comms: gv('v-comms'), v_client_feel: gv('v-client-feel'), v_problems: gv('v-problems'),
       v_complaints: gv('v-complaints'), v_reviews: gv('v-reviews'), v_diff: gv('v-diff'),
       v_praise: gv('v-praise'), v_proud: gv('v-proud'), v_why_price: gv('v-why-price'), v_notes: gv('v-notes'),
-      i_missed: gv('i-missed'), i_scale: gv('i-scale'), i_burnout: gv('i-burnout'),
+      i_inhrs: gv('i-inhrs'), i_fires: gv('i-fires'),
+      i_missed_leads: gv('i-missed-leads'), i_compensating: gv('i-compensating'),
+      i_bad_clients: gv('i-bad-clients'), i_missed: gv('i-missed'), i_scale: gv('i-scale'),
+      i_stories: gv('i-stories'), i_referral_notes: gv('i-referral-notes'),
+      i_want_more: gv('i-want-more'), i_burnout: gv('i-burnout'), i_90days: gv('i-90days'),
       s11_notes: gv('s11-notes'), s12_30: gv('s12-30'), s12_90: gv('s12-90'), s13_notes: gv('s13-notes'), s_notes: gv('s-notes'),
       e_notes: gv('e-notes')
     },
