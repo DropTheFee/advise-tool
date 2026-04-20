@@ -1023,23 +1023,85 @@ input.ki::placeholder{color:rgba(122,155,181,0.3);font-size:13px;}
         </div>
       </div>
 
-      <!-- E: EXECUTE -->
+     <!-- E: EXECUTE -->
       <div class="stage-panel" id="panel-5">
         <div class="panel-eyebrow">Stage E — Execute</div>
         <div class="panel-title">Here's what happens next.</div>
-        <div class="panel-desc">Brief is ready. Review on the right, then generate the shareable link.</div>
+        <div class="panel-desc">"We don't throw tech at you and disappear — we walk this out with you step by step."</div>
 
         <div class="qb">
-          <div class="qb-label">What Happens Next</div>
-          <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px;">
-            We don't throw tech at you and disappear — we walk this out with you step by step.<br><br>
-            We send over a clear service agreement. Once signed, we schedule your onboarding session. After that, we build. You'll see exactly where leads drop off, where deals stall, and where money is being left on the table.
+          <div class="qb-label">Step 14 — What Happens Next</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:14px;">Walk the prospect through each step below. Check each one off as you cover it.</div>
+
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+            <div class="e-step" id="estep-1" onclick="toggleEStep(this)" style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;">
+              <div class="e-check" style="width:20px;height:20px;border-radius:4px;border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px;transition:all 0.2s;">1</div>
+              <div>
+                <div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--tealb);letter-spacing:1px;margin-bottom:3px;">SERVICE AGREEMENT</div>
+                <div style="font-size:12px;color:var(--white);line-height:1.5;">We send over a clear, no-fluff service agreement that outlines exactly what we're going to do and what results we're building toward.</div>
+              </div>
+            </div>
+
+            <div class="e-step" id="estep-2" onclick="toggleEStep(this)" style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;">
+              <div class="e-check" style="width:20px;height:20px;border-radius:4px;border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px;transition:all 0.2s;">2</div>
+              <div>
+                <div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--tealb);letter-spacing:1px;margin-bottom:3px;">ONBOARDING SESSION</div>
+                <div style="font-size:12px;color:var(--white);line-height:1.5;">Once signed, we schedule your onboarding session to collect everything — logins, tools, workflows, offers, team roles, what's working, and what's broken.</div>
+              </div>
+            </div>
+
+            <div class="e-step" id="estep-3" onclick="toggleEStep(this)" style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;">
+              <div class="e-check" style="width:20px;height:20px;border-radius:4px;border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px;transition:all 0.2s;">3</div>
+              <div>
+                <div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--tealb);letter-spacing:1px;margin-bottom:3px;">IMPLEMENTATION</div>
+                <div style="font-size:12px;color:var(--white);line-height:1.5;">After onboarding, we begin building. You'll get regular updates — no chasing, no managing, no confusion.</div>
+              </div>
+            </div>
+
+            <div class="e-step" id="estep-4" onclick="toggleEStep(this)" style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;">
+              <div class="e-check" style="width:20px;height:20px;border-radius:4px;border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px;transition:all 0.2s;">4</div>
+              <div>
+                <div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--tealb);letter-spacing:1px;margin-bottom:3px;">LAUNCH &amp; VISIBILITY</div>
+                <div style="font-size:12px;color:var(--white);line-height:1.5;">Once we launch, you'll see exactly where leads drop off, where deals stall, and where money is being left on the table.</div>
+              </div>
+            </div>
+
+            <div class="e-step" id="estep-5" onclick="toggleEStep(this)" style="display:flex;align-items:flex-start;gap:12px;padding:12px;background:var(--card2);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;">
+              <div class="e-check" style="width:20px;height:20px;border-radius:4px;border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px;transition:all 0.2s;">5</div>
+              <div>
+                <div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--tealb);letter-spacing:1px;margin-bottom:3px;">OPTIMIZE &amp; SCALE</div>
+                <div style="font-size:12px;color:var(--white);line-height:1.5;">From there, we optimize what matters most — scaling the results, tightening the delivery, and removing you from the daily grind.</div>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="qb">
-          <div class="qb-label">Final Notes</div>
-          <textarea class="qi" id="e-notes" placeholder="Any final notes, agreed next steps, follow-up timing..." oninput="autoSave()"></textarea>
+          <div class="qb-label">Set the Tone</div>
+          <div style="background:rgba(110,223,200,0.06);border:1px solid rgba(110,223,200,0.2);border-radius:8px;padding:14px;margin-bottom:12px;">
+            <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--tealb);letter-spacing:2px;margin-bottom:10px;">DELIVER THIS — WORD FOR WORD</div>
+            <div style="font-size:13px;color:var(--white);font-style:italic;line-height:1.8;">"Our goal is simple — build systems that let your business grow without relying on you for every single task."</div>
+            <div style="margin-top:12px;display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);">
+                <span style="color:var(--tealb);font-weight:700;">✓</span> You'll have <strong style="color:var(--white);">clarity.</strong>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);">
+                <span style="color:var(--tealb);font-weight:700;">✓</span> Your team will have <strong style="color:var(--white);">direction.</strong>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);">
+                <span style="color:var(--tealb);font-weight:700;">✓</span> Your clients will have a <strong style="color:var(--white);">better experience</strong> — without more effort from you.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="qb">
+          <div class="qb-label">Final Close Prompt</div>
+          <div style="background:rgba(200,134,10,0.08);border:1px solid rgba(200,134,10,0.2);border-radius:8px;padding:14px;margin-bottom:12px;">
+            <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:var(--gold);letter-spacing:2px;margin-bottom:8px;">ASK THIS — THEN STOP TALKING</div>
+            <div style="font-size:14px;color:var(--white);font-style:italic;line-height:1.7;">"Are you ready to move forward and take the weight off your shoulders — or would it help to walk through the agreement together?"</div>
+          </div>
+          <textarea class="qi" id="e-notes" placeholder="Their response, final objections, agreed next steps, follow-up timing..." oninput="autoSave()"></textarea>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
@@ -2117,6 +2179,29 @@ function showObjPath(path) {
 }
 
 function showReframe() { showObjPath('time'); }
+  function toggleEStep(el) {
+  var check = el.querySelector('.e-check');
+  var isDone = el.classList.contains('e-done');
+  if (isDone) {
+    el.classList.remove('e-done');
+    el.style.borderColor = '';
+    el.style.background = 'var(--card2)';
+    check.textContent = check.getAttribute('data-num') || '✓';
+    check.style.background = '';
+    check.style.borderColor = '';
+    check.style.color = '';
+  } else {
+    el.classList.add('e-done');
+    el.style.borderColor = 'rgba(110,223,200,0.4)';
+    el.style.background = 'rgba(110,223,200,0.05)';
+    if (!check.getAttribute('data-num')) check.setAttribute('data-num', check.textContent);
+    check.textContent = '✓';
+    check.style.background = 'var(--teal)';
+    check.style.borderColor = 'var(--teal)';
+    check.style.color = 'var(--white)';
+  }
+  autoSave();
+}
 
 function showTiers() {
   updateTierROI();
